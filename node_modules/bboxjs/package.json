@@ -1,0 +1,40 @@
+{
+  "name": "bboxjs",
+  "version": "1.0.0",
+  "description": "BBoxJS is a light-weight Javascript solution for marking bounding boxes on an image",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "rollup --config",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "./node_modules/.bin/prettier --write \"src/bbox.js\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bluemellophone/bboxjs.git"
+  },
+  "keywords": [
+    "bbox",
+    "image",
+    "processing",
+    "computer vision",
+    "bounding box"
+  ],
+  "author": "Jason Parham",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bluemellophone/bboxjs/issues"
+  },
+  "homepage": "https://github.com/bluemellophone/bboxjs#readme",
+  "dependencies": {
+    "jquery": "^3.5.0",
+    "rollup": "^2.6.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "@rollup/plugin-node-resolve": "^7.1.3",
+    "prettier": "^2.0.4",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-commonjs": "^10.1.0"
+  }
+}

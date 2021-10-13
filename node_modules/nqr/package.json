@@ -1,0 +1,16 @@
+{
+  "name": "nqr",
+  "version": "1.0.0",
+  "description": "NPM Quick Run: A zero-dependency wrapper that reduces \"npm run x\" to \"nqr x\"",
+  "repository": "https://github.com/dboskovic/nqr",
+  "main": "index.js",
+  "bin": {
+    "nqr": "./nqr"
+  },
+  "keywords": [
+    "npm",
+    "run"
+  ],
+  "author": "David Boskovic <me@david.gs>",
+  "license": "MIT"
+}

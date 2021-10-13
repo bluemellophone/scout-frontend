@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>BBoxJS Demo</title>
+
+    <link rel="stylesheet" href="include/tpl/jquery-ui/jquery-ui.min.css">
+    <link rel="stylesheet" href="include/tpl/jquery.ui.rotatable/jquery.ui.rotatable.css">
+    <link rel="stylesheet" href="include/tpl/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="include/tpl/bootstrap-toggle/css/bootstrap-toggle.min.css">
+    <link rel="stylesheet" href="include/css/style.css">
+
+    <script type="text/javascript" src="include/javascript/jquery.min.js"></script>
+    <script type="text/javascript" src="include/tpl/jquery-ui/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="include/tpl/jquery.ui.rotatable/jquery.ui.rotatable.min.js"></script>
+    <script type="text/javascript" src="include/tpl/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="include/tpl/bootstrap-toggle/js/bootstrap-toggle.min.js"></script>
+
+    <script src="dist/bbox.js"></script>
+
+    <style>
+      .container {
+        width: 100%;
+      }
+
+      .demo-bbox-annotator-container {
+        width: 100%;
+        z-index: 999;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="content">
+        <div class="row" id="demo-detection-wrapper">
+          <div class="col-lg-6 col-md-6 col-sm-6">
+            <div class="row" id="demo-detection-setting-wrapper">
+              <div class="col-lg-4 col-md-4 col-sm-4">
+                  <div style="text-align: left; margin-top: 8px;">
+                    <span class="demo-detection-parts-toggle">
+                      <input type="checkbox" id="demo-detection-setting-parts-assignments">
+                      <i> Show Part Assignments <span class="demo-detection-hotkey" checked>(A)</span></i>
+                    </span>
+                  </div>
+              </div>
+              <div class="col-lg-4 col-md-4 col-sm-4">
+                  <div id="demo-detection-setting-toggle-wrapper" style="text-align: center; margin-top: 10px; margin-bottom: 2px;">
+                    <!-- <input type="checkbox" id="demo-detection-setting-toggle" checked> -->
+                    <input type="checkbox" id="demo-detection-setting-toggle" data-width="150">
+                    <br/>
+                    <div style="font-size: 10px; margin: 0px; line-height: 10px;">
+                      <span id="demo-detection-setting-toggle-label">Annotation</span>
+                      <span class="demo-detection-hotkey">(T)</span>
+                    </div>
+                  </div>
+              </div>
+              <div class="col-lg-4 col-md-4 col-sm-4">
+                  <div style="text-align: right; margin-top: 8px;">
+                    <span class="demo-detection-parts-toggle">
+                      <i><span class="demo-detection-hotkey">(S)</span> Always Show Parts</i>
+                      <input type="checkbox" id="demo-detection-setting-parts-show"><br/>
+                    </span>
+
+                    <span class="demo-detection-parts-toggle">
+                      <i><span class="demo-detection-hotkey">(D / H)</span> Always Hide Parts</i>
+                      <input type="checkbox" id="demo-detection-setting-parts-hide">
+                    </span>
+                  </div>
+              </div>
+            </div>
+
+            <div id="demo-bbox-annotator-container"></div>
+
+            <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-12">
+                <div id="demo-metadata-panel-annotation-quickhelp" style="text-align: center; color: #aaa;">
+                  <a tabindex="0" id="demo-detection-quickhelp" class="btn btn-default" role="button" data-toggle="popover" data-placement="top" data-trigger="focus" title="Quick Help Instructions" data-content="" style="margin-top: 10px;">Quick Help</a>
+                </div>
+                <br/>
+              </div>
+            </div>
+
+            <div class="row" style="margin-top: 20px;">
+              <div class="col-lg-12" style="text-align: center;">
+                <span id="demo-metadata-badge-annotation" class="badge" style="margin-left: auto; margin-right: -5px; border-top-right-radius: 0; border-bottom-right-radius: 0;">Annotation</span>
+                <span id="demo-metadata-badge-part" class="badge" style="border-top-left-radius: 0;border-bottom-left-radius: 0; margin-right: auto;">Part</span>
+              </div>
+            </div>
+
+            <div id="demo-metadata-panel-container" style="position: relative; width: 100%;">
+              <div id="demo-metadata-panel-annotation" style="position: absolute; width: 100%;">
+                <div id="demo-metadata-panel-annotation-species">
+                  Annotation Species: <span class="demo-detection-hotkey">(C to cycle)</span>
+                  <select id="demo-detection-annotation-class"  class="form-control demo-detection-annotation-value" name="demo-class-value" style="width: 200px;">
+                      <option value="species1">Species 1</option>
+                      <option value="species2">Species 2</option>
+                      <option value="species3">Species 3</option>
+                  </select>
+                </div>
+
+                <div id="demo-metadata-panel-annotation-flags">
+                  <div id="demo-metadata-panel-annotation-flags-aoi">
+                    <span class="demo-detection-hotkey">(I)</span> Annotation of Interest
+                    <input id="demo-detection-annotation-interest" class="demo-detection-annotation-value" name="demo-interest-value" type="checkbox"><br/>
+                  </div>
+                </div>
+              </div>
+
+              <div id="demo-metadata-panel-part" style="position: absolute; width: 100%;">
+                <div id="demo-metadata-panel-part-type">
+                  Part Type: <span class="demo-detection-hotkey">(C to cycle)</span>
+                  <select id="demo-detection-part-class" class="form-control demo-detection-part-value"  name="demo-part-value" style="width: 200px;">
+                      <option value="parttype1">Part Type 1</option>
+                      <option value="parttype2">Part Type 2</option>
+                      <option value="parttype3">Part Type 3</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6 col-md-6 col-sm-6">
+            <textarea id="demo-detection-data" name="demo-detection-data" style="font-family:monospace; margin-top:30px; width: 100%; height: 500px; z-index: -999" readonly=""></textarea>
+          </div>
+        </div>
+      </div>
+    </div> <!-- /container -->
+
+    <script type="text/javascript">
+      var bba, toggle, states, hotkeys_disabled, quickhelp_instructions
+
+      states = {
+        annotations: true,
+        parts: true,
+        active: null,
+      }
+
+      modes = ["diagonal", "rectangle"]  // Optional: "diagonal2"
+      hotkeys_disabled = true
+
+      quickhelp_instructions = `
+        <ul>
+          <li><b>Left-click</b>: add a new box <span style="color: #00e100; opacity: 0.75"><b>(green)</b></span></li>
+          <li><b>Hover</b>: highlight a box <span style="color: #F0AD4E; opacity: 0.75"><b>(orange)</b></span></li>
+          <li><b>Right-click</b> or <b>F</b>: focus a highlighted box <span style="color: #EB2A18; opacity: 0.75"><b>(red).</b></span></li>
+            When in focus: <ul>
+              <li>parts <span style="color: #444444; opacity: 0.75"><b>(dark outline)</b></span> can be added</li>
+              <li>metadata can be changed below</li>
+              <li>a part can be highlighted and focused</li>
+            </ul>
+          <li><b>Hover+Left-drag</b>: move the highlighted box
+          <li><b>Hover+Right-drag</b>: resize the highlighted box<br/>using the closest handle <span style="color: #EB2A18; opacity: 0.75"><b>(red)</b>
+          <li><b>Z</b>: toggle zoom</li>
+          <li><b>Esc</b>: cancel any action and unfocus</li>
+          <li><b>Delete</b> or <b>k</b>: delete a highlighted box</li>
+          <li><b>Delete+Shift</b> delete all parts of a highlighted box</li>
+          <li><b>Enter</b> or <b>Space</b>: accept the current bounding boxes and get a new example</li>
+          <li><b>Crtl</b>: hold to show all available hotkeys</li>
+          <li><b>I</b>: mark a highlighted box with Interest <span style="color: #2E63FF; opacity: 0.75"><b>(blue)</b></span></li>
+          <li><b>R</b>: rotate a highlighted box right by 90&#176;</li>
+          <li><b>L</b>: rotate a highlighted box left by 90&#176;</li>
+          <li><b>B</b>: send a box to the background</li>
+        </ul>
+      `
+
+      Array.min = function( array ){
+          return Math.min.apply( Math, array );
+      };
+
+      Array.max = function( array ){
+          return Math.max.apply( Math, array );
+      };
+
+      $.fn.getIndex = function(filter){
+          var index = $(this).parent().children(filter).index( $(this) );
+          return index;
+      }
+
+      function contains(arr, obj) {
+          var i = arr.length;
+          while (i--) {
+             if (arr[i] === obj) {
+                 return true;
+             }
+          }
+          return false;
+      }
+
+      function fix_metadata_panels() {
+          x = $("#demo-metadata-panel-annotation").height()
+          y = $("#demo-metadata-panel-part").height()
+          height = Math.max(x, y)
+          $("#demo-metadata-panel-container").css({
+              "height": height,
+          })
+      }
+
+      function update_metadata_panel(state) {
+          var css_active, css_inactive
+
+          state !== undefined || (state = null)
+          states.active = state
+
+          css_active = {
+              "background-color": "#286090",
+              "color": "#FFFFFF",
+              "border": "1px solid #286090",
+          }
+          css_inactive = {
+              "background-color": "#FFFFFF",
+              "color": "#333333",
+              "border": "1px solid #333333",
+          }
+
+          if (state == "annotation") {
+              active_ids = ["#demo-metadata-badge-annotation"]
+              inactive_ids = ["#demo-metadata-badge-part"]
+              visible_ids = ["#demo-metadata-panel-annotation"]
+              hidden_ids = ["#demo-metadata-panel-part"]
+          } else if (state == "part") {
+              active_ids = ["#demo-metadata-badge-part"]
+              inactive_ids = ["#demo-metadata-badge-annotation"]
+              visible_ids = ["#demo-metadata-panel-part"]
+              hidden_ids = ["#demo-metadata-panel-annotation"]
+          } else {
+              active_ids = []
+              inactive_ids = ["#demo-metadata-badge-annotation", "#demo-metadata-badge-part"]
+              visible_ids = []
+              hidden_ids = ["#demo-metadata-panel-annotation", "#demo-metadata-panel-part"]
+          }
+
+          for (var index = 0; index < active_ids.length; index++) {
+              $(active_ids[index]).css(css_active)
+          }
+          for (var index = 0; index < inactive_ids.length; index++) {
+              $(inactive_ids[index]).css(css_inactive)
+          }
+          for (var index = 0; index < visible_ids.length; index++) {
+              $(visible_ids[index]).show()
+          }
+          for (var index = 0; index < hidden_ids.length; index++) {
+              $(hidden_ids[index]).hide()
+          }
+
+          fix_metadata_panels();
+      }
+
+      function enable_metadata_annotations() {
+          $("#demo-detection-class").prop("disabled", false);
+          $("#demo-metadata-panel-annotation").css("color", "#000");
+          $("#demo-detection-annotation-warning").css("visibility", "hidden");
+      }
+
+      function disable_metadata_annotations() {
+          $("#demo-detection-class").prop("disabled", true);
+          $("#demo-metadata-panel-annotation").css("color", "#777");
+          $("#demo-detection-annotation-warning").css("visibility", "visible");
+      }
+
+      function enable_metadata_parts() {
+          $("#demo-detection-part").prop("disabled", false);
+          $("#demo-metadata-panel-part").css("color", "#000");
+          $("#demo-detection-part-warning").css("visibility", "hidden");
+      }
+
+      function disable_metadata_parts() {
+          $("#demo-detection-part").prop("disabled", true);
+          $("#demo-metadata-panel-part").css("color", "#777");
+          $("#demo-detection-part-warning").css("visibility", "visible");
+      }
+
+      function show_annotation_metadata(entry) {
+          invalid = false
+          entry.metadata.species    !== undefined || (invalid = true)
+          entry.metadata.species    !== undefined || (entry.metadata.species = "____")
+
+          $("#demo-detection-annotation-class option[value=\"" + entry.metadata.species + "\"]").prop("selected", true);
+          $("#demo-detection-annotation-multiple").prop("checked", entry.metadata.multiple);
+          $("#demo-detection-annotation-interest").prop("checked", entry.highlighted);
+
+          if(invalid) {
+              $(".demo-detection-annotation-value").trigger("change");
+          }
+      }
+
+      function show_part_metadata(entry, parent_entry) {
+          invalid = false
+          entry.metadata.type           !== undefined || (invalid = true)
+          entry.metadata.type           !== undefined || (entry.metadata.type = "____")
+          parent_entry.metadata.species !== undefined || (parent_entry.metadata.species = "____")
+
+          $("#demo-detection-part-class option[value=\"" + entry.metadata.type + "\"]").prop("selected", true);
+
+          if(invalid) {
+              $(".demo-detection-part-value").trigger("change");
+          }
+      }
+
+      $(document).ready(function() {
+        $(window).bind("resize", function() {
+            fix_metadata_panels()
+        })
+
+        mode = "rectangle"
+        visible = true
+        assignments = true
+
+        var entry = {}
+
+        // Initialize the bounding-box annotator.
+        bba = new BBoxAnnotator("include/image/zebra.jpg", {
+          prefix: "demo-",
+          modes: modes,
+          mode: mode,
+          colors: {
+            // anchor: "#FFFFFF",
+          },
+          actions: {
+            entry: entry,
+            subentry: {
+              addition: true,
+            },
+          },
+          subentries: {
+            visible: visible,
+            assignments: assignments,
+          },
+          callbacks: {
+            onload: function() {
+              console.log("Loaded BBoxAnnotator")
+            },
+            onchange: function(entries) {
+              $("#demo-detection-data").text(JSON.stringify(entries, null, "  "));
+            },
+            onhover: function(index, entry) {
+              if(index == null || entry == null) {
+                hotkeys_disabled = true;
+                update_metadata_panel();
+                return
+              }
+              if(entry.parent == null) {
+                update_metadata_panel("annotation");
+                show_annotation_metadata(entry)
+              } else {
+                update_metadata_panel("part");
+                parent = entry.parent
+                parent_entry = bba.entries[parent]
+                show_part_metadata(entry, parent_entry)
+              }
+              hotkeys_disabled = false;
+            },
+            onselector: function() {
+              if(bba.state.focus == null) {
+                update_metadata_panel("annotation");
+              } else {
+                update_metadata_panel("part");
+              }
+            },
+            onfocus: function(index, entry) {
+              // if(index == null || entry == null) {
+              //   return
+              // }
+
+              if(entry == null) {
+                disable_metadata_annotations()
+                disable_metadata_parts()
+              } else {
+                if (entry.parent == null) {
+                  enable_metadata_annotations()
+                  disable_metadata_parts()
+                } else {
+                  enable_metadata_parts()
+                }
+              }
+
+              checked_mode = $("#demo-detection-setting-toggle").prop("checked");
+
+              if(bba.state.focus == null) {
+                $("#demo-detection-setting-toggle-label").html("Annotations")
+                wanted_mode = states.annotations
+              } else {
+                $("#demo-detection-setting-toggle-label").html("Parts")
+                wanted_mode = states.parts
+              }
+
+              $("#demo-detection-setting-toggle").prop("checked", wanted_mode).trigger("change");
+            },
+          },
+        });
+
+        // Add pre-existing annotations as entries
+        bba.add_entry({
+          label:    "1",
+          percent:  {
+            left:      10,
+            top:       10,
+            width:     50,
+            height:    50,
+          },
+          angles:   {
+            theta:     25,
+          },
+          highlighted: true,
+          metadata: {
+            species:    "species1",
+          },
+        });
+
+        // Add pre-existing annotations as entries
+        bba.add_entry({
+          label:    "2",
+          parent:   0,
+          percent:  {
+            left:       50,
+            top:        50,
+            width:      10,
+            height:     10,
+          },
+          angles:   {
+            theta:      0,
+          },
+          metadata: {
+            type:       "parttype1",
+          },
+        });
+
+        // Create the toggle"s user interaction
+        toggle = $("#demo-detection-setting-toggle");
+        toggle.bootstrapToggle({
+          on: "Axis-to-Axis",
+          off: "Corner-to-Corner",
+          onstyle: "primary",
+          offstyle: "primary"
+        });
+
+        $("#demo-detection-setting-toggle,#demo-detection-setting-orientation").change(function() {
+
+          var checked_mode, checked_tag;
+          checked_mode = $("#demo-detection-setting-toggle").prop("checked");
+
+          // Save the mode
+          if(bba.state.focus == null) {
+            states.annotations = checked_mode
+          } else {
+            states.parts = checked_mode
+          }
+
+          checked_tag = checked_mode ? "diagonal" : "rectangle";
+          bba.update_mode(checked_tag);
+        });
+
+        $("#demo-detection-setting-parts-assignments").change(function() {
+          var checked_mode, checked_tag;
+          checked_mode = $(this).prop("checked");
+
+          checked_tag = checked_mode ? true : null;
+          bba.update_subentries_assignments(checked_tag);
+        });
+
+        $("#demo-detection-setting-parts-show").change(function() {
+          var checked_mode, checked_tag
+          checked_mode = $(this).prop("checked");
+
+          if(checked_mode) {
+            $("#demo-detection-setting-parts-hide").prop("checked", false);
+          }
+          checked_tag = checked_mode ? true : null;
+          bba.update_subentries_visible(checked_tag);
+        });
+
+        $("#demo-detection-setting-parts-hide").change(function() {
+          var checked_mode, checked_tag
+          checked_mode = $(this).prop("checked");
+
+          if(checked_mode) {
+            $("#demo-detection-setting-parts-show").prop("checked", false);
+          }
+          checked_tag = checked_mode ? false : null;
+          bba.update_subentries_visible(checked_tag);
+        });
+
+        $(".demo-detection-annotation-value").change(function(e)
+        {
+          metadata = bba.get_metadata()
+          if(metadata == null) {
+            return
+          }
+          metadata.species = $("#demo-detection-annotation-class").find("option:selected").val();
+
+          bba.set_metadata(metadata)
+          bba.set_highlighted($('#demo-detection-annotation-interest').is(":checked"))
+        });
+
+        $(".demo-detection-part-value").change(function(e)
+        {
+          metadata = bba.get_metadata()
+          if(metadata == null) {
+            return
+          }
+          metadata.type = $("#demo-detection-part-class").find("option:selected").val();
+          bba.set_metadata(metadata)
+        });
+
+        $("#demo-detection-quickhelp").popover({
+          html: true,
+        }).attr("data-content", quickhelp_instructions);
+
+        // Update metadata labels
+        disable_metadata_annotations();
+        disable_metadata_parts();
+        update_metadata_panel();
+        fix_metadata_panels();
+        $(".demo-detection-hotkey").hide();
+      });
+
+      $(window).keydown(function(event) {
+        key = event.which;
+
+        state = states.active
+        console.log(state)
+        if (state == null) {
+            return
+        }
+
+        console.log(key)
+        console.log(states.active)
+
+        if (key == 17) {
+          // Ctrl pressed
+          $(".demo-detection-hotkey").show();
+        } else if (key == 84) {
+          // T pressed
+          var element = $("#demo-detection-setting-toggle")
+          element.prop("checked", !element.is(":checked")).trigger("change");
+        } else if (key == 77) {
+          // M pressed
+          var element = $("#demo-detection-setting-orientation")
+          element.prop("checked", !element.is(":checked")).trigger("change");
+        } else if (key == 65) {
+          // A pressed
+          var element = $("#demo-detection-setting-parts-assignments")
+          element.prop("checked", !element.is(":checked")).trigger("change");
+        } else if (key == 83) {
+          // S pressed
+          var element = $("#demo-detection-setting-parts-show")
+          element.prop("checked", !element.is(":checked")).trigger("change");
+        } else if (key == 72 || key == 68) {
+          // D pressed
+          var element = $("#demo-detection-setting-parts-hide")
+          element.prop("checked", !element.is(":checked")).trigger("change");
+        }else if (key == 73) {
+          // I pressed
+          var element = $("#demo-detection-" + state + "-interest")
+          element.prop('checked', !element.is(':checked')).trigger('change');
+        }
+
+        if ( ! hotkeys_disabled) {
+          state = states.active
+          console.log(state)
+          if (state == null) {
+              return
+          }
+
+          if (key == 67) {
+              // C pressed
+              var element = $("#demo-detection-" + state + "-class")
+              var children = element.children("option")
+              var length = children.length;
+              var index = element.find("option:selected").index()
+              // Increment
+              if(event.shiftKey) {
+                  index -= 1
+              } else {
+                  index += 1
+              }
+              index = index % length
+              children.eq(index).prop("selected", true);
+              $(".demo-detection-" + state + "-value").trigger("change");
+          }
+        }
+      });
+
+      $(window).keyup(function(event) {
+        key = event.which;
+
+        if (key == 17) {
+            // Ctrl pressed
+            $(".demo-detection-hotkey").hide();
+        }
+      });
+    </script>
+
+  </body>
+</html>
