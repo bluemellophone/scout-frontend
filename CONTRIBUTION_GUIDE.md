@@ -10,17 +10,11 @@ We rely heavily on Material UI. When a component exists in Material UI, use it i
 
 - Currently we use inline styles. The plan is to continue doing so until performance issues arise. 
 - We use a 4px grid system. All padding, margins, and widths should be divisible by 4.
-- When using the main theme colors (white, black, or purple), please use Material UI's useTheme hook.
+- When using the colors, please use the color palette in Material UI's useTheme hook.
 
 ## Global state 
 
-There are a few things stored in context, but mostly pages fetch their own data.
-
-## Translations 
-
-All displayed text must support translation - for this we use `react-intl`. Translation keys are verbatum English abbreviations of the displayed text in all caps. You can see some examples in `/locale/en.json`. 
-
-If you want to help translate the project, that is very much appreciated and needed, but please don't do it by manually editing files in `/locale`. Your changes will wind up getting overwritten by Lokalise.
+There is no global state - components and pages fetch their own data directly. React-query is used to prevent excessive requests.
 
 ## Conventions 
 
