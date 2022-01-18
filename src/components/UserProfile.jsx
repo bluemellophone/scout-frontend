@@ -3,9 +3,6 @@ import { useIntl, FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 
 import { getHighestRoleLabelId } from '../utils/roleUtils';
-import useUserMetadataSchemas from '../models/users/useUserMetadataSchemas';
-import useGetUserSightings from '../models/users/useGetUserSightings';
-import useGetUserUnprocessedAssetGroupSightings from '../models/users/useGetUserUnproccessedAssetGroupSightings';
 import { formatDate } from '../utils/formatters';
 import EntityHeaderNew from './EntityHeaderNew';
 import BigAvatar from './profilePhotos/BigAvatar';
@@ -13,11 +10,6 @@ import MainColumn from './MainColumn';
 import SadScreen from './SadScreen';
 import EditUserMetadata from './EditUserMetadata';
 import Text from './Text';
-import RequestCollaborationButton from './RequestCollaborationButton';
-import MetadataCardNew from './cards/MetadataCardNew';
-import SightingsCard from './cards/SightingsCard';
-import CollaborationsCard from './cards/CollaborationsCard';
-import CardContainer from './cards/CardContainer';
 
 export default function UserProfile({
   children,
@@ -26,15 +18,11 @@ export default function UserProfile({
   userDataLoading,
   refreshUserData,
   someoneElse,
-  noCollaborate = false,
-}) {
-  const { data: sightingsData } = useGetUserSightings(userId);
+})
+{
   const intl = useIntl();
   const [editingProfile, setEditingProfile] = useState(false);
-  const metadataSchemas = useUserMetadataSchemas(userId);
-  const { data: agsData } = useGetUserUnprocessedAssetGroupSightings(
-    userId,
-  );
+  const metadataSchemas = [];
 
   const metadata = useMemo(
     () => {
@@ -97,13 +85,7 @@ export default function UserProfile({
             userDataLoading={userDataLoading}
           />
         }
-        renderOptions={
-          noCollaborate ? (
-            undefined
-          ) : (
-            <RequestCollaborationButton otherUserId={userId} />
-          )
-        }
+        renderOptions={undefined}
       >
         <Text
           variant="body2"
@@ -113,46 +95,6 @@ export default function UserProfile({
         />
       </EntityHeaderNew>
       {children}
-      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-        <CardContainer size="small">
-          <MetadataCardNew
-            editable
-            onEdit={
-              () => setEditingProfile(true) // ?
-            }
-            metadata={metadata}
-          />
-          {/* <UserProjectCard
-            renderActions={<IconButton><AddIcon /></IconButton>}
-            projects={[
-              { id: 'bob', name: 'NOAA Capricorn', count: 22, href: '/projects/noaa' },
-              { id: 'suz', name: 'Project Exodia', count: 14, href: '/projects/noaa' },
-              { id: 'zfeq', name: 'Turtle Kingdom LLC', count: 153, href: '/projects/noaa' },
-            ]}
-          /> */}
-        </CardContainer>
-        <CardContainer>
-          <SightingsCard
-            titleId={
-              someoneElse
-                ? 'USERS_UNPROCESSED_AGS'
-                : 'PENDING_SIGHTINGS'
-            }
-            columns={['individual', 'date', 'location', 'actions']}
-            sightings={agsData || []}
-            linkPath="pending-sightings"
-            noSightingsMsg="NO_PENDING_SIGHTINGS"
-          />
-          <SightingsCard
-            titleId={someoneElse ? 'USERS_SIGHTINGS' : 'SIGHTINGS'}
-            columns={['individual', 'date', 'location', 'actions']}
-            hideSubmitted
-            sightings={sightingsData || []}
-          />
-
-          {!someoneElse && <CollaborationsCard userId={userId} />}
-        </CardContainer>
-      </div>
     </MainColumn>
   );
 }

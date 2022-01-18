@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react';
-<<<<<<< HEAD
 import { FormattedMessage } from 'react-intl';
-=======
-import { useIntl, FormattedMessage } from 'react-intl';
->>>>>>> 0ff463b7f9903682e076b9fc390c5a32b139b152
 import { get } from 'lodash-es';
 
 import Grid from '@material-ui/core/Grid';
@@ -15,38 +11,22 @@ import usePatchUser from '../../models/users/usePatchUser';
 import CustomAlert from '../../components/Alert';
 import Text from '../../components/Text';
 import Button from '../../components/Button';
-<<<<<<< HEAD
 import BaoWaving from '../../components/svg/BaoWaving';
-=======
->>>>>>> 0ff463b7f9903682e076b9fc390c5a32b139b152
 import SimpleFormPage from '../../components/SimpleFormPage';
 
 const buttonId = 'saveProfile';
 
-<<<<<<< HEAD
 export default function ProfileSetup({ userData }) {
   const [noNameError, setNoNameError] = useState(false);
   const [name, setName] = useState('');
 
-=======
-export default function ProfileSetup({ userData, refreshUserData }) {
-  const [noNameError, setNoNameError] = useState(false);
-  const [name, setName] = useState('');
-
-  const intl = useIntl();
-
->>>>>>> 0ff463b7f9903682e076b9fc390c5a32b139b152
   const {
     replaceUserProperties,
     loading: replaceLoading,
     error: replaceError,
   } = usePatchUser(get(userData, 'guid'));
 
-<<<<<<< HEAD
   useDocumentTitle('SET_UP_PROFILE');
-=======
-  useDocumentTitle(intl.formatMessage({ id: 'SET_UP_PROFILE' }));
->>>>>>> 0ff463b7f9903682e076b9fc390c5a32b139b152
 
   function onKeyUp(e) {
     if (e.key === 'Enter') {
@@ -70,12 +50,7 @@ export default function ProfileSetup({ userData, refreshUserData }) {
           value: name,
         },
       ];
-<<<<<<< HEAD
       await replaceUserProperties(properties);
-=======
-      const successful = await replaceUserProperties(properties);
-      if (successful) refreshUserData();
->>>>>>> 0ff463b7f9903682e076b9fc390c5a32b139b152
     } else {
       setNoNameError(true);
     }
@@ -84,10 +59,7 @@ export default function ProfileSetup({ userData, refreshUserData }) {
     <SimpleFormPage
       titleId="SET_UP_PROFILE"
       instructionsId="SET_UP_PROFILE_INSTRUCTIONS"
-<<<<<<< HEAD
       BaoComponent={BaoWaving}
-=======
->>>>>>> 0ff463b7f9903682e076b9fc390c5a32b139b152
     >
       <form>
         <Grid
