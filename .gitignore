@@ -1,0 +1,11 @@
+node_modules/
+dist/
+devdist/
+public/
+package-lock.json
+.DS_Store
+.vscode/
+
+/src/constants/apiKeys.js
+
+dist.*.tar.gz
