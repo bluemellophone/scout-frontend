@@ -33,12 +33,12 @@ jobs:
 
       - name: Package the build
         run: |
-          mv dist codex-frontend
-          tar -czvf codex-frontend.tar.gz codex-frontend/
+          mv dist mws-frontend
+          tar -czvf mws-frontend.tar.gz mws-frontend/
 
       - uses: actions/upload-artifact@v2
         with:
-          name: codex-frontend
-          path: codex-frontend.tar.gz
+          name: mws-frontend
+          path: mws-frontend.tar.gz
           # default:
           # retention-days: 90
