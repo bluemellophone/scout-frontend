@@ -20,7 +20,8 @@ export const lato = [
 const blackColor = '#0E1014';
 const whiteColor = '#ffffff';
 
-export default primaryColor => {
+export default () => {
+  const primaryColor = '#21bdc1'; // #41d06a
   const lightPrimaryColor = lighten(primaryColor, 0.7);
   const darkPrimaryColor = darken(primaryColor, 0.2);
 

@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { BrowserRouter, useLocation } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import { get } from 'lodash-es';
 import { IntlProvider } from 'react-intl';
 import '@formatjs/intl-numberformat/polyfill';
 import enPolyfill from '@formatjs/intl-numberformat/dist/locale-data/en';
@@ -11,7 +10,7 @@ import esPolyfill from '@formatjs/intl-numberformat/dist/locale-data/es';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 
-import useSiteSettings from './models/site/useSiteSettings';
+import useGetAdminUserInitialized from './models/users/useGetAdminUserInitialized';
 import materialTheme from './styles/materialTheme';
 import messagesEn from '../locale/en.json';
 import messagesEs from '../locale/es.json';
@@ -42,17 +41,15 @@ const ScrollToTop = function() {
 
 function AppWithQueryClient() {
   const locale = 'en';
-  const { data, error } = useSiteSettings();
+  const { data, error } = useGetAdminUserInitialized();
 
-  const adminUserInitialized = get(data, 'site.adminUserInitialized');
-  const primaryColor = get(data, ['site.look.themeColor', 'value']);
+  const adminUserInitialized = data?.initialized;
 
   if (error) {
     document.title = 'Server Unavailable';
     return <SadScreen variant="serverError" />;
   }
-  if (!primaryColor) return null;
-  const theme = createTheme(materialTheme(primaryColor));
+  const theme = createTheme(materialTheme());
 
   return (
     <ThemeProvider theme={theme}>

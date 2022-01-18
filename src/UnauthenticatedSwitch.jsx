@@ -59,7 +59,7 @@ export default function UnauthenticatedSwitch() {
                       <Login redirect="/" />
                     </Route>
                     <Route path="/" exact>
-                      <span>Splishsplash!</span>
+                      <Login redirect="/" />
                     </Route>
                     <Route>
                       <Login showBanner redirect={pathname} />
