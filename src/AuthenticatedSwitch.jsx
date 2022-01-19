@@ -1,22 +1,13 @@
 import React from 'react';
-import { get } from 'lodash-es';
 import { Switch, Route } from 'react-router-dom';
 import Fade from '@material-ui/core/Fade';
 import { TransitionGroup } from 'react-transition-group';
 import AuthenticatedAppHeader from './components/AuthenticatedAppHeader';
 import FourOhFour from './pages/fourohfour/FourOhFour';
-import useSiteSettings from './models/site/useSiteSettings';
-import SiteSetup from './pages/setup/SiteSetup';
 import Footer from './components/Footer';
 import { defaultCrossfadeDuration } from './constants/defaults';
 
 export default function AuthenticatedSwitch() {
-  const { data: siteSettings } = useSiteSettings();
-  const siteNeedsSetup = get(siteSettings, [
-    'site.needsSetup',
-    'value',
-  ]);
-
   return (
     <main>
       <AuthenticatedAppHeader />
@@ -45,27 +36,23 @@ export default function AuthenticatedSwitch() {
                     boxSizing: 'border-box',
                   }}
                 >
-                  {siteNeedsSetup ? (
-                    <SiteSetup />
-                  ) : (
-                    <Switch location={location}>
-                        {/* <Route path="/users/:id">
-                        <User />
-                      </Route>
-                      <Route path="/users">
-                        <Users />
-                      </Route> */}
-                      <Route path="/welcome">
-                          <span>Welcome</span>
-                      </Route>
-                      <Route path="/" exact>
-                          <span>Home</span>
-                      </Route>
-                      <Route>
-                        <FourOhFour />
-                      </Route>
-                    </Switch>
-                  )}
+                  <Switch location={location}>
+                    {/* <Route path="/users/:id">
+                      <User />
+                    </Route>
+                    <Route path="/users">
+                      <Users />
+                    </Route> */}
+                    <Route path="/welcome">
+                      <span>Welcome</span>
+                    </Route>
+                    <Route path="/" exact>
+                      <span>Home</span>
+                    </Route>
+                    <Route>
+                      <FourOhFour />
+                    </Route>
+                  </Switch>
                 </div>
                 <Footer authenticated />
               </div>
