@@ -8,19 +8,14 @@ import Button from '../../components/Button';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import ProfileSetup from './ProfileSetup';
 
-export default function Home() {
-  const [crash, setCrash] = useState(false);
-
+export default function Home()
+{
   const { data, loading } = useGetMe();
 
   const fullName = get(data, ['full_name']);
   const userId = get(data, 'guid');
 
   useDocumentTitle('HOME', { refreshKey: fullName });
-
-  if (crash) {
-    const b = a.b.c.d.e.f;
-  }
 
   if (loading) return <LoadingScreen />;
   // if (error) handle error
@@ -33,8 +28,6 @@ export default function Home() {
       userId={userId}
       userDataLoading={loading}
       noCollaborate
-    >
-      <Button onClick={() => setCrash(true)}>Crash!!!!</Button>
-    </UserProfile>
+    />
   );
 }

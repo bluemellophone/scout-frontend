@@ -2,15 +2,13 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Fade from '@material-ui/core/Fade';
 import { TransitionGroup } from 'react-transition-group';
-import AuthenticatedAppHeader from './components/AuthenticatedAppHeader';
+import Home from './pages/home/Home';
 import FourOhFour from './pages/fourohfour/FourOhFour';
-import Footer from './components/Footer';
 import { defaultCrossfadeDuration } from './constants/defaults';
 
 export default function AuthenticatedSwitch() {
   return (
     <main>
-      <AuthenticatedAppHeader />
       <Route
         render={({ location }) => (
           <TransitionGroup appear>
@@ -47,14 +45,13 @@ export default function AuthenticatedSwitch() {
                       <span>Welcome</span>
                     </Route>
                     <Route path="/" exact>
-                      <span>Home</span>
+                      <Home />
                     </Route>
                     <Route>
                       <FourOhFour />
                     </Route>
                   </Switch>
                 </div>
-                <Footer authenticated />
               </div>
             </Fade>
           </TransitionGroup>
