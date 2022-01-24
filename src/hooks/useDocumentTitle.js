@@ -2,8 +2,6 @@ import { useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { get } from 'lodash-es';
 
-import useSiteSettings from '../models/site/useSiteSettings';
-
 export default function(message, configuration = {}) {
   const intl = useIntl();
   const appendSiteNameConfiguration = get(
@@ -14,13 +12,12 @@ export default function(message, configuration = {}) {
   const translateMessage = get(
     configuration,
     'translateMessage',
-    true,
+    false,
   );
   const refreshKey = get(configuration, 'refreshKey', null);
   const messageValues = get(configuration, 'messageValues', {});
 
-  const siteSettings = useSiteSettings();
-  const siteName = get(siteSettings, ['data', 'site.name', 'value']);
+  const siteName = 'MWS';
   const appendSiteName = siteName && appendSiteNameConfiguration;
 
   useEffect(

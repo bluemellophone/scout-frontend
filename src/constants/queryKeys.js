@@ -1,5 +1,6 @@
 export default {
   me: 'me',
+  myMissions: 'myMissions',
   settingsConfig: 'settingsConfig',
   settingsSchema: 'settingsSchema',
   users: 'users',

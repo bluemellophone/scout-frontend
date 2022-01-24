@@ -1,17 +1,37 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Paper from '@material-ui/core/Paper';
 import { useTheme } from '@material-ui/core/styles';
+
+import useDocumentTitle from '../hooks/useDocumentTitle';
+import Button from './Button';
 import Text from './Text';
 
 export default function SimpleFormPage({
-  titleId,
-  instructionsId,
-  BaoComponent,
-  baoStyles = {},
+  title,
+  instructions,
+  buttonId = 'submit form',
+  buttonText,
+  onSubmit,
+  buttonProps = {},
+  renderBelowButton = Function.prototype,
   children,
 }) {
+  useDocumentTitle(title);
   const theme = useTheme();
-  const themeColor = theme.palette.primary.main;
+
+  function onKeyUp(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      document.querySelector(`#${buttonId}`).click();
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener('keyup', onKeyUp);
+    return () => {
+      document.removeEventListener('keyup', onKeyUp);
+    };
+  }, []);
 
   return (
     <div
@@ -21,22 +41,9 @@ export default function SimpleFormPage({
         display: 'flex',
         flexWrap: 'wrap',
         justifyContent: 'center',
+        background: theme.palette.grey['100'],
       }}
     >
-      <div style={{ margin: '0px 80px 0 20px' }}>
-        <Text
-          responsive
-          variant="h2"
-          style={{ paddingBottom: 32 }}
-          id={titleId}
-        />
-        {BaoComponent && (
-          <BaoComponent
-            style={{ width: 280, ...baoStyles }}
-            themeColor={themeColor}
-          />
-        )}
-      </div>
       <Paper
         style={{
           width: 360,
@@ -47,11 +54,25 @@ export default function SimpleFormPage({
           height: 'min-content',
         }}
       >
+        <Text variant="h5" style={{ maxWidth: 460, marginLeft: 2 }}>
+          {title}
+        </Text>
         <Text
-          style={{ maxWidth: 460, fontWeight: 'bold', marginLeft: 4 }}
-          id={instructionsId}
-        />
+          variant="body2"
+          style={{ maxWidth: 460, margin: '8px 0 8px 4px' }}
+        >
+          {instructions}
+        </Text>
         {children}
+        <Button
+          domId={buttonId}
+          onClick={onSubmit}
+          display="primary"
+          {...buttonProps}
+        >
+          {buttonText}
+        </Button>
+        {renderBelowButton}
       </Paper>
     </div>
   );
