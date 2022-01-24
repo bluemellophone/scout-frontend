@@ -3,6 +3,4 @@ in this directory, apiKeys.js */
 
 export const googleMapsApiKey = '';
 
-export const sentryDsn = '';
-
 export const flatfileKey = '';
