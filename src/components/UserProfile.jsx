@@ -18,8 +18,7 @@ export default function UserProfile({
   userDataLoading,
   refreshUserData,
   someoneElse,
-})
-{
+}) {
   const intl = useIntl();
   const [editingProfile, setEditingProfile] = useState(false);
   const metadataSchemas = [];
