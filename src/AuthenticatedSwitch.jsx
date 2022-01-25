@@ -2,6 +2,7 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Fade from '@material-ui/core/Fade';
 import { TransitionGroup } from 'react-transition-group';
+import CreateMission from './pages/missions/CreateMission';
 import Mission from './pages/missions/Mission';
 import Home from './pages/home/Home';
 import FourOhFour from './pages/fourohfour/FourOhFour';
@@ -42,6 +43,9 @@ export default function AuthenticatedSwitch() {
                     <Route path="/users">
                       <Users />
                     </Route> */}
+                    <Route path="/projects/new">
+                      <CreateMission />
+                    </Route>
                     <Route path="/projects/:id">
                       <Mission />
                     </Route>

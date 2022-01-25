@@ -7,6 +7,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Paper from '@material-ui/core/Paper';
 
 import Text from '../../../components/Text';
+import ListTitle from './ListTitle';
 
 const currrentProjectButtonId = 'current-project-button';
 
@@ -43,9 +44,11 @@ const tasks = [
 export default function TaskSwitcher({ missionData }) {
   return (
     <>
-      <Text variant="caption" style={{ margin: '20px 0 0 12px' }}>
-        Tasks
-      </Text>
+      <ListTitle
+        title="Tasks"
+        buttonText="New task"
+        href="/tasks/new"
+      />
       <Paper
         style={{
           marginBottom: 20,

@@ -10,15 +10,15 @@ import Paper from '@material-ui/core/Paper';
 
 import useGetMe from '../../../models/users/useGetMe';
 import Link from '../../../components/Link';
-import Text from '../../../components/Text';
+import ListTitle from './ListTitle';
 
 const currrentProjectButtonId = 'current-project-button';
 
-const componentWidth = 280;
+const componentWidth = 320;
 
 export default function MissionDrawer({ missionData }) {
   const { data: meData, loading } = useGetMe();
-  const missions = get(meData, 'assigned_missions', []);
+  const missions = get(meData, 'owned_missions', []);
   const missionsForDisplay = missions.map(m => ({
     ...m,
     subtitle: 'Created on January 24th, 2022',
@@ -37,9 +37,11 @@ export default function MissionDrawer({ missionData }) {
 
   return (
     <>
-      <Text variant="caption" style={{ margin: '20px 0 0 12px' }}>
-        Current project
-      </Text>
+      <ListTitle
+        title="Current project"
+        buttonText="New project"
+        href="/projects/new"
+      />
       <Paper style={{ marginBottom: 20 }}>
         <List
           component="nav"
@@ -51,7 +53,7 @@ export default function MissionDrawer({ missionData }) {
             id={currrentProjectButtonId}
             aria-haspopup="listbox"
             aria-controls="current project"
-            aria-label={currentMission.title}
+            aria-label={currentMission?.title}
             aria-expanded={anchorEl ? 'true' : undefined}
             onClick={handleClickListItem}
           >
