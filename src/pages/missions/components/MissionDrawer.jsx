@@ -21,8 +21,17 @@ export default function MissionDrawer({ missionData, projectName }) {
       style={{ width: 300 }}
       PaperProps={{ style: { padding: 20 } }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', marginBottom: 16 }}>
-        <img src={WildMeLogo} style={{ width: 48, marginRight: 12 }} />
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          marginBottom: 16,
+        }}
+      >
+        <img
+          src={WildMeLogo}
+          style={{ width: 48, marginRight: 12 }}
+        />
         <Text variant="h5">MWS App</Text>
       </div>
       <Divider />

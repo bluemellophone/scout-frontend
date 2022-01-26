@@ -10,8 +10,6 @@ export default function usePatchMission() {
       data: operations,
     });
 
-    console.log(result);
-
     return result;
   });
 
