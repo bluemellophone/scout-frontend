@@ -19,3 +19,7 @@ export function getSightingQueryKey(id) {
 export function getAGSQueryKey(id) {
   return ['assetGroupSighting', id];
 }
+
+export function getMissionQueryKey(id) {
+  return ['mission', id];
+}
