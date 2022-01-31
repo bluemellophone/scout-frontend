@@ -10,6 +10,7 @@ import Text from './Text';
 export default function StandardDialog({
   open,
   onClose,
+  closeDialogDisabled,
   title,
   titleId,
   children,
@@ -24,6 +25,7 @@ export default function StandardDialog({
         <IconButton
           style={{ position: 'absolute', top: 4, right: 12 }}
           aria-label="close"
+          disabled={closeDialogDisabled}
           onClick={onClose}
         >
           <CloseIcon />

@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import useGetMission from '../../models/missions/useGetMission';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import MissionDrawer from './components/MissionDrawer';
+import MissionDashboard from './components/MissionDashboard';
 
 export default function Mission({ id: idFromProps }) {
   const { id: idFromUrl } = useParams();
@@ -18,9 +19,12 @@ export default function Mission({ id: idFromProps }) {
   useDocumentTitle(displayProjectName);
 
   return (
-    <div>
+    <div style={{ display: 'flex' }}>
       <MissionDrawer missionData={data} projectName={projectName} />
-      <div>Center panel</div>
+      <MissionDashboard
+        missionData={data}
+        projectName={projectName}
+      />
       <div>Right panel</div>
     </div>
   );

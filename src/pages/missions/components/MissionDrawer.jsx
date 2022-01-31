@@ -15,10 +15,10 @@ export default function MissionDrawer({ missionData, projectName }) {
   return (
     <Drawer
       anchor="left"
-      variant="permanent"
+      variant="persistent"
       open={open}
       onClose={() => setOpen(false)}
-      style={{ width: 300 }}
+      style={{ width: 361 }}
       PaperProps={{ style: { padding: 20 } }}
     >
       <div
@@ -31,6 +31,7 @@ export default function MissionDrawer({ missionData, projectName }) {
         <img
           src={WildMeLogo}
           style={{ width: 48, marginRight: 12 }}
+          alt="Wild Me logo"
         />
         <Text variant="h5">MWS App</Text>
       </div>
