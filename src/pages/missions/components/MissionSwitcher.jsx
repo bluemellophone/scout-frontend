@@ -16,7 +16,11 @@ const currrentProjectButtonId = 'current-project-button';
 
 const componentWidth = 320;
 
-export default function MissionDrawer({ missionData }) {
+export default function MissionDrawer({
+  missionData,
+  projectName,
+  createdDate,
+}) {
   const { data: meData, loading } = useGetMe();
   const missions = get(meData, 'owned_missions', []);
   const missionsForDisplay = missions.map(m => ({
@@ -53,13 +57,13 @@ export default function MissionDrawer({ missionData }) {
             id={currrentProjectButtonId}
             aria-haspopup="listbox"
             aria-controls="current project"
-            aria-label={currentMission?.title}
+            aria-label={projectName}
             aria-expanded={anchorEl ? 'true' : undefined}
             onClick={handleClickListItem}
           >
             <ListItemText
-              primary={missionData?.title}
-              secondary="Created on January 24"
+              primary={projectName}
+              secondary={`Created on ${createdDate}`}
             />
           </ListItem>
         </List>

@@ -9,7 +9,11 @@ import TaskSwitcher from './TaskSwitcher';
 import MissionSwitcher from './MissionSwitcher';
 import NotesEditor from './NotesEditor';
 
-export default function MissionDrawer({ missionData, projectName }) {
+export default function MissionDrawer({
+  missionData,
+  projectName,
+  createdDate,
+}) {
   const [open, setOpen] = useState(true);
 
   return (
@@ -37,7 +41,11 @@ export default function MissionDrawer({ missionData, projectName }) {
       </div>
       <Divider />
 
-      <MissionSwitcher missionData={missionData} />
+      <MissionSwitcher
+        missionData={missionData}
+        createdDate={createdDate}
+        projectName={projectName}
+      />
 
       <TaskSwitcher />
 
