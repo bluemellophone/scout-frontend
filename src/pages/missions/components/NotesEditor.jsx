@@ -47,6 +47,7 @@ export default function NotesEditor({ missionData }) {
         value={notes}
         helperText={getStatusText(status)}
         error={Boolean(error)}
+        style={{ width: 320 }}
       />
     </FormControl>
   );

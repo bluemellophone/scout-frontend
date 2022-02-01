@@ -23,11 +23,10 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import FilterList from '@material-ui/icons/FilterList';
 import CloudDownload from '@material-ui/icons/CloudDownload';
 
-import FilterBar from '../../../../components/FilterBar';
 import Text from '../../../../components/Text';
 import { formatDate } from '../../../../utils/formatters';
 import TablePaginationActions from './TablePaginationActions';
-import CollabsibleRow from './CollapsibleRow';
+import SelectableRow from './SelectableRow';
 import sendCsv from './sendCsv';
 
 const dateRendererOptions = {
@@ -53,12 +52,8 @@ export default function ImageTable({
   data,
   title,
   onClickImage = Function.prototype,
-  initiallySelectedRow = null,
-  onSelectRow = Function.prototype,
-  hideFilterSearch = false,
-  showNoResultsBao = false,
-  renderExpandedRow,
-  variant = 'primary',
+  selectedImages = [],
+  setSelectedImages = Function.prototype,
   idKey = 'guid',
   tableSize = 'small',
   noTitleBar,
@@ -73,8 +68,6 @@ export default function ImageTable({
   cellStyles = {},
   ...rest
 }) {
-  const theme = useTheme();
-
   const columns = [
     {
       name: 'filename',
@@ -115,13 +108,9 @@ export default function ImageTable({
   ];
   const initialColumnNames = columns.map(c => c.name);
 
-  const [selectedRow, setSelectedRow] = useState(
-    initiallySelectedRow,
-  );
   const [visibleColumnNames, setVisibleColumnNames] = useState(
     initialColumnNames,
   );
-  const [filter, setFilter] = useState('');
   const [sortColumn, setSortColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -132,29 +121,10 @@ export default function ImageTable({
     ? (page + 1) * rowsPerPage - 1
     : Infinity;
 
-  const visibleData = data.filter((datum, index) => {
+  const visibleData = data.filter((_, index) => {
     if (index < startIndex && !paginatedExternally) return false;
     if (index > endIndex && !paginatedExternally) return false;
-
-    let match = false;
-    columns.forEach(c => {
-      const userSuppliedDataParser = get(c, 'options.getStringValue');
-      const rawValue = get(datum, c.name, '');
-      let dataValue;
-      if (userSuppliedDataParser) {
-        const userValue = userSuppliedDataParser(rawValue, datum);
-        dataValue = userValue
-          ? userValue.toLowerCase().trim()
-          : userValue;
-      } else {
-        const stringifiedValue = JSON.stringify(rawValue) || '';
-        dataValue = stringifiedValue.toLowerCase().trim();
-      }
-      if (dataValue && dataValue.includes(filter.toLowerCase()))
-        match = true;
-    });
-
-    return match;
+    return true;
   });
 
   let sortedData = visibleData;
@@ -167,7 +137,9 @@ export default function ImageTable({
     visibleColumnNames.includes(column.name),
   );
 
-  const noResults = showNoResultsBao && data && data.length === 0;
+  const noResults = data && data.length === 0;
+  const allImagesSelected =
+    selectedImages.length === visibleData.length;
 
   return (
     <div {...rest}>
@@ -184,15 +156,6 @@ export default function ImageTable({
               elevation={8}
             >
               <Grid container direction="column">
-                {!hideFilterSearch && (
-                  <FilterBar
-                    size="small"
-                    width={140}
-                    style={{ margin: '0 0 12px 0' }}
-                    value={filter}
-                    onChange={setFilter}
-                  />
-                )}
                 {columns
                   .filter(c =>
                     get(c, 'options.displayInFilter', true),
@@ -240,27 +203,15 @@ export default function ImageTable({
           style={{ margin: '16px 0' }}
         >
           <Grid item>
-            <Text
-              variant={
-                variant === 'primary' ? 'subtitle1' : 'subtitle2'
-              }
-              style={{
-                margin:
-                  variant === 'secondary' ? '12px 0 0 12px' : 'unset',
-              }}
-            >
-              {title}
-            </Text>
+            <Text variant="subtitle1">{title}</Text>
           </Grid>
           <Grid item>
-            {variant === 'primary' && (
-              <IconButton
-                onClick={() => sendCsv(visibleColumns, visibleData)}
-                size="small"
-              >
-                <CloudDownload style={{ marginRight: 4 }} />
-              </IconButton>
-            )}
+            <IconButton
+              onClick={() => sendCsv(visibleColumns, visibleData)}
+              size="small"
+            >
+              <CloudDownload style={{ marginRight: 4 }} />
+            </IconButton>
             <IconButton
               onClick={event => {
                 setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -272,11 +223,7 @@ export default function ImageTable({
           </Grid>
         </Grid>
       )}
-      <TableContainer
-        component={variant === 'secondary' ? Paper : undefined}
-        elevation={variant === 'secondary' ? 2 : undefined}
-        style={paperStyles}
-      >
+      <TableContainer style={paperStyles}>
         <Table
           style={{ minWidth: 10 }}
           size={tableSize}
@@ -284,7 +231,24 @@ export default function ImageTable({
         >
           <TableHead>
             <TableRow>
-              {renderExpandedRow && <TableCell />}
+              <TableCell padding="checkbox">
+                <Checkbox
+                  indeterminate={
+                    selectedImages.length > 0 && !allImagesSelected
+                  }
+                  checked={allImagesSelected}
+                  onChange={() => {
+                    if (allImagesSelected) {
+                      setSelectedImages([]);
+                    } else {
+                      setSelectedImages(
+                        visibleData.map(datum => get(datum, idKey)),
+                      );
+                    }
+                  }}
+                  inputProps={{ 'aria-label': 'Select all images' }}
+                />
+              </TableCell>
               {visibleColumns.map((c, i) => {
                 const activeSort = c.name === sortColumn;
                 return (
@@ -313,25 +277,33 @@ export default function ImageTable({
           </TableHead>
           <TableBody>
             {!loading &&
-              sortedData.map(datum => (
-                <CollabsibleRow
-                  key={get(datum, idKey)}
-                  onClick={() => {
-                    if (selectedRow === get(datum, idKey)) {
-                      setSelectedRow(null);
-                      onSelectRow(null);
-                    } else {
-                      setSelectedRow(get(datum, idKey));
-                      onSelectRow(datum);
-                    }
-                  }}
-                  selected={selectedRow === get(datum, idKey)}
-                  datum={datum}
-                  cellStyles={cellStyles}
-                  columns={visibleColumns}
-                  renderExpandedRow={renderExpandedRow}
-                />
-              ))}
+              sortedData.map(datum => {
+                const datumGuid = get(datum, idKey);
+                const datumSelected = selectedImages.includes(
+                  datumGuid,
+                );
+                return (
+                  <SelectableRow
+                    key={datumGuid}
+                    onSelectRow={() => {
+                      if (datumSelected) {
+                        setSelectedImages(
+                          selectedImages.filter(i => i !== datumGuid),
+                        );
+                      } else {
+                        setSelectedImages([
+                          ...selectedImages,
+                          datumGuid,
+                        ]);
+                      }
+                    }}
+                    selected={datumSelected}
+                    datum={datum}
+                    cellStyles={cellStyles}
+                    columns={visibleColumns}
+                  />
+                );
+              })}
           </TableBody>
           {paginated && !loading && !noResults && (
             <TableFooter>

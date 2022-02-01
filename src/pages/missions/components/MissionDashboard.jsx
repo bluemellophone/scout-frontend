@@ -14,8 +14,9 @@ export default function MissionDashboard({
   projectName,
   createdDate,
 }) {
-  const [selectedAsset, setSelectedAsset] = useState(null);
+  const [clickedImage, setClickedImage] = useState(null);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [selectedImages, setSelectedImages] = useState([]);
   const images = get(missionData, 'assets', []);
   const noImages = images.length === 0;
 
@@ -45,7 +46,9 @@ export default function MissionDashboard({
       {!noImages && (
         <ImageTable
           data={images}
-          onClickImage={asset => setSelectedAsset(asset)}
+          onClickImage={asset => setClickedImage(asset)}
+          selectedImages={selectedImages}
+          setSelectedImages={setSelectedImages}
         />
       )}
       <AddImagesDialog
@@ -54,9 +57,9 @@ export default function MissionDashboard({
         onClose={() => setAddDialogOpen(false)}
       />
       <SelectedImageDialog
-        asset={selectedAsset}
-        open={Boolean(selectedAsset)}
-        onClose={() => setSelectedAsset(null)}
+        asset={clickedImage}
+        open={Boolean(clickedImage)}
+        onClose={() => setClickedImage(null)}
       />
     </div>
   );
