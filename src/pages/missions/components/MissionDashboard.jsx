@@ -21,7 +21,6 @@ export default function MissionDashboard({
   const images = get(missionData, 'assets', []);
   const noImages = images.length === 0;
   const footerOpen = selectedImages.length > 0;
-  console.log(selectedImages);
 
   const onAddImages = () => setAddDialogOpen(true);
 

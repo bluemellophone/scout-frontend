@@ -24,6 +24,7 @@ import FilterList from '@material-ui/icons/FilterList';
 import CloudDownload from '@material-ui/icons/CloudDownload';
 
 import Text from '../../../../components/Text';
+import Keywords from '../../../../components/Keywords';
 import { formatDate } from '../../../../utils/formatters';
 import TablePaginationActions from './TablePaginationActions';
 import SelectableRow from './SelectableRow';
@@ -85,6 +86,16 @@ export default function ImageTable({
             </button>
           );
         },
+      },
+    },
+    {
+      name: 'tags',
+      label: 'Tags',
+      align: 'left',
+      options: {
+        customBodyRender: (_, asset) => (
+          <Keywords asset={asset} style={{ marginTop: 0 }} />
+        ),
       },
     },
     {

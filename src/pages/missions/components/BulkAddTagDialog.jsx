@@ -17,16 +17,18 @@ export default function BulkAddTagDialog({
   open,
   onClose,
   selectedImages,
-})
-{
+}) {
   const { data: keywordOptions } = useGetKeywords();
-  const { addKeywordToAssets, isLoading, error } = useAddKeywordToAssets();
+  const {
+    addKeywordToAssets,
+    isLoading,
+    error,
+  } = useAddKeywordToAssets();
 
   const [newTagSelectValue, setNewTagSelectValue] = useState(null);
   const [newTagInputValue, setNewTagInputValue] = useState('');
 
-  function handleClose()
-  {
+  function handleClose() {
     setNewTagSelectValue(null);
     setNewTagInputValue('');
     onClose();
@@ -50,13 +52,11 @@ export default function BulkAddTagDialog({
           handleHomeEndKeys
           selectOnFocus
           value={newTagSelectValue}
-          onChange={(_, newValue) =>
-          {
+          onChange={(_, newValue) => {
             setNewTagSelectValue(newValue);
           }}
           inputValue={newTagInputValue}
-          onInputChange={(_, newValue) =>
-          {
+          onInputChange={(_, newValue) => {
             setNewTagInputValue(newValue);
           }}
           disabled={isLoading}
@@ -108,8 +108,7 @@ export default function BulkAddTagDialog({
           display="primary"
           loading={isLoading}
           disabled={isLoading || newTagInputValue === ''}
-          onClick={async () =>
-          {
+          onClick={async () => {
             const selectValue = get(newTagSelectValue, 'value');
             const selectKeywordId = get(newTagSelectValue, 'guid');
             const matchingKeywordId =
