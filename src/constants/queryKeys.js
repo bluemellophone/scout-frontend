@@ -6,6 +6,7 @@ export default {
   users: 'users',
   collaborations: 'collaborations',
   assetGroupSightings: 'assetGroupSightings',
+  keywords: 'keywords',
 };
 
 export function getAuditLogQueryKey(id) {

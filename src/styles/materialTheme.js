@@ -21,7 +21,7 @@ const blackColor = '#0E1014';
 const whiteColor = '#ffffff';
 
 export default () => {
-  const primaryColor = '#21bdc1'; // #41d06a
+  const primaryColor = '#41d06a'; // #21bdc1
   const lightPrimaryColor = lighten(primaryColor, 0.7);
   const darkPrimaryColor = darken(primaryColor, 0.2);
 
@@ -58,11 +58,7 @@ export default () => {
     overrides: {
       MuiTypography: { colorTextSecondary: { color: '#0E1014' } },
       MuiFormHelperText: { root: { color: '#0E1014' } },
-      MuiAlert: {
-        action: {
-          alignItems: 'start',
-        },
-      },
+      MuiAlert: { action: { alignItems: 'start' } },
       MuiButton: {
         label: {
           letterSpacing: '0.02em',

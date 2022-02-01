@@ -21,7 +21,6 @@ export default function BodyHeader({
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'flex-start',
-        maxWidth: 900,
       }}
     >
       <div style={{ display: 'flex', flexDirection: 'column' }}>

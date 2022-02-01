@@ -32,12 +32,12 @@ const Core = function({
 
 export default function CustomAlert({
   titleId = '',
-  titleTxt,
+  title,
   titleValues,
   children: alertChildren,
   ...rest
 }) {
-  const isTitle = titleId || titleTxt;
+  const isTitle = titleId || title;
   return (
     <Core {...rest} alertChildren={alertChildren}>
       {isTitle ? (
@@ -45,7 +45,7 @@ export default function CustomAlert({
           {titleId ? (
             <Text id={titleId} values={titleValues} />
           ) : (
-            <Text>{titleTxt}</Text>
+            <Text>{title}</Text>
           )}
         </AlertTitle>
       ) : null}
