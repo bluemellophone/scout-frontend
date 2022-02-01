@@ -19,7 +19,7 @@ export const formatDate = (input, fancy) => {
     const formattedDate = format(jsDate, formatter);
     return formattedDate;
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return '';
   }
 };
@@ -31,7 +31,7 @@ export const formatDateCustom = (input, formatSpecification) => {
     const formattedDate = format(jsDate, formatSpecification);
     return formattedDate;
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return '';
   }
 };
