@@ -1,7 +1,10 @@
 import axios from 'axios';
-import { useMutation } from 'react-query';
+import { useQueryClient, useMutation } from 'react-query';
+import { getMissionQueryKey } from '../../constants/queryKeys';
 
 export default function usePostMissionCollection() {
+  const queryClient = useQueryClient();
+
   const mutation = useMutation(
     async ({ missionId, transactionId }) => {
       const result = await axios.request({
@@ -14,6 +17,7 @@ export default function usePostMissionCollection() {
         },
       });
 
+      queryClient.invalidateQueries(getMissionQueryKey(missionId));
       return result;
     },
   );

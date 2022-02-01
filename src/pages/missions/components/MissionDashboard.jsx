@@ -19,12 +19,17 @@ export default function MissionDashboard({
   const images = get(missionData, 'assets', []);
   const noImages = images.length === 0;
 
+  const onAddImages = () => setAddDialogOpen(true);
+
   return (
     <div style={{ margin: '20px 16px 40px 16px', width: '100%' }}>
       <BodyHeader
         title={projectName}
         subtitle={`Created on ${createdDate}`}
         MenuComponent={MissionActionsMenu}
+        menuComponentProps={{
+          onAddImages,
+        }}
       />
       {noImages && (
         <div style={{ marginTop: 40 }}>
@@ -32,10 +37,7 @@ export default function MissionDashboard({
             Your project has no images. Get started by adding some
             images!
           </Text>
-          <Button
-            display="primary"
-            onClick={() => setAddDialogOpen(true)}
-          >
+          <Button display="primary" onClick={onAddImages}>
             Add images
           </Button>
         </div>

@@ -5,6 +5,7 @@ import Popover from '@material-ui/core/Popover';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import Divider from '@material-ui/core/Divider';
+import AddImagesIcon from '@material-ui/icons/AddAPhoto';
 import ManageUsersIcon from '@material-ui/icons/AccountCircle';
 import ProjectSettingsIcon from '@material-ui/icons/Settings';
 import LogoutIcon from '@material-ui/icons/ExitToApp';
@@ -15,6 +16,7 @@ import Text from '../../../components/Text';
 export default function MissionActionsMenu({
   anchorEl,
   setAnchorEl,
+  onAddImages,
 }) {
   const theme = useTheme();
   const closePopover = () => setAnchorEl(null);
@@ -32,6 +34,19 @@ export default function MissionActionsMenu({
       onClose={closePopover}
     >
       <MenuList style={{ minWidth: 270 }}>
+        <MenuItem onClick={onAddImages} style={{ minHeight: 'auto' }}>
+          <div
+            style={{
+              padding: 12,
+              borderRadius: 1000,
+              color: theme.palette.grey['600'],
+              lineHeight: 0,
+            }}
+          >
+            <AddImagesIcon />
+          </div>
+          <Text style={{ margin: '0 8px' }}>Add images</Text>
+        </MenuItem>
         <Link
           href={`/projects/settings/${'herp'}`}
           onClick={closePopover}

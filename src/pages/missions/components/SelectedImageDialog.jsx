@@ -48,8 +48,6 @@ export default function SelectedImageDialog({
     onClose();
   }
 
-  console.log(keywordOptions);
-
   return (
     <StandardDialog
       fullScreen

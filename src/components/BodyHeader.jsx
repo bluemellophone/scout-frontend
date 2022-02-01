@@ -11,6 +11,7 @@ export default function BodyHeader({
   title,
   subtitle,
   MenuComponent,
+  menuComponentProps = {},
 }) {
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -24,8 +25,8 @@ export default function BodyHeader({
       }}
     >
       <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <Text variant="h3">{title}</Text>
-        {subtitle && <Text variant="subtitle1">{subtitle}</Text>}
+        <Text variant="h4">{title}</Text>
+        {subtitle && <Text variant="subtitle2">{subtitle}</Text>}
       </div>
       <Tooltip title="More actions">
         <IconButton
@@ -38,7 +39,11 @@ export default function BodyHeader({
           <DropDownIcon />
         </IconButton>
       </Tooltip>
-      <MenuComponent anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
+      <MenuComponent
+        anchorEl={anchorEl}
+        setAnchorEl={setAnchorEl}
+        {...menuComponentProps}
+      />
     </div>
   );
 }
