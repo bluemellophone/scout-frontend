@@ -60,9 +60,13 @@ export default function MissionDrawer({
           />
           <Text
             variant="h5"
-            style={{ whiteSpace: 'nowrap', ...minimizedStyles }}
+            style={{
+              whiteSpace: 'nowrap',
+              fontSize: 26,
+              ...minimizedStyles,
+            }}
           >
-            MWS App
+            Wild Me Scout
           </Text>
         </div>
         <IconButton

@@ -17,7 +17,7 @@ export default function(message, configuration = {}) {
   const refreshKey = get(configuration, 'refreshKey', null);
   const messageValues = get(configuration, 'messageValues', {});
 
-  const siteName = 'MWS';
+  const siteName = 'Scout';
   const appendSiteName = siteName && appendSiteNameConfiguration;
 
   useEffect(

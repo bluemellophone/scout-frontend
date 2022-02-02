@@ -21,7 +21,8 @@ const blackColor = '#0E1014';
 const whiteColor = '#ffffff';
 
 export default () => {
-  const primaryColor = '#41d06a'; // #21bdc1
+  // const primaryColor = '#41d06a'; // #21bdc1
+  const primaryColor = '#FFB55F';
   const lightPrimaryColor = lighten(primaryColor, 0.7);
   const darkPrimaryColor = darken(primaryColor, 0.2);
 
