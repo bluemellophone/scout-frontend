@@ -22,7 +22,9 @@ export default function CreateTaskDialog({
     onClose();
   }
 
-  const displayMessage = message || `Create new task from ${selectedImages?.length} images?`;
+  const displayMessage =
+    message ||
+    `Create new task from ${selectedImages?.length} images?`;
 
   return (
     <StandardDialog
@@ -32,10 +34,9 @@ export default function CreateTaskDialog({
       PaperProps={{ style: { width: 400 } }}
     >
       <DialogContent>
-        <Text
-          variant="body2"
-          style={{ marginBottom: 12 }}
-        >{displayMessage}</Text>
+        <Text variant="body2" style={{ marginBottom: 12 }}>
+          {displayMessage}
+        </Text>
         {error && (
           <Alert
             style={{ marginTop: 16, marginBottom: 8 }}

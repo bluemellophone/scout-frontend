@@ -111,7 +111,10 @@ export default function ImageTable({
       align: 'left',
       options: {
         customBodyRender: (_, asset) => (
-          <Keywords asset={asset} style={{ marginTop: 0, flexWrap: undefined }} />
+          <Keywords
+            asset={asset}
+            style={{ marginTop: 0, flexWrap: undefined }}
+          />
         ),
       },
     },

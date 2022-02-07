@@ -5,43 +5,15 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Paper from '@material-ui/core/Paper';
 
+import Link from '../../../components/Link';
 import ListTitle from './ListTitle';
 import CreateTaskDialog from './CreateTaskDialog';
 
 const currrentProjectButtonId = 'current-project-button';
 
-const componentWidth = 280;
-
-const tasks = [
-  {
-    guid: 123,
-    title: 'Task for Jimbo',
-    status: 'Complete',
-  },
-  {
-    guid: 512,
-    title: 'Task for Mark',
-    status: '93% of images viewed',
-  },
-  {
-    guid: 523,
-    title: 'Imgs for Sally',
-    status: '43% of images viewed',
-  },
-  {
-    guid: 234,
-    title: 'Review Jimbos work',
-    status: '13% of images viewed',
-  },
-  {
-    guid: 4215,
-    title: 'Review Sallys work',
-    status: '43% of images viewed',
-  },
-];
-
 export default function TaskSwitcher({ missionData }) {
   const [creatingTask, setCreatingTask] = useState(false);
+  const tasks = missionData?.tasks || [];
   return (
     <>
       <CreateTaskDialog
@@ -67,22 +39,31 @@ export default function TaskSwitcher({ missionData }) {
         <List
           component="nav"
           aria-label="tasks in this project"
-          style={{ padding: 0, width: componentWidth }}
+          style={{ padding: 0 }}
         >
-          {tasks.map(task => (
-            <ListItem
-              button
-              id={currrentProjectButtonId}
-              aria-controls="view task"
-              aria-label={task.title}
-              onClick={Function.prototype}
-            >
-              <ListItemText
-                primary={task.title}
-                secondary={task.status}
-              />
-            </ListItem>
-          ))}
+          {tasks.map(task =>
+          {
+            const taskTitle = task?.title || 'Unnamed task';
+            const assetCount = task?.asset_count || 0;
+            let taskSubtitle = `${assetCount} images`;
+            if (assetCount === 0) taskSubtitle = 'No images';
+            if (assetCount === 1) taskSubtitle = '1 image';
+            return (
+              <Link noUnderline to={`/tasks/${task?.guid}`}>
+                <ListItem
+                  button
+                  id={currrentProjectButtonId}
+                  aria-controls="view task"
+                  aria-label={taskTitle}
+                >
+                  <ListItemText
+                    primary={taskTitle}
+                    secondary={taskSubtitle}
+                  />
+                </ListItem>
+              </Link>
+            );
+          })}
         </List>
       </Paper>
     </>

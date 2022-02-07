@@ -5,9 +5,14 @@ import Text from '../../../components/Text';
 import Button from '../../../components/Button';
 import ButtonLink from '../../../components/ButtonLink';
 
-export default function ListTitle({ title, buttonVariant = "link", buttonText, ...rest })
-{
-  const ButtonComponent = buttonVariant === 'link' ? ButtonLink : Button;
+export default function ListTitle({
+  title,
+  buttonVariant = 'link',
+  buttonText,
+  ...rest
+}) {
+  const ButtonComponent =
+    buttonVariant === 'link' ? ButtonLink : Button;
   return (
     <div
       style={{
