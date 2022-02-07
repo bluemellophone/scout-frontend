@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { get, sortBy } from 'lodash-es';
 
-import { useTheme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -286,7 +285,7 @@ export default function ImageTable({
               })}
             </TableRow>
           </TableHead>
-          <TableBody>
+          <TableBody style={{ whiteSpace: 'nowrap' }}>
             {!loading &&
               sortedData.map(datum => {
                 const datumGuid = get(datum, idKey);

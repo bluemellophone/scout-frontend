@@ -24,3 +24,11 @@ export function getAGSQueryKey(id) {
 export function getMissionQueryKey(id) {
   return ['mission', id];
 }
+
+export function getMissionAssetsQueryKey(id) {
+  return ['missionAssets', id];
+}
+
+export function getTaskQueryKey(id) {
+  return ['task', id];
+}
