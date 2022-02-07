@@ -7,23 +7,25 @@ export default function useAddKeywordToAssets() {
 
   const mutation = useMutation(
     async ({ imageGuids, keywordGuid, tag }) => {
-      const payload = keywordGuid || {
-        value: tag,
-        source: 'user',
-      };
-
-      const operations = imageGuids.map(guid => ({
+      const testOperation = keywordGuid
+        ? { op: 'test', path: '/tags', value: keywordGuid }
+        : {
+            op: 'test',
+            path: '/tags',
+            value: { value: tag, source: 'user' },
+          };
+      const addOperations = imageGuids.map(guid => ({
         op: 'add',
         path: '/tags',
         guid,
-        value: payload,
+        value: '[0]',
       }));
 
       const result = await axios.request({
         url: `${__houston_url__}/api/v1/assets/`,
         withCredentials: true,
         method: 'patch',
-        data: operations,
+        data: [testOperation, ...addOperations],
       });
 
       return result;
