@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { get } from 'lodash-es';
 
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Paper from '@material-ui/core/Paper';
 
-import Text from '../../../components/Text';
 import ListTitle from './ListTitle';
+import CreateTaskDialog from './CreateTaskDialog';
 
 const currrentProjectButtonId = 'current-project-button';
 
@@ -42,12 +41,21 @@ const tasks = [
 ];
 
 export default function TaskSwitcher({ missionData }) {
+  const [creatingTask, setCreatingTask] = useState(false);
   return (
     <>
+      <CreateTaskDialog
+        message="Are you sure you want to create a new task?"
+        selectedImages={[]}
+        missionGuid={missionData?.guid}
+        open={creatingTask}
+        onClose={() => setCreatingTask(false)}
+      />
       <ListTitle
         title="Tasks"
+        buttonVariant="button"
         buttonText="New task"
-        href="/tasks/new"
+        onClick={() => setCreatingTask(true)}
       />
       <Paper
         style={{

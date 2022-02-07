@@ -88,16 +88,6 @@ export default function ImageTable({
       },
     },
     {
-      name: 'tags',
-      label: 'Tags',
-      align: 'left',
-      options: {
-        customBodyRender: (_, asset) => (
-          <Keywords asset={asset} style={{ marginTop: 0 }} />
-        ),
-      },
-    },
-    {
       name: 'created',
       label: 'Date added',
       align: 'left',
@@ -114,6 +104,16 @@ export default function ImageTable({
       label: '# Annotations',
       align: 'left',
       options: countRendererOptions,
+    },
+    {
+      name: 'tags',
+      label: 'Tags',
+      align: 'left',
+      options: {
+        customBodyRender: (_, asset) => (
+          <Keywords asset={asset} style={{ marginTop: 0, flexWrap: undefined }} />
+        ),
+      },
     },
   ];
   const initialColumnNames = columns.map(c => c.name);

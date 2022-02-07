@@ -10,6 +10,10 @@ export default function usePostTask() {
         method: 'post',
         data: operations,
       });
+      if (result?.status === 200) {
+        const newTaskId = result?.data?.guid;
+        window.location.href = `/tasks/${newTaskId}`;
+      }
       return result;
     },
   );

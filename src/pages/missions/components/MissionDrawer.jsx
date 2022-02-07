@@ -85,7 +85,7 @@ export default function MissionDrawer({
           projectName={projectName}
         />
 
-        <TaskSwitcher />
+        <TaskSwitcher missionData={missionData} />
 
         <NotesEditor missionData={missionData} />
       </div>

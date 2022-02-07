@@ -9,17 +9,20 @@ import Button from '../../../components/Button';
 import Text from '../../../components/Text';
 import Alert from '../../../components/Alert';
 
-export default function BulkAddTagDialog({
+export default function CreateTaskDialog({
   open,
   onClose,
   selectedImages,
   missionGuid,
+  message,
 }) {
   const { postTask, isLoading, error } = usePostTask();
 
   function handleClose() {
     onClose();
   }
+
+  const displayMessage = message || `Create new task from ${selectedImages?.length} images?`;
 
   return (
     <StandardDialog
@@ -32,9 +35,7 @@ export default function BulkAddTagDialog({
         <Text
           variant="body2"
           style={{ marginBottom: 12 }}
-        >{`Create new task from ${
-          selectedImages?.length
-        } images?`}</Text>
+        >{displayMessage}</Text>
         {error && (
           <Alert
             style={{ marginTop: 16, marginBottom: 8 }}
