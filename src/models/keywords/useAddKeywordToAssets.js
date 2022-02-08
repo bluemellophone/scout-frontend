@@ -1,12 +1,12 @@
 import axios from 'axios';
 import { useQueryClient, useMutation } from 'react-query';
-// import { getMissionQueryKey } from '../../constants/queryKeys';
+import { getMissionAssetsQueryKey } from '../../constants/queryKeys';
 
 export default function useAddKeywordToAssets() {
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
   const mutation = useMutation(
-    async ({ imageGuids, keywordGuid, tag }) => {
+    async ({ missionGuid, imageGuids, keywordGuid, tag }) => {
       const testOperation = keywordGuid
         ? { op: 'test', path: '/tags', value: keywordGuid }
         : {
@@ -28,12 +28,28 @@ export default function useAddKeywordToAssets() {
         data: [testOperation, ...addOperations],
       });
 
+      if (result?.status === 200) {
+        queryClient.invalidateQueries(
+          getMissionAssetsQueryKey(missionGuid),
+        );
+      }
+
       return result;
     },
   );
 
-  const addKeywordToAssets = (imageGuids, keywordGuid, tag) =>
-    mutation.mutateAsync({ imageGuids, keywordGuid, tag });
+  const addKeywordToAssets = (
+    missionGuid,
+    imageGuids,
+    keywordGuid,
+    tag,
+  ) =>
+    mutation.mutateAsync({
+      missionGuid,
+      imageGuids,
+      keywordGuid,
+      tag,
+    });
 
   const error = mutation?.error
     ? mutation?.error.toJSON().message

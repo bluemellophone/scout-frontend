@@ -334,7 +334,7 @@ export default function ImageTable({
           )}
         </Table>
       </TableContainer>
-      {noResults && (
+      {!loading && noResults && (
         <div
           style={{
             display: 'flex',
@@ -343,9 +343,7 @@ export default function ImageTable({
             marginTop: 40,
           }}
         >
-          <Text style={{ marginTop: 12 }}>
-            Your search did not match any records.
-          </Text>
+          <Text style={{ marginTop: 12 }}>No images to display.</Text>
         </div>
       )}
       {loading && <LinearProgress style={{ margin: '16px 32px' }} />}

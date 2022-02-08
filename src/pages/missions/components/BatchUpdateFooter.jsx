@@ -33,6 +33,7 @@ export default function BatchUpdateFooter({
       }}
     >
       <BulkAddTagDialog
+        missionGuid={missionGuid}
         selectedImages={selectedImages}
         open={addingTag}
         onClose={() => setAddingTag(false)}
