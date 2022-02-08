@@ -7,6 +7,7 @@ export default function TaskDashboard({
   taskData,
   taskName,
   createdDate,
+  selectedAsset,
 }) {
   return (
     <div
@@ -32,6 +33,13 @@ export default function TaskDashboard({
           backButtonHref={`/projects/${taskData?.mission?.guid}`}
           MenuComponent={TaskActionsMenu}
         />
+        {selectedAsset && (
+          <img
+            alt={selectedAsset?.filename}
+            src={selectedAsset?.src}
+            style={{ width: '100%', marginTop: 12 }}
+          />
+        )}
       </div>
     </div>
   );

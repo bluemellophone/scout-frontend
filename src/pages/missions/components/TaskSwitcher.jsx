@@ -41,8 +41,7 @@ export default function TaskSwitcher({ missionData }) {
           aria-label="tasks in this project"
           style={{ padding: 0 }}
         >
-          {tasks.map(task =>
-          {
+          {tasks.map(task => {
             const taskTitle = task?.title || 'Unnamed task';
             const assetCount = task?.asset_count || 0;
             let taskSubtitle = `${assetCount} images`;

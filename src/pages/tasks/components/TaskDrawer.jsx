@@ -7,11 +7,12 @@ import CollapseIcon from '@material-ui/icons/ChevronLeft';
 
 import WildMeLogo from '../../../assets/wild-me-gradient-logo.png';
 import Text from '../../../components/Text';
+import ImageList from './ImageList';
 
 export default function TaskDrawer({
   taskData,
-  taskName,
-  createdDate,
+  selectedAsset,
+  setSelectedAsset,
 }) {
   const [minimized, setMinimized] = useState(false);
 
@@ -75,7 +76,13 @@ export default function TaskDrawer({
       </div>
       <Divider style={minimizedStyles} />
 
-      <div style={minimizedStyles}>Heyaaa</div>
+      <div style={minimizedStyles}>
+        <ImageList
+          taskData={taskData}
+          selectedAsset={selectedAsset}
+          setSelectedAsset={setSelectedAsset}
+        />
+      </div>
     </Drawer>
   );
 }
