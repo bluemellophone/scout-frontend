@@ -8,9 +8,8 @@ export default function useDeleteMission() {
       withCredentials: true,
       method: 'delete',
     });
-    if (result?.status === 200) {
-      console.log('successfully deleted...', result);
-      // window.location.href = '/';
+    if (result?.status === 204) {
+      window.location.href = '/';
     }
     return result;
   });
