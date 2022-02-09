@@ -10,7 +10,7 @@ export default function useRemoveUserFromMission() {
       data: [
         {
           op: 'remove',
-          path: '/users',
+          path: '/user',
           value: userId,
         },
       ],
