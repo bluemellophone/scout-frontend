@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import TextField from '@material-ui/core/TextField';
-import Switch from '@material-ui/core/Switch';
 
 import CustomAlert from '../../components/Alert';
 import useLogin from '../../models/auth/useLogin';
@@ -21,7 +18,7 @@ export default function Login({ showBanner, redirect = '/' }) {
 
   return (
     <SimpleFormPage
-      title="Welcome back"
+      title="Login to continue"
       buttonId="submitLogin"
       buttonText="login"
       onSubmit={() => {
@@ -29,23 +26,11 @@ export default function Login({ showBanner, redirect = '/' }) {
       }}
       buttonProps={{ loading }}
       renderBelowButton={
-        <Typography style={{ marginTop: 8 }}>
-          <Link href="/forgot">
-            <Text
-              variant="subtitle2"
-              component="span"
-              id="FORGOT_QUESTION"
-            />
-          </Link>
-          <span style={{ margin: '0 4px' }}> | </span>
-          <Link href="/request">
-            <Text
-              variant="subtitle2"
-              component="span"
-              id="REQUEST_INVITE"
-            />
-          </Link>
-        </Typography>
+        <Link href="/forgot">
+          <Text variant="subtitle2" style={{ margin: '8px 0 0 4px' }}>
+            Forgot password?
+          </Text>
+        </Link>
       }
     >
       {showBanner && (
@@ -59,7 +44,7 @@ export default function Login({ showBanner, redirect = '/' }) {
         container
         spacing={2}
         direction="column"
-        style={{ padding: '8px 0 16px 0', width: 280 }}
+        style={{ padding: '8px 0 16px 0' }}
       >
         <Grid item>
           <FormControl
@@ -93,14 +78,6 @@ export default function Login({ showBanner, redirect = '/' }) {
                 setError(null);
               }}
               label={<FormattedMessage id="PASSWORD" />}
-            />
-          </FormControl>
-        </Grid>
-        <Grid item>
-          <FormControl required style={{ marginBottom: 4 }}>
-            <FormControlLabel
-              control={<Switch name="remember" />}
-              label={<FormattedMessage id="REMEMBER_ME" />}
             />
           </FormControl>
         </Grid>

@@ -1,31 +1,28 @@
 import axios from 'axios';
 import { get } from 'lodash-es';
 import { useQuery } from 'react-query';
-import queryKeys from '../../constants/queryKeys';
+import { getMissionQueryKey } from '../../constants/queryKeys';
 
-export default function useGetMe() {
+export default function useGetTask(id) {
   const result = useQuery(
-    queryKeys.me,
+    getMissionQueryKey(id),
     async () => {
       const response = await axios.request({
-        url: `${__houston_url__}/api/v1/users/me`,
+        url: `${__houston_url__}/api/v1/missions/tasks/${id}`,
         method: 'get',
       });
       return response;
     },
     {
       staleTime: Infinity,
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-      retry: false,
     },
   );
 
-  const { data, isLoading, error } = result;
+  const { data, error } = result;
 
   return {
+    ...result,
     data: get(data, 'data'),
-    loading: isLoading,
     error: error ? error.toJSON().message : null,
   };
 }

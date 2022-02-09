@@ -17,6 +17,7 @@ export default function BulkAddTagDialog({
   open,
   onClose,
   selectedImages,
+  missionGuid,
 }) {
   const { data: keywordOptions } = useGetKeywords();
   const {
@@ -117,6 +118,7 @@ export default function BulkAddTagDialog({
                 : null;
 
             const result = await addKeywordToAssets(
+              missionGuid,
               selectedImages,
               matchingKeywordId,
               newTagInputValue,

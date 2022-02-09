@@ -10,7 +10,7 @@ import Mission from '../missions/Mission';
 export default function Home() {
   const { data, loading } = useGetMe();
   const atLeastOneMission =
-    get(data, 'assigned_missions', []).length > 0;
+    get(data, 'owned_missions', []).length > 0;
 
   const fullName = get(data, ['full_name']);
 
@@ -19,7 +19,5 @@ export default function Home() {
   // if (!fullName) return <ProfileSetup userData={data} />;
   if (!atLeastOneMission) return <CreateMission />;
 
-  return (
-    <Mission id={get(data, ['assigned_missions', '0', 'guid'])} />
-  );
+  return <Mission id={get(data, ['owned_missions', '0', 'guid'])} />;
 }

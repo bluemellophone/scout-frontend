@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useQueryClient, useMutation } from 'react-query';
-import { getMissionQueryKey } from '../../constants/queryKeys';
+import { getMissionAssetsQueryKey } from '../../constants/queryKeys';
 
 export default function usePostMissionCollection() {
   const queryClient = useQueryClient();
@@ -17,7 +17,11 @@ export default function usePostMissionCollection() {
         },
       });
 
-      queryClient.invalidateQueries(getMissionQueryKey(missionId));
+      if (result?.status === 200) {
+        queryClient.invalidateQueries(
+          getMissionAssetsQueryKey(missionId),
+        );
+      }
       return result;
     },
   );

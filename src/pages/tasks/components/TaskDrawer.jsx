@@ -7,14 +7,12 @@ import CollapseIcon from '@material-ui/icons/ChevronLeft';
 
 import WildMeLogo from '../../../assets/wild-me-gradient-logo.png';
 import Text from '../../../components/Text';
-import TaskSwitcher from './TaskSwitcher';
-import MissionSwitcher from './MissionSwitcher';
-import NotesEditor from './NotesEditor';
+import ImageList from './ImageList';
 
-export default function MissionDrawer({
-  missionData,
-  projectName,
-  createdDate,
+export default function TaskDrawer({
+  taskData,
+  selectedAsset,
+  setSelectedAsset,
 }) {
   const [minimized, setMinimized] = useState(false);
 
@@ -79,15 +77,11 @@ export default function MissionDrawer({
       <Divider style={minimizedStyles} />
 
       <div style={minimizedStyles}>
-        <MissionSwitcher
-          missionData={missionData}
-          createdDate={createdDate}
-          projectName={projectName}
+        <ImageList
+          taskData={taskData}
+          selectedAsset={selectedAsset}
+          setSelectedAsset={setSelectedAsset}
         />
-
-        <TaskSwitcher missionData={missionData} />
-
-        <NotesEditor missionData={missionData} />
       </div>
     </Drawer>
   );

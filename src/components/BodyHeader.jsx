@@ -6,10 +6,14 @@ import IconButton from '@material-ui/core/IconButton';
 import DropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 import Text from './Text';
+import ButtonLink from './ButtonLink';
 
 export default function BodyHeader({
   title,
   subtitle,
+  showBackButton = false,
+  backButtonText = 'Back',
+  backButtonHref,
   MenuComponent,
   menuComponentProps = {},
 }) {
@@ -25,25 +29,34 @@ export default function BodyHeader({
       }}
     >
       <div style={{ display: 'flex', flexDirection: 'column' }}>
+        {showBackButton && (
+          <ButtonLink display="back" href={backButtonHref}>
+            {backButtonText}
+          </ButtonLink>
+        )}
         <Text variant="h4">{title}</Text>
         {subtitle && <Text variant="subtitle2">{subtitle}</Text>}
       </div>
-      <Tooltip title="More actions">
-        <IconButton
-          style={{
-            marginTop: 8,
-            border: `1px solid ${theme.palette.grey.A100}`,
-          }}
-          onClick={e => setAnchorEl(e.currentTarget)}
-        >
-          <DropDownIcon />
-        </IconButton>
-      </Tooltip>
-      <MenuComponent
-        anchorEl={anchorEl}
-        setAnchorEl={setAnchorEl}
-        {...menuComponentProps}
-      />
+      {MenuComponent && (
+        <Tooltip title="More actions">
+          <IconButton
+            style={{
+              marginTop: 8,
+              border: `1px solid ${theme.palette.grey.A100}`,
+            }}
+            onClick={e => setAnchorEl(e.currentTarget)}
+          >
+            <DropDownIcon />
+          </IconButton>
+        </Tooltip>
+      )}
+      {MenuComponent && (
+        <MenuComponent
+          anchorEl={anchorEl}
+          setAnchorEl={setAnchorEl}
+          {...menuComponentProps}
+        />
+      )}
     </div>
   );
 }

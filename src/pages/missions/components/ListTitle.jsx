@@ -2,9 +2,17 @@ import React from 'react';
 import AddIcon from '@material-ui/icons/Add';
 
 import Text from '../../../components/Text';
+import Button from '../../../components/Button';
 import ButtonLink from '../../../components/ButtonLink';
 
-export default function ListTitle({ title, buttonText, ...rest }) {
+export default function ListTitle({
+  title,
+  buttonVariant = 'link',
+  buttonText,
+  ...rest
+}) {
+  const ButtonComponent =
+    buttonVariant === 'link' ? ButtonLink : Button;
   return (
     <div
       style={{
@@ -15,7 +23,7 @@ export default function ListTitle({ title, buttonText, ...rest }) {
       }}
     >
       <Text variant="h6">{title}</Text>
-      <ButtonLink
+      <ButtonComponent
         {...rest}
         display="secondary"
         style={{
@@ -27,7 +35,7 @@ export default function ListTitle({ title, buttonText, ...rest }) {
         size="small"
       >
         {buttonText}
-      </ButtonLink>
+      </ButtonComponent>
     </div>
   );
 }

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { get, sortBy } from 'lodash-es';
 
-import { useTheme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -89,16 +88,6 @@ export default function ImageTable({
       },
     },
     {
-      name: 'tags',
-      label: 'Tags',
-      align: 'left',
-      options: {
-        customBodyRender: (_, asset) => (
-          <Keywords asset={asset} style={{ marginTop: 0 }} />
-        ),
-      },
-    },
-    {
       name: 'created',
       label: 'Date added',
       align: 'left',
@@ -115,6 +104,19 @@ export default function ImageTable({
       label: '# Annotations',
       align: 'left',
       options: countRendererOptions,
+    },
+    {
+      name: 'tags',
+      label: 'Tags',
+      align: 'left',
+      options: {
+        customBodyRender: (_, asset) => (
+          <Keywords
+            asset={asset}
+            style={{ marginTop: 0, flexWrap: undefined }}
+          />
+        ),
+      },
     },
   ];
   const initialColumnNames = columns.map(c => c.name);
@@ -286,7 +288,7 @@ export default function ImageTable({
               })}
             </TableRow>
           </TableHead>
-          <TableBody>
+          <TableBody style={{ whiteSpace: 'nowrap' }}>
             {!loading &&
               sortedData.map(datum => {
                 const datumGuid = get(datum, idKey);
@@ -332,7 +334,7 @@ export default function ImageTable({
           )}
         </Table>
       </TableContainer>
-      {noResults && (
+      {!loading && noResults && (
         <div
           style={{
             display: 'flex',
@@ -341,9 +343,7 @@ export default function ImageTable({
             marginTop: 40,
           }}
         >
-          <Text style={{ marginTop: 12 }}>
-            Your search did not match any records.
-          </Text>
+          <Text style={{ marginTop: 12 }}>No images to display.</Text>
         </div>
       )}
       {loading && <LinearProgress style={{ margin: '16px 32px' }} />}

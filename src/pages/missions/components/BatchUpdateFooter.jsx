@@ -7,11 +7,18 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Button from '../../../components/Button';
 import Text from '../../../components/Text';
 import BulkAddTagDialog from './BulkAddTagDialog';
+import CreateTaskDialog from './CreateTaskDialog';
 
-export default function BatchUpdateFooter({ open, selectedImages }) {
+export default function BatchUpdateFooter({
+  open,
+  selectedImages,
+  missionGuid,
+}) {
   const theme = useTheme();
+
   const [anchorEl, setAnchorEl] = useState(false);
   const [addingTag, setAddingTag] = useState(false);
+  const [creatingTask, setCreatingTask] = useState(false);
   const selectedImageCount = selectedImages.length;
 
   return (
@@ -26,9 +33,16 @@ export default function BatchUpdateFooter({ open, selectedImages }) {
       }}
     >
       <BulkAddTagDialog
+        missionGuid={missionGuid}
         selectedImages={selectedImages}
         open={addingTag}
         onClose={() => setAddingTag(false)}
+      />
+      <CreateTaskDialog
+        selectedImages={selectedImages}
+        missionGuid={missionGuid}
+        open={creatingTask}
+        onClose={() => setCreatingTask(false)}
       />
       <div
         style={{
@@ -65,7 +79,16 @@ export default function BatchUpdateFooter({ open, selectedImages }) {
           >
             Add tag
           </MenuItem>
-          <MenuItem>Create task</MenuItem>
+
+          <MenuItem
+            onClick={() => {
+              setCreatingTask(true);
+              setAnchorEl(null);
+            }}
+          >
+            Create task
+          </MenuItem>
+          <MenuItem>Add to task</MenuItem>
         </Menu>
       </div>
     </div>

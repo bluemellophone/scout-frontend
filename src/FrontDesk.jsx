@@ -5,21 +5,37 @@ import { useTheme } from '@material-ui/core/styles';
 
 import UnauthenticatedSwitch from './UnauthenticatedSwitch';
 import AuthenticatedSwitch from './AuthenticatedSwitch';
+import SadScreen from './components/SadScreen';
 import useGetMe from './models/users/useGetMe';
+import useGetAdminUserInitialized from './models/users/useGetAdminUserInitialized';
 import CreateAdminUser from './pages/setup/CreateAdminUser';
 
-export default function FrontDesk({ adminUserInitialized }) {
-  // Display a loading spinner while waiting for authentication status from the server.
-  const { loading, data, error } = useGetMe();
+export default function FrontDesk() {
   const theme = useTheme();
 
-  if (!loading && !adminUserInitialized) return <CreateAdminUser />;
-  if (data) return <AuthenticatedSwitch />;
-  if (error) return <UnauthenticatedSwitch />;
+  const {
+    data: initializedData,
+    loading: initializedLoading,
+    error: initializedError,
+  } = useGetAdminUserInitialized();
+  const { loading: meDataLoading, error: meDataError } = useGetMe();
 
-  return (
-    <Backdrop style={{ color: theme.palette.common.white }} open>
-      <CircularProgress color="inherit" />
-    </Backdrop>
-  );
+  const loading = initializedLoading || meDataLoading;
+  if (loading) {
+    return (
+      <Backdrop style={{ color: theme.palette.common.white }} open>
+        <CircularProgress color="inherit" />
+      </Backdrop>
+    );
+  }
+
+  if (!initializedData?.initialized) return <CreateAdminUser />;
+
+  if (initializedError) {
+    document.title = 'Server Unavailable';
+    return <SadScreen variant="serverError" />;
+  }
+  if (meDataError) return <UnauthenticatedSwitch />;
+
+  return <AuthenticatedSwitch />;
 }

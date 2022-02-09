@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { get } from 'lodash-es';
 
+import useGetMissionAssets from '../../../models/assets/useGetMissionAssets';
 import BodyHeader from '../../../components/BodyHeader';
 import Text from '../../../components/Text';
 import Button from '../../../components/Button';
@@ -15,18 +15,29 @@ export default function MissionDashboard({
   projectName,
   createdDate,
 }) {
+  const id = missionData?.guid;
+  const {
+    data: missionAssets,
+    isLoading: assetsLoading,
+  } = useGetMissionAssets(id);
+  const images = missionAssets || [];
+
   const [clickedImage, setClickedImage] = useState(null);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
-  const images = get(missionData, 'assets', []);
-  const noImages = images.length === 0;
+  const noImages = missionData?.asset_count === 0;
   const footerOpen = selectedImages.length > 0;
 
   const onAddImages = () => setAddDialogOpen(true);
 
   return (
     <div
-      style={{ position: 'relative', width: '100%', height: '100vh' }}
+      style={{
+        position: 'relative',
+        width: '100%',
+        height: '100vh',
+        overflow: 'scroll',
+      }}
     >
       <div
         style={{
@@ -43,6 +54,7 @@ export default function MissionDashboard({
           MenuComponent={MissionActionsMenu}
           menuComponentProps={{
             onAddImages,
+            missionGuid: id,
           }}
         />
         {noImages && (
@@ -59,6 +71,7 @@ export default function MissionDashboard({
         {!noImages && (
           <ImageTable
             data={images}
+            loading={assetsLoading}
             onClickImage={asset => setClickedImage(asset)}
             selectedImages={selectedImages}
             setSelectedImages={setSelectedImages}
@@ -76,6 +89,7 @@ export default function MissionDashboard({
         />
       </div>
       <BatchUpdateFooter
+        missionGuid={id}
         open={footerOpen}
         selectedImages={selectedImages}
       />
