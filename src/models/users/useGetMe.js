@@ -15,6 +15,8 @@ export default function useGetMe() {
     },
     {
       staleTime: Infinity,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
       retry: false,
     },
   );

@@ -10,12 +10,10 @@ import esPolyfill from '@formatjs/intl-numberformat/dist/locale-data/es';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 
-import useGetAdminUserInitialized from './models/users/useGetAdminUserInitialized';
 import materialTheme from './styles/materialTheme';
 import messagesEn from '../locale/en.json';
 import messagesEs from '../locale/es.json';
 import FrontDesk from './FrontDesk';
-import SadScreen from './components/SadScreen';
 import ErrorBoundary from './ErrorBoundary';
 
 // polyfill to enable formatting of a number using the unit prop
@@ -41,14 +39,6 @@ const ScrollToTop = function() {
 
 function AppWithQueryClient() {
   const locale = 'en';
-  const { data, error } = useGetAdminUserInitialized();
-
-  const adminUserInitialized = data?.initialized;
-
-  if (error) {
-    document.title = 'Server Unavailable';
-    return <SadScreen variant="serverError" />;
-  }
   const theme = createTheme(materialTheme());
 
   return (
@@ -62,7 +52,7 @@ function AppWithQueryClient() {
         <BrowserRouter basename="/">
           <ScrollToTop />
           <ErrorBoundary>
-            <FrontDesk adminUserInitialized={adminUserInitialized} />
+            <FrontDesk />
           </ErrorBoundary>
         </BrowserRouter>
       </IntlProvider>

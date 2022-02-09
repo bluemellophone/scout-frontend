@@ -17,6 +17,7 @@ export default function MissionActionsMenu({
   anchorEl,
   setAnchorEl,
   onAddImages,
+  missionGuid,
 }) {
   const theme = useTheme();
   const closePopover = () => setAnchorEl(null);
@@ -48,7 +49,7 @@ export default function MissionActionsMenu({
           <Text style={{ margin: '0 8px' }}>Add images</Text>
         </MenuItem>
         <Link
-          href={`/projects/settings/${'herp'}`}
+          href={`/projects/settings/${missionGuid}`}
           onClick={closePopover}
           noUnderline
         >

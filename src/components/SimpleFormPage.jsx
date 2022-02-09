@@ -68,6 +68,7 @@ export default function SimpleFormPage({
           domId={buttonId}
           onClick={onSubmit}
           display="primary"
+          fullWidth
           {...buttonProps}
         >
           {buttonText}

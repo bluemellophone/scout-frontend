@@ -37,17 +37,19 @@ export default function BodyHeader({
         <Text variant="h4">{title}</Text>
         {subtitle && <Text variant="subtitle2">{subtitle}</Text>}
       </div>
-      <Tooltip title="More actions">
-        <IconButton
-          style={{
-            marginTop: 8,
-            border: `1px solid ${theme.palette.grey.A100}`,
-          }}
-          onClick={e => setAnchorEl(e.currentTarget)}
-        >
-          <DropDownIcon />
-        </IconButton>
-      </Tooltip>
+      {MenuComponent && (
+        <Tooltip title="More actions">
+          <IconButton
+            style={{
+              marginTop: 8,
+              border: `1px solid ${theme.palette.grey.A100}`,
+            }}
+            onClick={e => setAnchorEl(e.currentTarget)}
+          >
+            <DropDownIcon />
+          </IconButton>
+        </Tooltip>
+      )}
       {MenuComponent && (
         <MenuComponent
           anchorEl={anchorEl}

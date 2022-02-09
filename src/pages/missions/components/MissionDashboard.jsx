@@ -54,6 +54,7 @@ export default function MissionDashboard({
           MenuComponent={MissionActionsMenu}
           menuComponentProps={{
             onAddImages,
+            missionGuid: id,
           }}
         />
         {noImages && (

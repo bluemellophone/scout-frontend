@@ -2,24 +2,17 @@ import React from 'react';
 import { Switch, Route, useLocation } from 'react-router-dom';
 import Fade from '@material-ui/core/Fade';
 import { TransitionGroup } from 'react-transition-group';
-import UnauthenticatedAppHeader from './components/UnauthenticatedAppHeader';
 import Login from './pages/auth/Login';
 import RequestInvitation from './pages/auth/RequestInvitation';
 import Forgot from './pages/auth/Forgot';
 import Create from './pages/auth/Create';
-import Footer from './components/Footer';
 import { defaultCrossfadeDuration } from './constants/defaults';
 
 export default function UnauthenticatedSwitch() {
   const { pathname } = useLocation();
-  const home = pathname === '/';
 
   return (
     <main>
-      <UnauthenticatedAppHeader
-        topTransparency={home}
-        siteNameScrolls={home}
-      />
       <Route
         render={({ location }) => (
           <TransitionGroup appear>
@@ -66,7 +59,6 @@ export default function UnauthenticatedSwitch() {
                     </Route>
                   </Switch>
                 </div>
-                <Footer />
               </div>
             </Fade>
           </TransitionGroup>

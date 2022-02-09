@@ -32,12 +32,13 @@ export default function TaskSwitcher({ missionData }) {
       <Paper
         style={{
           marginBottom: 20,
-          maxHeight: 268,
+          height: 268,
           overflow: 'scroll',
         }}
       >
         <List
           component="nav"
+          dense
           aria-label="tasks in this project"
           style={{ padding: 0 }}
         >
@@ -54,6 +55,7 @@ export default function TaskSwitcher({ missionData }) {
                   id={currrentProjectButtonId}
                   aria-controls="view task"
                   aria-label={taskTitle}
+                  divider
                 >
                   <ListItemText
                     primary={taskTitle}
