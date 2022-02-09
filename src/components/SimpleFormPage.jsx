@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import Paper from '@material-ui/core/Paper';
 import { useTheme } from '@material-ui/core/styles';
 
+import WildMeLogo from '../assets/wild-me-gradient-logo.png';
 import useDocumentTitle from '../hooks/useDocumentTitle';
 import Button from './Button';
 import Text from './Text';
@@ -36,14 +37,37 @@ export default function SimpleFormPage({
   return (
     <div
       style={{
-        paddingTop: '20vh',
+        paddingTop: '10vh',
         minHeight: '100vh',
         display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'center',
+        flexDirection: 'column',
+        alignItems: 'center',
         background: theme.palette.grey['100'],
       }}
     >
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <img
+          src={WildMeLogo}
+          style={{ width: 120 }}
+          alt="Wild Me logo"
+        />
+        <Text
+          style={{
+            fontWeight: 'bold',
+            marginTop: 8,
+            marginBottom: 12,
+            fontSize: '1.2rem',
+          }}
+        >
+          Wild Me Scout
+        </Text>
+      </div>
       <Paper
         style={{
           width: 360,
