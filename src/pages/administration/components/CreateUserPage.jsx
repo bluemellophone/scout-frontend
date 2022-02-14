@@ -2,34 +2,39 @@ import React, { useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
-import SimpleFormPage from '../../components/SimpleFormPage';
-import CustomAlert from '../../components/Alert';
+import SimpleFormPage from '../../../components/SimpleFormPage';
+import CustomAlert from '../../../components/Alert';
 
-import useCreateAdminUser from '../../models/setup/useCreateAdminUser';
-
-export default function CreateAdminUser() {
-  const {
-    authenticate,
-    error,
-    setError,
-    loading,
-  } = useCreateAdminUser();
-
+export default function CreateUserPage({
+  title,
+  instructions,
+  error,
+  loading,
+  onSubmit,
+  renderInputs = Function.prototype,
+})
+{
   const [email, setEmail] = useState('');
   const [password1, setPassword1] = useState('');
   const [password2, setPassword2] = useState('');
+  const [formError, setFormError] = useState(null);
+
+  const displayError = formError || error;
 
   return (
     <SimpleFormPage
-      title="MWS Initialized!"
-      instructions="First step is to create an admin user."
-      buttonId="createAdminUser"
+      title={title}
+      instructions={instructions}
+      buttonId="create-user"
       buttonText="Create user"
-      onSubmit={() => {
-        if (password1 === password2) {
-          authenticate(email, password1, '/');
-        } else {
-          setError('Passwords do not match');
+      onSubmit={() =>
+      {
+        if (password1 === password2)
+        {
+          onSubmit(email, password1);
+        } else
+        {
+          setFormError('Passwords do not match');
         }
       }}
       buttonProps={{ loading }}
@@ -43,15 +48,16 @@ export default function CreateAdminUser() {
         <Grid item>
           <FormControl
             required
-            style={{ width: '100%', marginBottom: 4 }}
+            style={{ width: '100%' }}
           >
             <TextField
               autoComplete="username"
               variant="outlined"
               id="email"
-              onChange={e => {
+              onChange={e =>
+              {
                 setEmail(e.target.value);
-                setError(null);
+                setFormError(null);
               }}
               label="Email address"
             />
@@ -60,16 +66,17 @@ export default function CreateAdminUser() {
         <Grid item>
           <FormControl
             required
-            style={{ width: '100%', marginBottom: 4 }}
+            style={{ width: '100%' }}
           >
             <TextField
               autoComplete="off"
               variant="outlined"
               id="password1"
               type="password"
-              onChange={e => {
+              onChange={e =>
+              {
                 setPassword1(e.target.value);
-                setError(null);
+                setFormError(null);
               }}
               label="Password"
             />
@@ -78,23 +85,25 @@ export default function CreateAdminUser() {
         <Grid item>
           <FormControl
             required
-            style={{ width: '100%', marginBottom: 4 }}
+            style={{ width: '100%' }}
           >
             <TextField
               autoComplete="off"
               variant="outlined"
               id="password2"
               type="password"
-              onChange={e => {
+              onChange={e =>
+              {
                 setPassword2(e.target.value);
-                setError(null);
+                setFormError(null);
               }}
               label="Confirm password"
             />
           </FormControl>
         </Grid>
-        {error && (
-          <CustomAlert severity="error" description={error} />
+        {renderInputs()}
+        {displayError && (
+          <CustomAlert severity="error" description={displayError} />
         )}
       </Grid>
     </SimpleFormPage>
