@@ -1,28 +1,11 @@
 import React, { useState } from 'react';
 
 import Grid from '@material-ui/core/Grid';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
 
 import usePostUser from '../../models/users/usePostUser';
+import roleSchema from './constants/roleSchema';
 import CreateUserPage from './components/CreateUserPage';
-
-const roleOptions = [
-  {
-    label: 'Basic user',
-    payload: [],
-  },
-  {
-    label: 'Data manager',
-    payload: ['is_data_manager'],
-  },
-  {
-    label: 'Administration',
-    payload: ['is_admin', 'is_data_manager'],
-  },
-]
+import RoleDropdown from './components/RoleDropdown';
 
 export default function CreateAdminUser()
 {
@@ -40,7 +23,7 @@ export default function CreateAdminUser()
       instructions="The best passwords contain a mix of upper and lower case letters, numbers, and special characters."
       onSubmit={async (email, password) =>
       {
-        const selectedRole = roleOptions.find(o => o.label === newUserRole) || roleOptions[0];
+        const selectedRole = roleSchema.find(o => o.label === newUserRole) || roleSchema[0];
         const selectedRolePayload = selectedRole?.payload;
         const successful = await postUser(email, password, selectedRolePayload);
         if (successful)
@@ -55,29 +38,10 @@ export default function CreateAdminUser()
         return (
 
           <Grid item>
-            <FormControl
-              variant="outlined"
-              style={{ width: '100%' }}
-            >
-              <InputLabel id="select-roles-label">
-                Role
-              </InputLabel>
-              <Select
-                id="user-roles-selector"
-                variant="outlined"
-                onChange={e =>
-                {
-                  setNewUserRole(e.target.value);
-                }}
-                value={newUserRole}
-              >
-                {roleOptions.map(o => (
-                  <MenuItem key={o.label} value={o.label}>
-                    {o.label}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <RoleDropdown
+              value={newUserRole}
+              onChange={newValue => setNewUserRole(newValue)}
+            />
           </Grid>
         )
       }}

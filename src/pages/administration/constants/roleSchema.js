@@ -1,26 +1,14 @@
 export default [
   {
-    id: 'is_contributor',
-    titleId: 'CONTRIBUTOR',
+    label: 'Basic user',
+    payload: [],
   },
   {
-    id: 'is_researcher',
-    titleId: 'RESEARCHER',
+    label: 'Data manager',
+    payload: ['is_data_manager'],
   },
   {
-    id: 'is_user_manager',
-    titleId: 'USER_MANAGER',
-  },
-  {
-    id: 'is_exporter',
-    titleId: 'EXPORTER',
-  },
-  {
-    id: 'is_admin',
-    titleId: 'ADMINISTRATOR',
-  },
-  {
-    id: 'is_staff',
-    titleId: 'STAFF',
+    label: 'Administration',
+    payload: ['is_admin', 'is_data_manager'],
   },
 ];

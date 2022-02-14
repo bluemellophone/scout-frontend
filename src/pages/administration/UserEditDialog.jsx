@@ -1,12 +1,7 @@
-import React, { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import React, { useEffect, useState } from 'react';
 import { get } from 'lodash-es';
 
-import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import DialogActions from '@material-ui/core/DialogActions';
 import TextField from '@material-ui/core/TextField';
 
@@ -15,29 +10,58 @@ import Button from '../../components/Button';
 import StandardDialog from '../../components/StandardDialog';
 import PasswordVerificationAlert from '../../components/PasswordVerificationAlert';
 import usePatchUser from '../../models/users/usePatchUser';
-import roleSchema from './constants/roleSchema';
+import RoleDropdown from './components/RoleDropdown';
+import deriveUserRole from './utils/deriveUserRole';
+import deriveRolePaths from './utils/deriveRolePaths';
 
 export default function UserEditDialog({ open, onClose, userData }) {
-  const [formValues, setFormValues] = useState({});
-  const [touched, setTouched] = useState(false);
+  const [email, setEmail] = useState(userData?.email || '');
+  const [name, setName] = useState(userData?.full_name || '');
+  const [role, setRole] = useState(deriveUserRole(userData)?.label);
   const [password, setPassword] = useState('');
+
+  useEffect(() =>
+  {
+    if (!userData)
+    {
+      setEmail('');
+      setName('');
+      setRole('');
+      setPassword('');
+    } else
+    {
+      setEmail(userData?.email || '');
+      setName(userData?.full_name || '');
+      setRole(deriveUserRole(userData)?.label);
+    }
+  }, [userData])
 
   const { replaceUserProperties, loading, error } = usePatchUser(
     get(userData, 'guid'),
   );
 
   function cleanupAndClose() {
-    setTouched(false);
-    setFormValues({});
+    setEmail(userData?.email);
+    setName(userData?.name);
     setPassword('');
     onClose();
   }
 
   async function saveProperties() {
-    const properties = Object.keys(formValues).map(propertyId => ({
-      path: `/${propertyId}`,
-      value: formValues[propertyId],
-    }));
+    const rolePaths = deriveRolePaths(role);
+    const properties = [
+      {
+        path: '/email',
+        value: email,
+      },
+      {
+        path: '/full_name',
+        value: name,
+      },
+      ...rolePaths
+    ]
+
+    console.log(properties);
 
     const success = await replaceUserProperties(properties, password);
 
@@ -47,90 +71,47 @@ export default function UserEditDialog({ open, onClose, userData }) {
   return (
     <StandardDialog
       open={open}
-      onClose={cleanupAndClose}
+      onClose={(_, reason) =>
+      {
+        if (reason === 'backdropClick') return;
+        cleanupAndClose();
+      }}
       titleId="EDIT_USER"
       maxWidth="xs"
     >
       <div style={{ padding: '12px 24px' }}>
-        <FormControl required style={{ width: 320 }}>
+        <FormControl variant="outlined" style={{ width: '100%', }}>
           <TextField
+            variant="outlined"
             id="email"
-            value={formValues.email || get(userData, 'email', '')}
+            value={email}
             onChange={e => {
-              setTouched(true);
-              setFormValues({
-                ...formValues,
-                email: e.target.value,
-              });
+              setEmail(e.target.value);
             }}
-            label={<FormattedMessage id="EMAIL_ADDRESS" />}
+            label="Email address"
           />
         </FormControl>
-        <FormControl required style={{ width: 320, marginTop: 28 }}>
+        <FormControl variant="outlined" style={{ width: '100%', margin: '12px 0 12px 0' }}>
           <TextField
-            id="full_name"
-            value={
-              formValues.full_name || get(userData, 'full_name', '')
-            }
+            id="full_name" variant="outlined"
+            value={name}
             onChange={e => {
-              setFormValues({
-                ...formValues,
-                full_name: e.target.value,
-              });
+              setName(e.target.value);
             }}
-            label={<FormattedMessage id="FULL_NAME" />}
+            label="Full name"
           />
         </FormControl>
-        <FormControl component="fieldset" style={{ marginTop: 28 }}>
-          <FormLabel component="legend">
-            <FormattedMessage id="ROLE" />
-          </FormLabel>
-          <FormGroup row>
-            {roleSchema.map(role => {
-              const userDataChecked = get(userData, role.id, false);
-              const formDataChecked = get(
-                formValues,
-                role.id,
-                undefined,
-              );
-              const checked =
-                formDataChecked === undefined
-                  ? userDataChecked
-                  : formDataChecked;
-
-              return (
-                <FormControlLabel
-                  key={role.id}
-                  style={{
-                    width: 180,
-                  }}
-                  control={
-                    <Checkbox
-                      checked={checked}
-                      onChange={() => {
-                        setTouched(true);
-                        setFormValues({
-                          ...formValues,
-                          [role.id]: !checked,
-                        });
-                      }}
-                      name={role.id}
-                    />
-                  }
-                  label={<FormattedMessage id={role.titleId} />}
-                />
-              );
-            })}
-          </FormGroup>
-        </FormControl>
-        {touched ? (
-          <PasswordVerificationAlert
-            setPassword={setPassword}
-            descriptionId="SENSITIVE_USER_DATA_CHANGE_DESCRIPTION"
-          />
-        ) : null}
+        <RoleDropdown
+          value={role}
+          onChange={(newRole) => setRole(newRole)}
+        />
+        <PasswordVerificationAlert
+          setPassword={setPassword}
+          descriptionId="SENSITIVE_USER_DATA_CHANGE_DESCRIPTION"
+          style={{ marginTop: 16, marginBottom: 0 }}
+        />
         {error && (
-          <Alert severity="error" titleId="SERVER_ERROR">
+          <Alert style={{ marginTop: 16 }} severity="error" titleId="SERVER_ERROR">
             {error}
           </Alert>
         )}
