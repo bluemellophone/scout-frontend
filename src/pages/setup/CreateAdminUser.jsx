@@ -38,7 +38,7 @@ export default function CreateAdminUser() {
         container
         spacing={2}
         direction="column"
-        style={{ padding: '16px 40px 16px 0' }}
+        style={{ padding: '16px 0 16px 0' }}
       >
         <Grid item>
           <FormControl
