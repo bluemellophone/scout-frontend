@@ -12,8 +12,7 @@ export default function CreateUserPage({
   loading,
   onSubmit,
   renderInputs = Function.prototype,
-})
-{
+}) {
   const [email, setEmail] = useState('');
   const [password1, setPassword1] = useState('');
   const [password2, setPassword2] = useState('');
@@ -27,13 +26,10 @@ export default function CreateUserPage({
       instructions={instructions}
       buttonId="create-user"
       buttonText="Create user"
-      onSubmit={() =>
-      {
-        if (password1 === password2)
-        {
+      onSubmit={() => {
+        if (password1 === password2) {
           onSubmit(email, password1);
-        } else
-        {
+        } else {
           setFormError('Passwords do not match');
         }
       }}
@@ -46,16 +42,12 @@ export default function CreateUserPage({
         style={{ padding: '16px 0 16px 0' }}
       >
         <Grid item>
-          <FormControl
-            required
-            style={{ width: '100%' }}
-          >
+          <FormControl required style={{ width: '100%' }}>
             <TextField
               autoComplete="username"
               variant="outlined"
               id="email"
-              onChange={e =>
-              {
+              onChange={e => {
                 setEmail(e.target.value);
                 setFormError(null);
               }}
@@ -64,17 +56,13 @@ export default function CreateUserPage({
           </FormControl>
         </Grid>
         <Grid item>
-          <FormControl
-            required
-            style={{ width: '100%' }}
-          >
+          <FormControl required style={{ width: '100%' }}>
             <TextField
               autoComplete="off"
               variant="outlined"
               id="password1"
               type="password"
-              onChange={e =>
-              {
+              onChange={e => {
                 setPassword1(e.target.value);
                 setFormError(null);
               }}
@@ -83,17 +71,13 @@ export default function CreateUserPage({
           </FormControl>
         </Grid>
         <Grid item>
-          <FormControl
-            required
-            style={{ width: '100%' }}
-          >
+          <FormControl required style={{ width: '100%' }}>
             <TextField
               autoComplete="off"
               variant="outlined"
               id="password2"
               type="password"
-              onChange={e =>
-              {
+              onChange={e => {
                 setPassword2(e.target.value);
                 setFormError(null);
               }}

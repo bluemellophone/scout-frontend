@@ -7,17 +7,10 @@ import Select from '@material-ui/core/Select';
 
 import roleSchema from '../constants/roleSchema';
 
-export default function RoleDropdown({ value, onChange })
-{
-
+export default function RoleDropdown({ value, onChange }) {
   return (
-    <FormControl
-      variant="outlined"
-      style={{ width: '100%' }}
-    >
-      <InputLabel id="select-roles-label">
-        Role
-      </InputLabel>
+    <FormControl variant="outlined" style={{ width: '100%' }}>
+      <InputLabel id="select-roles-label">Role</InputLabel>
       <Select
         id="user-roles-selector"
         variant="outlined"

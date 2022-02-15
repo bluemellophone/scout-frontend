@@ -22,7 +22,7 @@ export default function deriveRolePaths(roleLabel) {
   if (roleLabel === admin.label) {
     return getRoleOperations(true, true);
   } else if (roleLabel === dataManager.label) {
-    return getRoleOperations(true, false);
+    return getRoleOperations(false, true);
   } else {
     return getRoleOperations(false, false);
   }

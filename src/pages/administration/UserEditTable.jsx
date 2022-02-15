@@ -3,9 +3,11 @@ import { useIntl } from 'react-intl';
 
 import Grid from '@material-ui/core/Grid';
 import Skeleton from '@material-ui/lab/Skeleton';
+import AddIcon from '@material-ui/icons/Add';
 
 import DataDisplay from '../../components/dataDisplays/DataDisplay';
 import ActionIcon from '../../components/ActionIcon';
+import ButtonLink from '../../components/ButtonLink';
 import UserDeleteDialog from '../../components/dialogs/UserDeleteDialog';
 import Text from '../../components/Text';
 import deriveUserRole from './utils/deriveUserRole';
@@ -17,7 +19,9 @@ export default function UserEditTable({ data, loading, usersError }) {
   const [deleteUser, setDeleteUser] = useState(null);
 
   const safeUsers = data || [];
-  const activeUsers = safeUsers.filter(u => u.full_name !== 'Inactivated User');
+  const activeUsers = safeUsers.filter(
+    u => u.full_name !== 'Inactivated User',
+  );
 
   const tableColumns = [
     {
@@ -54,7 +58,9 @@ export default function UserEditTable({ data, loading, usersError }) {
       label: intl.formatMessage({ id: 'ACTIONS' }),
       options: {
         customBodyRender: (_, user) => (
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <div
+            style={{ display: 'flex', justifyContent: 'flex-end' }}
+          >
             <ActionIcon
               variant="edit"
               onClick={() => setEditUser(user)}
@@ -85,12 +91,33 @@ export default function UserEditTable({ data, loading, usersError }) {
         }}
         userData={deleteUser}
       />
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          margin: '36px 0 16px 4px',
+        }}
+      >
+        <Text variant="h5">User Management</Text>
+        <ButtonLink
+          href="/administration/create-new-user"
+          display="primary"
+          style={{
+            textTransform: 'none',
+            borderRadius: 3,
+          }}
+          startIcon={<AddIcon />}
+        >
+          Create user
+        </ButtonLink>
+      </div>
       <DataDisplay
         idKey="guid"
-        title="User management"
         style={{ marginTop: 8 }}
         columns={tableColumns}
         data={activeUsers}
+        noTitleBar
       />
       {loading ? (
         <Skeleton style={{ transform: 'unset' }} height={44} />

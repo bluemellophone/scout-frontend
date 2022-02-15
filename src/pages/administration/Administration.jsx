@@ -7,8 +7,7 @@ import BodyHeader from '../../components/BodyHeader';
 import useGetUsers from '../../models/users/useGetUsers';
 import UserEditTable from './UserEditTable';
 
-export default function UserManagement()
-{
+export default function UserManagement() {
   useDocumentTitle('Administration');
 
   const {
@@ -18,7 +17,7 @@ export default function UserManagement()
   } = useGetUsers();
 
   return (
-    <div style={{ margin: '32px 0 0 200px', maxWidth: 800 }}>
+    <div style={{ margin: '32px 16px 0 200px', maxWidth: 800 }}>
       <BodyHeader
         title="Administration"
         showBackButton

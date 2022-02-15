@@ -3,20 +3,14 @@ import React from 'react';
 import useCreateAdminUser from '../../models/setup/useCreateAdminUser';
 import CreateUserPage from './components/CreateUserPage';
 
-export default function CreateAdminUser()
-{
-  const {
-    authenticate,
-    error,
-    loading,
-  } = useCreateAdminUser();
+export default function CreateAdminUser() {
+  const { authenticate, error, loading } = useCreateAdminUser();
 
   return (
     <CreateUserPage
       title="MWS Initialized!"
       instructions="First step is to create an admin user."
-      onSubmit={(email, password) =>
-      {
+      onSubmit={(email, password) => {
         authenticate(email, password, '/');
       }}
       loading={loading}

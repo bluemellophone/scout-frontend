@@ -20,21 +20,21 @@ export default function UserEditDialog({ open, onClose, userData }) {
   const [role, setRole] = useState(deriveUserRole(userData)?.label);
   const [password, setPassword] = useState('');
 
-  useEffect(() =>
-  {
-    if (!userData)
-    {
-      setEmail('');
-      setName('');
-      setRole('');
-      setPassword('');
-    } else
-    {
-      setEmail(userData?.email || '');
-      setName(userData?.full_name || '');
-      setRole(deriveUserRole(userData)?.label);
-    }
-  }, [userData])
+  useEffect(
+    () => {
+      if (!userData) {
+        setEmail('');
+        setName('');
+        setRole('');
+        setPassword('');
+      } else {
+        setEmail(userData?.email || '');
+        setName(userData?.full_name || '');
+        setRole(deriveUserRole(userData)?.label);
+      }
+    },
+    [userData],
+  );
 
   const { replaceUserProperties, loading, error } = usePatchUser(
     get(userData, 'guid'),
@@ -58,8 +58,8 @@ export default function UserEditDialog({ open, onClose, userData }) {
         path: '/full_name',
         value: name,
       },
-      ...rolePaths
-    ]
+      ...rolePaths,
+    ];
 
     console.log(properties);
 
@@ -71,8 +71,7 @@ export default function UserEditDialog({ open, onClose, userData }) {
   return (
     <StandardDialog
       open={open}
-      onClose={(_, reason) =>
-      {
+      onClose={(_, reason) => {
         if (reason === 'backdropClick') return;
         cleanupAndClose();
       }}
@@ -80,7 +79,7 @@ export default function UserEditDialog({ open, onClose, userData }) {
       maxWidth="xs"
     >
       <div style={{ padding: '12px 24px' }}>
-        <FormControl variant="outlined" style={{ width: '100%', }}>
+        <FormControl variant="outlined" style={{ width: '100%' }}>
           <TextField
             variant="outlined"
             id="email"
@@ -91,9 +90,13 @@ export default function UserEditDialog({ open, onClose, userData }) {
             label="Email address"
           />
         </FormControl>
-        <FormControl variant="outlined" style={{ width: '100%', margin: '12px 0 12px 0' }}>
+        <FormControl
+          variant="outlined"
+          style={{ width: '100%', margin: '12px 0 12px 0' }}
+        >
           <TextField
-            id="full_name" variant="outlined"
+            id="full_name"
+            variant="outlined"
             value={name}
             onChange={e => {
               setName(e.target.value);
@@ -103,7 +106,7 @@ export default function UserEditDialog({ open, onClose, userData }) {
         </FormControl>
         <RoleDropdown
           value={role}
-          onChange={(newRole) => setRole(newRole)}
+          onChange={newRole => setRole(newRole)}
         />
         <PasswordVerificationAlert
           setPassword={setPassword}
@@ -111,7 +114,11 @@ export default function UserEditDialog({ open, onClose, userData }) {
           style={{ marginTop: 16, marginBottom: 0 }}
         />
         {error && (
-          <Alert style={{ marginTop: 16 }} severity="error" titleId="SERVER_ERROR">
+          <Alert
+            style={{ marginTop: 16 }}
+            severity="error"
+            titleId="SERVER_ERROR"
+          >
             {error}
           </Alert>
         )}
