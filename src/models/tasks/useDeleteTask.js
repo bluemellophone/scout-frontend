@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { useMutation } from 'react-query';
 
-export default function useDeleteMission() {
-  const mutation = useMutation(async missionId => {
+export default function useDeleteTask() {
+  const mutation = useMutation(async taskId => {
     const result = await axios.request({
-      url: `${__houston_url__}/api/v1/missions/${missionId}`,
+      url: `${__houston_url__}/api/v1/missions/tasks/${taskId}`,
       withCredentials: true,
       method: 'delete',
     });
@@ -12,7 +12,7 @@ export default function useDeleteMission() {
     return result;
   });
 
-  const deleteMission = missionId => mutation.mutateAsync(missionId);
+  const deleteTask = taskId => mutation.mutateAsync(taskId);
 
   const error = mutation?.error
     ? mutation?.error.toJSON().message
@@ -20,7 +20,7 @@ export default function useDeleteMission() {
 
   return {
     ...mutation,
-    deleteMission,
+    deleteTask,
     error,
   };
 }

@@ -7,6 +7,7 @@ import CreateMission from './pages/missions/CreateMission';
 import Mission from './pages/missions/Mission';
 import MissionSettings from './pages/missions/MissionSettings';
 import Task from './pages/tasks/Task';
+import TaskSettings from './pages/tasks/TaskSettings';
 import Home from './pages/home/Home';
 import CreateUser from './pages/administration/CreateUser';
 import Administration from './pages/administration/Administration';
@@ -62,6 +63,9 @@ export default function AuthenticatedSwitch() {
                     </Route>
                     <Route path="/projects/:id">
                       <Mission />
+                    </Route>
+                    <Route path="/tasks/settings/:id">
+                      <TaskSettings />
                     </Route>
                     <Route path="/tasks/:id">
                       <Task />

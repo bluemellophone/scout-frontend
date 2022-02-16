@@ -32,6 +32,7 @@ export default function TaskDashboard({
           backButtonText="Back to project"
           backButtonHref={`/projects/${taskData?.mission?.guid}`}
           MenuComponent={TaskActionsMenu}
+          menuComponentProps={{ taskGuid: taskData?.guid }}
         />
         {selectedAsset && (
           <img

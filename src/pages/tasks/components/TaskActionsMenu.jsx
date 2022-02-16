@@ -10,7 +10,11 @@ import Link from '../../../components/Link';
 import Text from '../../../components/Text';
 import GlobalActionsMenuItems from '../../../components/GlobalActionsMenuItems';
 
-export default function TaskActionsMenu({ anchorEl, setAnchorEl }) {
+export default function TaskActionsMenu({
+  anchorEl,
+  setAnchorEl,
+  taskGuid,
+}) {
   const theme = useTheme();
   const closePopover = () => setAnchorEl(null);
 
@@ -28,7 +32,7 @@ export default function TaskActionsMenu({ anchorEl, setAnchorEl }) {
     >
       <MenuList style={{ minWidth: 270 }}>
         <Link
-          href={`/projects/settings/${'herp'}`}
+          href={`/tasks/settings/${taskGuid}`}
           onClick={closePopover}
           noUnderline
         >
