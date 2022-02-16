@@ -7,7 +7,7 @@ export default function usePatchTask() {
 
   const mutation = useMutation(async ({ taskId, operations }) => {
     const result = await axios.request({
-      url: `${__houston_url__}/api/v1/tasks/${taskId}`,
+      url: `${__houston_url__}/api/v1/missions/tasks/${taskId}`,
       withCredentials: true,
       method: 'patch',
       data: operations,
