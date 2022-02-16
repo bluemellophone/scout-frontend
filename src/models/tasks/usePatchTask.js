@@ -1,8 +1,6 @@
 import axios from 'axios';
 import { useQueryClient, useMutation } from 'react-query';
-import queryKeys, {
-  getTaskQueryKey,
-} from '../../constants/queryKeys';
+import { getTaskQueryKey } from '../../constants/queryKeys';
 
 export default function usePatchTask() {
   const queryClient = useQueryClient();
@@ -17,7 +15,6 @@ export default function usePatchTask() {
 
     if (result?.status === 200) {
       queryClient.invalidateQueries(getTaskQueryKey(taskId));
-      // queryClient.invalidateQueries(queryKeys.me);
     }
 
     return result;
