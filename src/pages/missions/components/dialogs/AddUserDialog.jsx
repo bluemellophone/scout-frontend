@@ -1,35 +1,52 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 
 import Alert from '../../../../components/Alert';
 import Button from '../../../../components/Button';
+import UserDropdown from '../../../../components/UserDropdown';
 import Text from '../../../../components/Text';
 import StandardDialog from '../../../../components/StandardDialog';
-import useRemoveUserFromMission from '../../../../models/missions/useRemoveUserFromMission';
+import useAddUserToMission from '../../../../models/missions/useAddUserToMission';
+import useGetUsers from '../../../../models/users/useGetUsers';
 
-export default function DeleteMissionDialog({
+export default function AddUserDialog({
   open,
   onClose,
   missionGuid,
-  user,
   refreshMissionData,
 }) {
+  const { data: userData } = useGetUsers();
+
   const {
-    removeUserFromMission,
+    addUserToMission,
     isLoading,
     error,
-  } = useRemoveUserFromMission();
+  } = useAddUserToMission();
 
-  const userName = user?.full_name || 'Unnamed User';
+  const [selectedUser, setSelectedUser] = useState(null);
+
+  function handleClose() {
+    setSelectedUser(null);
+    onClose();
+  }
 
   return (
-    <StandardDialog open={open} onClose={onClose} title="Remove user">
+    <StandardDialog
+      open={open}
+      onClose={handleClose}
+      title="Add user to mission"
+    >
       <DialogContent>
         <Text variant="body2">
-          {`Are you sure you want to remove ${userName} from this project?`}
+          Select a user to add to this project.
         </Text>
+        <UserDropdown
+          users={userData}
+          value={selectedUser || ''}
+          onChange={userGuid => setSelectedUser(userGuid)}
+        />
         {error && (
           <Alert
             style={{ marginTop: 16, marginBottom: 8 }}
@@ -41,25 +58,24 @@ export default function DeleteMissionDialog({
         )}
       </DialogContent>
       <DialogActions>
-        <Button display="basic" onClick={onClose} id="CANCEL" />
+        <Button display="basic" onClick={handleClose} id="CANCEL" />
 
         <Button
-          disabled={isLoading}
+          disabled={isLoading || !selectedUser}
           loading={isLoading}
           display="primary"
           onClick={async () => {
-            const result = await removeUserFromMission(
+            const result = await addUserToMission(
               missionGuid,
-              user?.guid,
+              selectedUser,
             );
-
             if (result?.status === 200) {
               refreshMissionData();
-              onClose();
+              handleClose();
             }
           }}
         >
-          Remove user
+          Add user
         </Button>
       </DialogActions>
     </StandardDialog>

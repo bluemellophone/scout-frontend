@@ -49,7 +49,11 @@ export default function TaskSwitcher({ missionData }) {
             if (assetCount === 0) taskSubtitle = 'No images';
             if (assetCount === 1) taskSubtitle = '1 image';
             return (
-              <Link noUnderline to={`/tasks/${task?.guid}`}>
+              <Link
+                key={task?.guid}
+                noUnderline
+                to={`/tasks/${task?.guid}`}
+              >
                 <ListItem
                   button
                   id={currrentProjectButtonId}

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useQueryClient } from 'react-query';
 
 import { useTheme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
+import AddIcon from '@material-ui/icons/Add';
 
 import useGetMission from '../../models/missions/useGetMission';
 import usePatchMission from '../../models/missions/usePatchMission';
@@ -12,18 +14,27 @@ import BodyHeader from '../../components/BodyHeader';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
 import UserChips from '../../components/UserChips';
+import { getMissionQueryKey } from '../../constants/queryKeys';
 import DeleteMissionDialog from './components/dialogs/DeleteMissionDialog';
+import AddUserDialog from './components/dialogs/AddUserDialog';
 import RemoveUserDialog from './components/dialogs/RemoveUserDialog';
 
 export default function MissionSettings() {
-  const { id: missionGuid } = useParams();
   const theme = useTheme();
+  const queryClient = useQueryClient();
+  const { id: missionGuid } = useParams();
 
   const { data, isLoading } = useGetMission(missionGuid);
   const { patchMission } = usePatchMission();
 
+  function refreshMissionData() {
+    const queryKey = getMissionQueryKey(missionGuid);
+    queryClient.invalidateQueries(queryKey);
+  }
+
   const [userToRemove, setUserToRemove] = useState(null);
   const [deletingMission, setDeletingMission] = useState(false);
+  const [addingUser, setAddingUser] = useState(false);
   const [title, setTitle] = useState([]);
   useEffect(
     () => {
@@ -35,15 +46,28 @@ export default function MissionSettings() {
   useDocumentTitle('Project settings');
 
   if (isLoading) return null; // make this nicer...
-  console.log(data);
+
+  const ownerGuid = data?.owner?.guid;
+  const safeUsers = data?.assigned_users || [];
+  const chipUsers = safeUsers.map(u => {
+    if (u?.guid === ownerGuid) return { ...u, invincible: true };
+    return u;
+  });
 
   return (
     <div style={{ padding: '32px 0 0 200px', maxWidth: 800 }}>
+      <AddUserDialog
+        open={addingUser}
+        onClose={() => setAddingUser(false)}
+        missionGuid={missionGuid}
+        refreshMissionData={refreshMissionData}
+      />
       <RemoveUserDialog
         open={Boolean(userToRemove)}
         onClose={() => setUserToRemove(null)}
         missionGuid={missionGuid}
         user={userToRemove}
+        refreshMissionData={refreshMissionData}
       />
       <DeleteMissionDialog
         open={deletingMission}
@@ -73,10 +97,12 @@ export default function MissionSettings() {
           display="primary"
           disabled={data?.title === title}
           onClick={async () => {
-            const result = await patchMission(missionGuid, [
-              { op: 'replace', path: '/title', value: title },
-            ]);
-            console.log(result);
+            const titlePatchOp = {
+              op: 'replace',
+              path: '/title',
+              value: title,
+            };
+            patchMission(missionGuid, [titlePatchOp]);
           }}
         >
           Rename
@@ -86,10 +112,23 @@ export default function MissionSettings() {
         Users
       </Text>
       <UserChips
-        users={data?.assigned_users}
+        users={chipUsers}
         deletable
         onDelete={user => setUserToRemove(user)}
-      />
+      >
+        <Button
+          onClick={() => setAddingUser(true)}
+          startIcon={<AddIcon />}
+          size="small"
+          style={{
+            margin: '4px 4px 0 0',
+            height: 32,
+            padding: '0 12px',
+          }}
+        >
+          Add user
+        </Button>
+      </UserChips>
       <Text style={{ fontWeight: 'bold', margin: '24px 0 4px 4px' }}>
         Project actions
       </Text>

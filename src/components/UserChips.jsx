@@ -9,6 +9,7 @@ export default function UserChips({
   onDelete,
   style,
   children,
+  invincibleLabel = 'owner',
   ...rest
 }) {
   return (
@@ -23,18 +24,29 @@ export default function UserChips({
         }}
         {...rest}
       >
-        {users.map(user => (
-          <Chip
-            key={user?.guid}
-            style={{
-              marginTop: 4,
-              marginRight: 4,
-            }}
-            label={user?.full_name}
-            deleteIcon={<DeleteIcon />}
-            onDelete={deletable ? () => onDelete(user) : undefined}
-          />
-        ))}
+        {users.map(user => {
+          const userIsDeletable = user?.invincible
+            ? false
+            : deletable;
+          const baseUserLabel = user?.full_name || user?.email;
+          const userLabel = user?.invincible
+            ? `${baseUserLabel} (${invincibleLabel})`
+            : baseUserLabel;
+          return (
+            <Chip
+              key={user?.guid}
+              style={{
+                marginTop: 4,
+                marginRight: 4,
+              }}
+              label={userLabel}
+              deleteIcon={<DeleteIcon />}
+              onDelete={
+                userIsDeletable ? () => onDelete(user) : undefined
+              }
+            />
+          );
+        })}
         {children}
       </div>
     </div>
