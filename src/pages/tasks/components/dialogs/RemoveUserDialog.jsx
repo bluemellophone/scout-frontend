@@ -7,20 +7,20 @@ import Alert from '../../../../components/Alert';
 import Button from '../../../../components/Button';
 import Text from '../../../../components/Text';
 import StandardDialog from '../../../../components/StandardDialog';
-import useRemoveUserFromMission from '../../../../models/missions/useRemoveUserFromMission';
+import useRemoveUserFromTask from '../../../../models/tasks/useRemoveUserFromTask';
 
-export default function DeleteMissionDialog({
+export default function RemoveUserDialog({
   open,
   onClose,
-  missionGuid,
+  taskGuid,
   user,
-  refreshMissionData,
+  refreshTaskData,
 }) {
   const {
-    removeUserFromMission,
+    removeUserFromTask,
     isLoading,
     error,
-  } = useRemoveUserFromMission();
+  } = useRemoveUserFromTask();
 
   const userName = user?.full_name || 'Unnamed User';
 
@@ -28,7 +28,7 @@ export default function DeleteMissionDialog({
     <StandardDialog open={open} onClose={onClose} title="Remove user">
       <DialogContent>
         <Text variant="body2">
-          {`Are you sure you want to remove ${userName} from this project?`}
+          {`Are you sure you want to remove ${userName} from this task?`}
         </Text>
         {error && (
           <Alert
@@ -48,13 +48,13 @@ export default function DeleteMissionDialog({
           loading={isLoading}
           display="primary"
           onClick={async () => {
-            const result = await removeUserFromMission(
-              missionGuid,
+            const result = await removeUserFromTask(
+              taskGuid,
               user?.guid,
             );
 
             if (result?.status === 200) {
-              refreshMissionData();
+              refreshTaskData();
               onClose();
             }
           }}

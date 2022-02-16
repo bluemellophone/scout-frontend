@@ -3,7 +3,7 @@ import axios from 'axios';
 import { get } from 'lodash-es';
 import { useIntl } from 'react-intl';
 
-export default function useLogin() {
+export default function useCreateAdminUser() {
   const intl = useIntl();
   const invalidError = intl.formatMessage({
     id: 'INVALID_EMAIL_OR_PASSWORD',

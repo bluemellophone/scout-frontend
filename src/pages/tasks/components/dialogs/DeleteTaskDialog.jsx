@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useTheme } from '@material-ui/core/styles';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 
@@ -7,28 +8,22 @@ import Alert from '../../../../components/Alert';
 import Button from '../../../../components/Button';
 import Text from '../../../../components/Text';
 import StandardDialog from '../../../../components/StandardDialog';
-import useRemoveUserFromMission from '../../../../models/missions/useRemoveUserFromMission';
+import useDeleteTask from '../../../../models/tasks/useDeleteTask';
 
-export default function DeleteMissionDialog({
+export default function DeleteTaskDialog({
   open,
   onClose,
-  missionGuid,
-  user,
-  refreshMissionData,
+  taskGuid,
 }) {
-  const {
-    removeUserFromMission,
-    isLoading,
-    error,
-  } = useRemoveUserFromMission();
-
-  const userName = user?.full_name || 'Unnamed User';
+  const theme = useTheme();
+  const { isLoading, deleteTask, error } = useDeleteTask();
 
   return (
-    <StandardDialog open={open} onClose={onClose} title="Remove user">
+    <StandardDialog open={open} onClose={onClose} title="Delete task">
       <DialogContent>
         <Text variant="body2">
-          {`Are you sure you want to remove ${userName} from this project?`}
+          Are you sure you want to delete this task? This action
+          cannot be undone.
         </Text>
         {error && (
           <Alert
@@ -46,20 +41,16 @@ export default function DeleteMissionDialog({
         <Button
           disabled={isLoading}
           loading={isLoading}
-          display="primary"
           onClick={async () => {
-            const result = await removeUserFromMission(
-              missionGuid,
-              user?.guid,
-            );
-
-            if (result?.status === 200) {
-              refreshMissionData();
-              onClose();
-            }
+            const result = await deleteTask(taskGuid);
+            if (result?.status === 200) onClose();
+          }}
+          style={{
+            background: theme.palette.error.main,
+            color: theme.palette.common.white,
           }}
         >
-          Remove user
+          Delete task
         </Button>
       </DialogActions>
     </StandardDialog>

@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { get } from 'lodash-es';
 import { useQuery } from 'react-query';
-import { getMissionQueryKey } from '../../constants/queryKeys';
+import { getTaskQueryKey } from '../../constants/queryKeys';
 
 export default function useGetTask(id) {
   const result = useQuery(
-    getMissionQueryKey(id),
+    getTaskQueryKey(id),
     async () => {
       const response = await axios.request({
         url: `${__houston_url__}/api/v1/missions/tasks/${id}`,

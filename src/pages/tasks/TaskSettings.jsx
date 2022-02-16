@@ -7,33 +7,33 @@ import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 import AddIcon from '@material-ui/icons/Add';
 
-import useGetMission from '../../models/missions/useGetMission';
-import usePatchMission from '../../models/missions/usePatchMission';
+import useGetTask from '../../models/tasks/useGetTask';
+import usePatchTask from '../../models/tasks/usePatchTask';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import BodyHeader from '../../components/BodyHeader';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
 import UserChips from '../../components/UserChips';
-import { getMissionQueryKey } from '../../constants/queryKeys';
-import DeleteMissionDialog from './components/dialogs/DeleteMissionDialog';
+import { getTaskQueryKey } from '../../constants/queryKeys';
+import DeleteTaskDialog from './components/dialogs/DeleteTaskDialog';
 import AddUserDialog from './components/dialogs/AddUserDialog';
 import RemoveUserDialog from './components/dialogs/RemoveUserDialog';
 
-export default function MissionSettings() {
+export default function TaskSettings() {
   const theme = useTheme();
   const queryClient = useQueryClient();
-  const { id: missionGuid } = useParams();
+  const { id: taskGuid } = useParams();
 
-  const { data, isLoading } = useGetMission(missionGuid);
-  const { patchMission } = usePatchMission();
+  const { data, isLoading } = useGetTask(taskGuid);
+  const { patchTask } = usePatchTask();
 
-  function refreshMissionData() {
-    const queryKey = getMissionQueryKey(missionGuid);
+  function refreshTaskData() {
+    const queryKey = getTaskQueryKey(taskGuid);
     queryClient.invalidateQueries(queryKey);
   }
 
   const [userToRemove, setUserToRemove] = useState(null);
-  const [deletingMission, setDeletingMission] = useState(false);
+  const [deletingTask, setDeletingTask] = useState(false);
   const [addingUser, setAddingUser] = useState(false);
   const [title, setTitle] = useState([]);
   useEffect(
@@ -43,10 +43,11 @@ export default function MissionSettings() {
     [data],
   );
 
-  useDocumentTitle('Project settings');
+  useDocumentTitle('Task settings');
 
   if (isLoading) return null; // make this nicer...
 
+  console.log(data);
   const ownerGuid = data?.owner?.guid;
   const safeUsers = data?.assigned_users || [];
   const chipUsers = safeUsers.map(u => {
@@ -59,30 +60,30 @@ export default function MissionSettings() {
       <AddUserDialog
         open={addingUser}
         onClose={() => setAddingUser(false)}
-        missionGuid={missionGuid}
-        refreshMissionData={refreshMissionData}
+        taskGuid={taskGuid}
+        refreshTaskData={refreshTaskData}
       />
       <RemoveUserDialog
         open={Boolean(userToRemove)}
         onClose={() => setUserToRemove(null)}
-        missionGuid={missionGuid}
+        taskGuid={taskGuid}
         user={userToRemove}
-        refreshMissionData={refreshMissionData}
+        refreshTaskData={refreshTaskData}
       />
-      <DeleteMissionDialog
-        open={deletingMission}
-        onClose={() => setDeletingMission(false)}
-        missionGuid={missionGuid}
+      <DeleteTaskDialog
+        open={deletingTask}
+        onClose={() => setDeletingTask(false)}
+        taskGuid={taskGuid}
       />
       <BodyHeader
-        title="Project settings"
+        title="Task settings"
         showBackButton
-        backButtonHref={`/projects/${missionGuid}`}
-        backButtonText="Return to project"
+        backButtonHref={`/tasks/${taskGuid}`}
+        backButtonText="Return to task"
       />
       <Divider style={{ margin: '12px 0 20px 0' }} />
       <Text style={{ fontWeight: 'bold', margin: '24px 0 4px 4px' }}>
-        Project name
+        Task name
       </Text>
       <div style={{ display: 'flex' }}>
         <TextField
@@ -102,7 +103,7 @@ export default function MissionSettings() {
               path: '/title',
               value: title,
             };
-            patchMission(missionGuid, [titlePatchOp]);
+            patchTask(taskGuid, [titlePatchOp]);
           }}
         >
           Rename
@@ -130,7 +131,7 @@ export default function MissionSettings() {
         </Button>
       </UserChips>
       <Text style={{ fontWeight: 'bold', margin: '24px 0 4px 4px' }}>
-        Project actions
+        Task actions
       </Text>
       <div
         style={{
@@ -144,21 +145,19 @@ export default function MissionSettings() {
         }}
       >
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <Text style={{ fontWeight: 'bold' }}>
-            Delete this project
-          </Text>
+          <Text style={{ fontWeight: 'bold' }}>Delete this task</Text>
           <Text style={{ fontSize: '0.9rem' }}>
             This action cannot be undone.
           </Text>
         </div>
         <Button
-          onClick={() => setDeletingMission(true)}
+          onClick={() => setDeletingTask(true)}
           style={{
             background: theme.palette.error.main,
             color: theme.palette.common.white,
           }}
         >
-          Delete project
+          Delete task
         </Button>
       </div>
     </div>

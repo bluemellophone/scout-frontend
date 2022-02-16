@@ -8,7 +8,7 @@ import AuthenticatedSwitch from './AuthenticatedSwitch';
 import SadScreen from './components/SadScreen';
 import useGetMe from './models/users/useGetMe';
 import useGetAdminUserInitialized from './models/users/useGetAdminUserInitialized';
-import CreateAdminUser from './pages/setup/CreateAdminUser';
+import CreateAdminUser from './pages/administration/CreateAdminUser';
 
 export default function FrontDesk() {
   const theme = useTheme();
