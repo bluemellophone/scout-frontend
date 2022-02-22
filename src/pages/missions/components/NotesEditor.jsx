@@ -13,7 +13,7 @@ function getStatusText(status) {
 }
 
 export default function NotesEditor({ missionData }) {
-  const { patchMission, status, error } = usePatchMission();
+  const { mutate: patchMission, status, error } = usePatchMission();
   const [notes, setNotes] = useState('');
 
   useEffect(
@@ -42,7 +42,7 @@ export default function NotesEditor({ missionData }) {
             path: '/notes',
             value: notes,
           };
-          await patchMission(missionId, [replaceNotesOperation]);
+          await patchMission({ missionGuid: missionId, operations: [replaceNotesOperation] });
         }}
         value={notes}
         helperText={getStatusText(status)}

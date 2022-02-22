@@ -25,7 +25,7 @@ export default function MissionSettings() {
   const { id: missionGuid } = useParams();
 
   const { data, isLoading } = useGetMission(missionGuid);
-  const { patchMission } = usePatchMission();
+  const { mutate: patchMission } = usePatchMission();
 
   function refreshMissionData() {
     const queryKey = getMissionQueryKey(missionGuid);
@@ -102,7 +102,7 @@ export default function MissionSettings() {
               path: '/title',
               value: title,
             };
-            patchMission(missionGuid, [titlePatchOp]);
+            patchMission({ missionGuid, operations: [titlePatchOp] });
           }}
         >
           Rename
