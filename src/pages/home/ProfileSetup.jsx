@@ -5,7 +5,6 @@ import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 
 import useDocumentTitle from '../../hooks/useDocumentTitle';
-import useOnEnter from '../../hooks/useOnEnter';
 import usePatchUser from '../../models/users/usePatchUser';
 import CustomAlert from '../../components/Alert';
 import SimpleFormPage from '../../components/SimpleFormPage';
@@ -20,10 +19,6 @@ export default function ProfileSetup({ userData }) {
   useDocumentTitle('Set up profile');
 
   const actionDisabled = isLoading || name === '';
-
-  useOnEnter(() => {
-    document.querySelector(`#${buttonId}`).click();
-  });
 
   async function saveProfile() {
     if (!actionDisabled) {
