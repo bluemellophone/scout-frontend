@@ -16,7 +16,7 @@ export default function DeleteMissionDialog({
   missionGuid,
 }) {
   const theme = useTheme();
-  const { isLoading, deleteMission, error } = useDeleteMission();
+  const { mutate: deleteMission, isLoading, error } = useDeleteMission();
 
   return (
     <StandardDialog
@@ -46,7 +46,7 @@ export default function DeleteMissionDialog({
           disabled={isLoading}
           loading={isLoading}
           onClick={async () => {
-            const result = await deleteMission(missionGuid);
+            const result = await deleteMission({ missionGuid });
             if (result?.status === 200) onClose();
           }}
           style={{

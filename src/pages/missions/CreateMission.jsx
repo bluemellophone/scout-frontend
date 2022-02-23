@@ -10,7 +10,7 @@ import SimpleFormPage from '../../components/SimpleFormPage';
 
 export default function CreateMission() {
   const [projectName, setProjectName] = useState('');
-  const { postMission, isLoading, error } = usePostMission();
+  const { mutate: postMission, isLoading, error } = usePostMission();
   return (
     <SimpleFormPage
       title="Create a project"
@@ -18,7 +18,7 @@ export default function CreateMission() {
       buttonId="createMission"
       buttonText="Create project"
       onSubmit={() => {
-        postMission(projectName);
+        postMission({ title: projectName });
       }}
       buttonProps={{
         disabled: isLoading || projectName === '',

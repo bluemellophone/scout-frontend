@@ -1,26 +1,10 @@
-import axios from 'axios';
-import { useMutation } from 'react-query';
+import { useDelete } from '../../hooks/useMutate';
 
 export default function useDeleteMission() {
-  const mutation = useMutation(async missionId => {
-    const result = await axios.request({
-      url: `${__houston_url__}/api/v1/missions/${missionId}`,
-      withCredentials: true,
-      method: 'delete',
-    });
-    if (result?.status === 204) window.location.href = '/';
-    return result;
+  return useDelete({
+    deriveUrl: ({ missionGuid }) => `/missions/${missionGuid}`,
+    onSuccess: () => {
+      window.location.href = '/';
+    },
   });
-
-  const deleteMission = missionId => mutation.mutateAsync(missionId);
-
-  const error = mutation?.error
-    ? mutation?.error.toJSON().message
-    : null;
-
-  return {
-    ...mutation,
-    deleteMission,
-    error,
-  };
 }
