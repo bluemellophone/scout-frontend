@@ -1,8 +1,8 @@
 import { usePost } from '../../hooks/useMutate';
 
-export default function usePostTask() {
+export default function usePostAssetsToTask() {
   return usePost({
-    deriveUrl: ({ missionGuid }) => `/missions/${missionGuid}/tasks`,
+    deriveUrl: ({ taskGuid }) => `/missions/tasks/${taskGuid}`,
     deriveData: ({ operations }) => operations,
     onSuccess: result => {
       const newTaskId = result?.data?.guid;

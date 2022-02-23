@@ -22,7 +22,7 @@ export default function AddImagesDialog({
 }) {
   const {
     isLoading,
-    postMissionCollection,
+    mutate: postMissionCollection,
   } = usePostMissionCollection();
 
   const [files, setFiles] = useState([]);
@@ -120,10 +120,10 @@ export default function AddImagesDialog({
           display="primary"
           disabled={addButtonDisabled}
           onClick={async () => {
-            const result = await postMissionCollection(
+            const result = await postMissionCollection({
               missionGuid,
-              assetSubmissionId,
-            );
+              transactionId: assetSubmissionId,
+            });
             if (result?.status === 200) onCloseDialog();
           }}
         >

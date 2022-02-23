@@ -16,7 +16,7 @@ export default function CreateTaskDialog({
   missionGuid,
   message,
 }) {
-  const { postTask, isLoading, error } = usePostTask();
+  const { mutate: postTask, isLoading, error } = usePostTask();
 
   function handleClose() {
     onClose();
@@ -63,7 +63,7 @@ export default function CreateTaskDialog({
                 value: selectedImages,
               },
             ];
-            const result = await postTask(missionGuid, operations);
+            const result = await postTask({ missionGuid, operations });
             if (result?.status === 200) handleClose();
           }}
         >

@@ -8,6 +8,7 @@ import Button from '../../../components/Button';
 import Text from '../../../components/Text';
 import BulkAddTagDialog from './BulkAddTagDialog';
 import CreateTaskDialog from './CreateTaskDialog';
+import AddToTaskDialog from './dialogs/AddToTaskDialog';
 
 export default function BatchUpdateFooter({
   open,
@@ -19,6 +20,7 @@ export default function BatchUpdateFooter({
   const [anchorEl, setAnchorEl] = useState(false);
   const [addingTag, setAddingTag] = useState(false);
   const [creatingTask, setCreatingTask] = useState(false);
+  const [addingToTask, setAddingToTask] = useState(false);
   const selectedImageCount = selectedImages.length;
 
   return (
@@ -43,6 +45,12 @@ export default function BatchUpdateFooter({
         missionGuid={missionGuid}
         open={creatingTask}
         onClose={() => setCreatingTask(false)}
+      />
+      <AddToTaskDialog
+        selectedImages={selectedImages}
+        missionGuid={missionGuid}
+        open={addingToTask}
+        onClose={() => setAddingToTask(false)}
       />
       <div
         style={{
@@ -88,7 +96,13 @@ export default function BatchUpdateFooter({
           >
             Create task
           </MenuItem>
-          <MenuItem>Add to task</MenuItem>
+          <MenuItem
+            onClick={() =>
+            {
+              setAddingToTask(true);
+              setAnchorEl(null);
+            }}
+          >Add to task</MenuItem>
         </Menu>
       </div>
     </div>
