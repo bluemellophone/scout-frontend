@@ -3,9 +3,7 @@ import { Switch, Route, useLocation } from 'react-router-dom';
 import Fade from '@material-ui/core/Fade';
 import { TransitionGroup } from 'react-transition-group';
 import Login from './pages/auth/Login';
-import RequestInvitation from './pages/auth/RequestInvitation';
 import Forgot from './pages/auth/Forgot';
-import Create from './pages/auth/Create';
 import { defaultCrossfadeDuration } from './constants/defaults';
 
 export default function UnauthenticatedSwitch() {
@@ -41,12 +39,6 @@ export default function UnauthenticatedSwitch() {
                   <Switch location={location}>
                     <Route path="/forgot">
                       <Forgot />
-                    </Route>
-                    <Route path="/request">
-                      <RequestInvitation />
-                    </Route>
-                    <Route path="/create">
-                      <Create />
                     </Route>
                     <Route path="/login">
                       <Login redirect="/" />
