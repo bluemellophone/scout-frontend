@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import { useTheme } from '@material-ui/core/styles';
 
 import WildMeLogo from '../assets/wild-me-gradient-logo.png';
 import useDocumentTitle from '../hooks/useDocumentTitle';
+import useOnEnter from '../hooks/useOnEnter';
 import Button from './Button';
 import Text from './Text';
 
@@ -15,24 +16,15 @@ export default function SimpleFormPage({
   onSubmit,
   buttonProps = {},
   renderBelowButton = Function.prototype,
+  disableLogout = false,
   children,
 }) {
   useDocumentTitle(title);
   const theme = useTheme();
 
-  function onKeyUp(e) {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      document.querySelector(`#${buttonId}`).click();
-    }
-  }
-
-  useEffect(() => {
-    document.addEventListener('keyup', onKeyUp);
-    return () => {
-      document.removeEventListener('keyup', onKeyUp);
-    };
-  }, []);
+  useOnEnter(() => {
+    document.querySelector(`#${buttonId}`).click();
+  });
 
   return (
     <div
@@ -45,6 +37,28 @@ export default function SimpleFormPage({
         background: theme.palette.grey['100'],
       }}
     >
+      {!disableLogout && (
+        <form
+          action={`${__houston_url__}/logout?next=/`}
+          method="POST"
+          style={{ position: 'absolute', right: 16, top: 12 }}
+        >
+          <button
+            type="submit"
+            style={{
+              textDecoration: 'underline',
+              fontSize: '1rem',
+              backgroundColor: 'unset',
+              width: '100%',
+              border: 'unset',
+              cursor: 'pointer',
+              padding: 0,
+            }}
+          >
+            Logout
+          </button>
+        </form>
+      )}
       <div
         style={{
           display: 'flex',

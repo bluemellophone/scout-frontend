@@ -5,12 +5,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 
-export default function TaskDropdown({
-  tasks,
-  value,
-  onChange,
-})
-{
+export default function TaskDropdown({ tasks, value, onChange }) {
   const safeTasks = tasks || [];
 
   return (

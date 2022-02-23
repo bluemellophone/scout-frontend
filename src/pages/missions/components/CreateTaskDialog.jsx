@@ -63,7 +63,10 @@ export default function CreateTaskDialog({
                 value: selectedImages,
               },
             ];
-            const result = await postTask({ missionGuid, operations });
+            const result = await postTask({
+              missionGuid,
+              operations,
+            });
             if (result?.status === 200) handleClose();
           }}
         >

@@ -16,15 +16,17 @@ export default function AddToTaskDialog({
   onClose,
   selectedImages,
   missionGuid,
-})
-{
+}) {
   const [selectedTask, setSelectedTask] = useState('');
 
   const { data: missionData } = useGetMission(missionGuid);
-  const { mutate: postAssetsToTask, isLoading, error } = usePostAssetsToTask();
+  const {
+    mutate: postAssetsToTask,
+    isLoading,
+    error,
+  } = usePostAssetsToTask();
 
-  function handleClose()
-  {
+  function handleClose() {
     setSelectedTask('');
     onClose();
   }
@@ -40,7 +42,11 @@ export default function AddToTaskDialog({
         <Text variant="body2" style={{ marginBottom: 12 }}>
           {`Select a task to add ${selectedImages?.length} images.`}
         </Text>
-        <TaskDropdown tasks={missionData?.tasks} value={selectedTask} onChange={taskGuid => setSelectedTask(taskGuid)} />
+        <TaskDropdown
+          tasks={missionData?.tasks}
+          value={selectedTask}
+          onChange={taskGuid => setSelectedTask(taskGuid)}
+        />
         {error && (
           <Alert
             style={{ marginTop: 16, marginBottom: 8 }}
@@ -59,8 +65,7 @@ export default function AddToTaskDialog({
           display="primary"
           loading={isLoading}
           disabled={selectedTask === '' || isLoading}
-          onClick={async () =>
-          {
+          onClick={async () => {
             const operations = [
               {
                 op: 'union',
@@ -68,7 +73,10 @@ export default function AddToTaskDialog({
                 value: selectedImages,
               },
             ];
-            const result = await postAssetsToTask({ taskGuid: selectedTask, operations });
+            const result = await postAssetsToTask({
+              taskGuid: selectedTask,
+              operations,
+            });
             if (result?.status === 200) handleClose();
           }}
         >

@@ -52,8 +52,7 @@ export default function RemoveUserDialog({
               userGuid: user?.guid,
             });
 
-            if (result?.status === 200)
-            {
+            if (result?.status === 200) {
               onClose();
             }
           }}

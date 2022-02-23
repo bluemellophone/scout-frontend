@@ -16,7 +16,11 @@ export default function DeleteMissionDialog({
   missionGuid,
 }) {
   const theme = useTheme();
-  const { mutate: deleteMission, isLoading, error } = useDeleteMission();
+  const {
+    mutate: deleteMission,
+    isLoading,
+    error,
+  } = useDeleteMission();
 
   return (
     <StandardDialog

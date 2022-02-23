@@ -97,12 +97,13 @@ export default function BatchUpdateFooter({
             Create task
           </MenuItem>
           <MenuItem
-            onClick={() =>
-            {
+            onClick={() => {
               setAddingToTask(true);
               setAnchorEl(null);
             }}
-          >Add to task</MenuItem>
+          >
+            Add to task
+          </MenuItem>
         </Menu>
       </div>
     </div>

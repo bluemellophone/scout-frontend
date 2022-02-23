@@ -42,7 +42,10 @@ export default function NotesEditor({ missionData }) {
             path: '/notes',
             value: notes,
           };
-          await patchMission({ missionGuid: missionId, operations: [replaceNotesOperation] });
+          await patchMission({
+            missionGuid: missionId,
+            operations: [replaceNotesOperation],
+          });
         }}
         value={notes}
         helperText={getStatusText(status)}

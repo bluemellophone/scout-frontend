@@ -5,7 +5,7 @@ import useGetMe from '../../models/users/useGetMe';
 import LoadingScreen from '../../components/LoadingScreen';
 import CreateMission from '../missions/CreateMission';
 import Mission from '../missions/Mission';
-// import ProfileSetup from './ProfileSetup';
+import ProfileSetup from './ProfileSetup';
 
 export default function Home() {
   const { data, loading } = useGetMe();
@@ -16,7 +16,7 @@ export default function Home() {
 
   if (loading) return <LoadingScreen />;
   // if (error) handle error
-  // if (!fullName) return <ProfileSetup userData={data} />;
+  if (!fullName) return <ProfileSetup userData={data} />;
   if (!atLeastOneMission) return <CreateMission />;
 
   return <Mission id={get(data, ['owned_missions', '0', 'guid'])} />;

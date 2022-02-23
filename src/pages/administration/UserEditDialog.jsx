@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { get } from 'lodash-es';
 
 import FormControl from '@material-ui/core/FormControl';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -36,9 +35,7 @@ export default function UserEditDialog({ open, onClose, userData }) {
     [userData],
   );
 
-  const { replaceUserProperties, loading, error } = usePatchUser(
-    get(userData, 'guid'),
-  );
+  const { mutate: patchUser, isLoading, error } = usePatchUser();
 
   function cleanupAndClose() {
     setEmail(userData?.email);
@@ -49,21 +46,25 @@ export default function UserEditDialog({ open, onClose, userData }) {
 
   async function saveProperties() {
     const rolePaths = deriveRolePaths(role);
-    const properties = [
+    const operations = [
       {
+        op: 'replace',
         path: '/email',
         value: email,
       },
       {
+        op: 'replace',
         path: '/full_name',
         value: name,
       },
       ...rolePaths,
     ];
 
-    console.log(properties);
-
-    const success = await replaceUserProperties(properties, password);
+    const success = await patchUser({
+      userGuid: userData?.guid,
+      operations,
+      password,
+    });
 
     if (success) cleanupAndClose();
   }
@@ -127,7 +128,7 @@ export default function UserEditDialog({ open, onClose, userData }) {
         <Button
           display="primary"
           onClick={saveProperties}
-          loading={loading}
+          loading={isLoading}
           id="SAVE"
         />
       </DialogActions>

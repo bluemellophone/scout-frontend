@@ -68,8 +68,7 @@ export default function AddUserDialog({
               missionGuid,
               userGuid: selectedUser,
             });
-            if (result?.status === 200)
-            {
+            if (result?.status === 200) {
               handleClose();
             }
           }}
