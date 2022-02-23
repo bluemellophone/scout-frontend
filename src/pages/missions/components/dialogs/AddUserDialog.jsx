@@ -15,12 +15,11 @@ export default function AddUserDialog({
   open,
   onClose,
   missionGuid,
-  refreshMissionData,
 }) {
   const { data: userData } = useGetUsers();
 
   const {
-    addUserToMission,
+    mutate: addUserToMission,
     isLoading,
     error,
   } = useAddUserToMission();
@@ -65,12 +64,11 @@ export default function AddUserDialog({
           loading={isLoading}
           display="primary"
           onClick={async () => {
-            const result = await addUserToMission(
+            const result = await addUserToMission({
               missionGuid,
-              selectedUser,
-            );
+              userGuid: selectedUser,
+            });
             if (result?.status === 200) {
-              refreshMissionData();
               handleClose();
             }
           }}

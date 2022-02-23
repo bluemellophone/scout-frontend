@@ -7,11 +7,9 @@ const dataManager = roleSchema.find(o =>
 
 function getRoleOperations(adminBool, dataManagerBool) {
   return [
+    { op: 'replace', path: '/is_admin', value: adminBool },
     {
-      path: '/is_admin',
-      value: adminBool,
-    },
-    {
+      op: 'replace',
       path: '/is_data_manager',
       value: dataManagerBool,
     },

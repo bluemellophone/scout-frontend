@@ -1,47 +1,57 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 
-import usePostTask from '../../../models/tasks/usePostTask';
-import StandardDialog from '../../../components/StandardDialog';
-import Button from '../../../components/Button';
-import Text from '../../../components/Text';
-import Alert from '../../../components/Alert';
+import useGetMission from '../../../../models/missions/useGetMission';
+import usePostAssetsToTask from '../../../../models/tasks/usePostAssetsToTask';
+import StandardDialog from '../../../../components/StandardDialog';
+import Button from '../../../../components/Button';
+import Text from '../../../../components/Text';
+import Alert from '../../../../components/Alert';
+import TaskDropdown from '../../../../components/TaskDropdown';
 
-export default function CreateTaskDialog({
+export default function AddToTaskDialog({
   open,
   onClose,
   selectedImages,
   missionGuid,
-  message,
 }) {
-  const { mutate: postTask, isLoading, error } = usePostTask();
+  const [selectedTask, setSelectedTask] = useState('');
+
+  const { data: missionData } = useGetMission(missionGuid);
+  const {
+    mutate: postAssetsToTask,
+    isLoading,
+    error,
+  } = usePostAssetsToTask();
 
   function handleClose() {
+    setSelectedTask('');
     onClose();
   }
-
-  const displayMessage =
-    message ||
-    `Create new task from ${selectedImages?.length} images?`;
 
   return (
     <StandardDialog
       open={open}
       onClose={handleClose}
-      title="Create task"
+      title="Add to task"
       PaperProps={{ style: { width: 400 } }}
     >
       <DialogContent>
         <Text variant="body2" style={{ marginBottom: 12 }}>
-          {displayMessage}
+          {`Select a task to add ${selectedImages?.length} images.`}
         </Text>
+        <TaskDropdown
+          tasks={missionData?.tasks}
+          value={selectedTask}
+          onChange={taskGuid => setSelectedTask(taskGuid)}
+        />
         {error && (
           <Alert
             style={{ marginTop: 16, marginBottom: 8 }}
             severity="error"
-            title="Failed to create task"
+            title="Failed to add images to task"
           >
             {error}
           </Alert>
@@ -54,7 +64,7 @@ export default function CreateTaskDialog({
         <Button
           display="primary"
           loading={isLoading}
-          disabled={isLoading}
+          disabled={selectedTask === '' || isLoading}
           onClick={async () => {
             const operations = [
               {
@@ -63,14 +73,14 @@ export default function CreateTaskDialog({
                 value: selectedImages,
               },
             ];
-            const result = await postTask({
-              missionGuid,
+            const result = await postAssetsToTask({
+              taskGuid: selectedTask,
               operations,
             });
             if (result?.status === 200) handleClose();
           }}
         >
-          Create task
+          Add to task
         </Button>
       </DialogActions>
     </StandardDialog>

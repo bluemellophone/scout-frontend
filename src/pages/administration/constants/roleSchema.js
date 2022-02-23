@@ -8,7 +8,7 @@ export default [
     payload: ['is_data_manager'],
   },
   {
-    label: 'Administration',
+    label: 'Administrator',
     payload: ['is_admin', 'is_data_manager'],
   },
 ];

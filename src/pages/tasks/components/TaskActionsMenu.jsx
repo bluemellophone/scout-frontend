@@ -4,7 +4,7 @@ import { useTheme } from '@material-ui/core/styles';
 import Popover from '@material-ui/core/Popover';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
-import ProjectSettingsIcon from '@material-ui/icons/Settings';
+import ProjectSettingsIcon from '@material-ui/icons/Build';
 
 import Link from '../../../components/Link';
 import Text from '../../../components/Text';

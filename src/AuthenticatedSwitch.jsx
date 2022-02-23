@@ -9,6 +9,7 @@ import MissionSettings from './pages/missions/MissionSettings';
 import Task from './pages/tasks/Task';
 import TaskSettings from './pages/tasks/TaskSettings';
 import Home from './pages/home/Home';
+import UserSettings from './pages/user/UserSettings';
 import CreateUser from './pages/administration/CreateUser';
 import Administration from './pages/administration/Administration';
 import FourOhFour from './pages/fourohfour/FourOhFour';
@@ -70,8 +71,8 @@ export default function AuthenticatedSwitch() {
                     <Route path="/tasks/:id">
                       <Task />
                     </Route>
-                    <Route path="/welcome">
-                      <span>Welcome</span>
+                    <Route path="/settings">
+                      <UserSettings />
                     </Route>
                     <Route path="/" exact>
                       <Home />

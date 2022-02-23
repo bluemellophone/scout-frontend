@@ -9,15 +9,14 @@ import Text from '../../../../components/Text';
 import StandardDialog from '../../../../components/StandardDialog';
 import useRemoveUserFromMission from '../../../../models/missions/useRemoveUserFromMission';
 
-export default function DeleteMissionDialog({
+export default function RemoveUserDialog({
   open,
   onClose,
   missionGuid,
   user,
-  refreshMissionData,
 }) {
   const {
-    removeUserFromMission,
+    mutate: removeUserFromMission,
     isLoading,
     error,
   } = useRemoveUserFromMission();
@@ -48,13 +47,12 @@ export default function DeleteMissionDialog({
           loading={isLoading}
           display="primary"
           onClick={async () => {
-            const result = await removeUserFromMission(
+            const result = await removeUserFromMission({
               missionGuid,
-              user?.guid,
-            );
+              userGuid: user?.guid,
+            });
 
             if (result?.status === 200) {
-              refreshMissionData();
               onClose();
             }
           }}

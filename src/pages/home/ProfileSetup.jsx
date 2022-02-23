@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
-import { get } from 'lodash-es';
+import React, { useState } from 'react';
 
 import Grid from '@material-ui/core/Grid';
 import FormControl from '@material-ui/core/FormControl';
@@ -9,111 +7,70 @@ import TextField from '@material-ui/core/TextField';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import usePatchUser from '../../models/users/usePatchUser';
 import CustomAlert from '../../components/Alert';
-import Text from '../../components/Text';
-import Button from '../../components/Button';
-import BaoWaving from '../../components/svg/BaoWaving';
 import SimpleFormPage from '../../components/SimpleFormPage';
 
 const buttonId = 'saveProfile';
 
 export default function ProfileSetup({ userData }) {
-  const [noNameError, setNoNameError] = useState(false);
   const [name, setName] = useState('');
 
-  const {
-    replaceUserProperties,
-    loading: replaceLoading,
-    error: replaceError,
-  } = usePatchUser(get(userData, 'guid'));
+  const { mutate: patchUser, isLoading, error } = usePatchUser();
 
-  useDocumentTitle('SET_UP_PROFILE');
+  useDocumentTitle('Set up profile');
 
-  function onKeyUp(e) {
-    if (e.key === 'Enter') {
-      document.querySelector(`#${buttonId}`).click();
-      e.preventDefault();
-    }
-  }
-
-  useEffect(() => {
-    document.addEventListener('keyup', onKeyUp);
-    return () => {
-      document.removeEventListener('keyup', onKeyUp);
-    };
-  }, []);
+  const actionDisabled = isLoading || name === '';
 
   async function saveProfile() {
-    if (name) {
-      const properties = [
-        {
-          path: '/full_name',
-          value: name,
-        },
-      ];
-      await replaceUserProperties(properties);
-    } else {
-      setNoNameError(true);
+    if (!actionDisabled) {
+      await patchUser({
+        userGuid: userData?.guid,
+        operations: [
+          {
+            op: 'replace',
+            path: '/full_name',
+            value: name,
+          },
+        ],
+      });
     }
   }
   return (
     <SimpleFormPage
-      titleId="SET_UP_PROFILE"
-      instructionsId="SET_UP_PROFILE_INSTRUCTIONS"
-      BaoComponent={BaoWaving}
+      title="Set up profile"
+      instructions="Enter your name to begin using Scout."
+      buttonId={buttonId}
+      buttonText="Continue"
+      onSubmit={saveProfile}
+      buttonProps={{
+        disabled: actionDisabled,
+        loading: isLoading,
+      }}
     >
-      <form>
-        <Grid
-          container
-          spacing={2}
-          direction="column"
-          style={{ padding: '16px 0', width: 280 }}
-        >
-          <Grid item>
-            <FormControl
-              required
-              style={{ width: '100%', marginBottom: 4 }}
-            >
-              <TextField
-                variant="outlined"
-                id="name"
-                error={noNameError}
-                onChange={e => {
-                  setName(e.target.value);
-                  if (noNameError) setNoNameError(false);
-                }}
-                label={<FormattedMessage id="FULL_NAME_REQUIRED" />}
-                helperText={
-                  noNameError ? (
-                    <FormattedMessage id="FULL_NAME_IS_REQUIRED" />
-                  ) : (
-                    undefined
-                  )
-                }
-              />
-              <Text
-                style={{ margin: '8px 4px 0 4px' }}
-                variant="caption"
-                id="FULL_NAME_DESCRIPTION"
-              />
-            </FormControl>
-          </Grid>
-          {replaceError && (
-            <CustomAlert
-              severity="error"
-              description={replaceError}
+      <Grid
+        container
+        spacing={2}
+        direction="column"
+        style={{ padding: '8px 0 16px 0' }}
+      >
+        <Grid item>
+          <FormControl
+            required
+            style={{ width: '100%', marginBottom: 4 }}
+          >
+            <TextField
+              variant="outlined"
+              id="name"
+              onChange={e => setName(e.target.value)}
+              label="Full name"
             />
-          )}
-          <Grid item style={{ position: 'relative' }}>
-            <Button
-              domId={buttonId}
-              loading={replaceLoading}
-              onClick={saveProfile}
-              display="primary"
-              id="SAVE_PROFILE"
-            />
-          </Grid>
+          </FormControl>
         </Grid>
-      </form>
+        {error && (
+          <CustomAlert style={{ marginBottom: 8 }} severity="error">
+            {error}
+          </CustomAlert>
+        )}
+      </Grid>
     </SimpleFormPage>
   );
 }
