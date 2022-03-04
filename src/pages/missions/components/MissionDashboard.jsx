@@ -8,7 +8,7 @@ import SelectedImageDialog from './SelectedImageDialog';
 import AddImagesDialog from './AddImagesDialog';
 import MissionActionsMenu from './MissionActionsMenu';
 import BatchUpdateFooter from './BatchUpdateFooter';
-import ImageTable from './table/ImageTable';
+import ImageDisplay from './ImageDisplay';
 
 export default function MissionDashboard({
   missionData,
@@ -57,7 +57,7 @@ export default function MissionDashboard({
             missionGuid: id,
           }}
         />
-        {noImages && (
+        {noImages ? (
           <div style={{ marginTop: 40 }}>
             <Text style={{ marginBottom: 12 }}>
               Your project has no images. Get started by adding some
@@ -67,9 +67,9 @@ export default function MissionDashboard({
               Add images
             </Button>
           </div>
-        )}
-        {!noImages && (
-          <ImageTable
+        ) : (
+          <ImageDisplay
+            missionData={missionData}
             data={images}
             loading={assetsLoading}
             onClickImage={asset => setClickedImage(asset)}

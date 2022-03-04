@@ -14,6 +14,7 @@ export default function useGet({
   queryKey,
   url,
   data,
+  method = 'get',
   dataAccessor = result => result?.data?.data,
   onSuccess = Function.prototype,
   prependHoustonApiUrl = true,
@@ -30,7 +31,7 @@ export default function useGet({
     async () => {
       const response = await axios.request({
         url: apiUrl,
-        method: 'get',
+        method,
         data,
       });
       const status = response?.status;

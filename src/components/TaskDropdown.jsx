@@ -5,19 +5,34 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 
-export default function TaskDropdown({ tasks, value, onChange }) {
+export default function TaskDropdown({
+  label = 'Task',
+  tasks,
+  value,
+  onChange,
+  formControlStyle = {},
+  style = {},
+  ...rest
+})
+{
   const safeTasks = tasks || [];
 
+  console.log(rest);
+
   return (
-    <FormControl variant="outlined" style={{ width: '100%' }}>
-      <InputLabel id="select-roles-label">Task</InputLabel>
+    <FormControl
+      variant="outlined"
+      style={{ width: '100%', ...formControlStyle }}
+    >
+      <InputLabel id="select-roles-label">{label}</InputLabel>
       <Select
         id="task-selector"
         variant="outlined"
         onChange={e => onChange(e.target.value)}
         value={value}
-        style={{ width: 360 }}
+        style={{ width: 360, ...style }}
         MenuProps={{ style: { maxHeight: 440 } }}
+        {...rest}
       >
         {safeTasks.map(u => (
           <MenuItem key={u?.guid} value={u?.guid}>
