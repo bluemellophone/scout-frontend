@@ -12,10 +12,8 @@ export default function useGetMissionAssets(id) {
     method: 'post',
     url: `/missions/${id}/assets`,
     data: {
-      query: {
-        query_string: {
-          query: 'B74f2fad7050',
-        },
+      query_string: {
+        query: 'B74f2fad7050',
       },
     },
   });
