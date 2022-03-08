@@ -5,5 +5,8 @@ export default function useGetMission(id) {
   return useGet({
     queryKey: getMissionQueryKey(id),
     url: `/missions/${id}`,
+    queryOptions: {
+      enabled: Boolean(id),
+    },
   });
 }

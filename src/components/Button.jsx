@@ -72,20 +72,21 @@ const Core = function({
     };
   }
 
-  if (display === 'link') {
+  if (['link', 'text'].includes(display)) {
     roleStyles = {
       textTransform: 'none',
       background: 'none',
       border: 'none',
       padding: '0',
       color: theme.palette.text.primary,
-      textDecoration: 'underline',
+      textDecoration: display === 'link' ? 'underline' : undefined,
       cursor: 'pointer',
       backgroundColor: 'transparent',
       textAlign: 'right',
       justifyContent: 'right',
       fontSize: '14px',
     };
+
     return (
       <button
         type="button"

@@ -13,8 +13,7 @@ export default function TaskDropdown({
   formControlStyle = {},
   style = {},
   ...rest
-})
-{
+}) {
   const safeTasks = tasks || [];
 
   console.log(rest);

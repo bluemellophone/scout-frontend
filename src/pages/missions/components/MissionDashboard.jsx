@@ -16,15 +16,18 @@ export default function MissionDashboard({
   createdDate,
 }) {
   const id = missionData?.guid;
-  const {
-    data: missionAssets,
-    isLoading: assetsLoading,
-  } = useGetMissionAssets(id);
-  const images = missionAssets || [];
 
   const [clickedImage, setClickedImage] = useState(null);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
+  const [imageQuery, setImageQuery] = useState({});
+
+  const {
+    data: missionAssets,
+    isLoading: assetsLoading,
+  } = useGetMissionAssets(id, imageQuery);
+  const images = missionAssets || [];
+
   const noImages = missionData?.asset_count === 0;
   const footerOpen = selectedImages.length > 0;
 
@@ -75,6 +78,7 @@ export default function MissionDashboard({
             onClickImage={asset => setClickedImage(asset)}
             selectedImages={selectedImages}
             setSelectedImages={setSelectedImages}
+            setImageQuery={setImageQuery}
           />
         )}
         <AddImagesDialog

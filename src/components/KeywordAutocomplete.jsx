@@ -12,12 +12,10 @@ export default function SelectedImageDialog({
   textFieldProps = {},
   value,
   onChange,
-})
-{
+}) {
   const { data: keywordOptions } = useGetKeywords();
   const filteredKeywordOptions = useMemo(
-    () =>
-    {
+    () => {
       if (!filterAsset) return keywordOptions;
 
       const assetKeywords = filterAsset?.tags;
@@ -38,13 +36,11 @@ export default function SelectedImageDialog({
       handleHomeEndKeys
       selectOnFocus
       value={newTagSelectValue}
-      onChange={(_, newValue) =>
-      {
+      onChange={(_, newValue) => {
         setNewTagSelectValue(newValue);
       }}
       inputValue={newTagInputValue}
-      onInputChange={(_, newValue) =>
-      {
+      onInputChange={(_, newValue) => {
         setNewTagInputValue(newValue);
       }}
       options={filteredKeywordOptions}
@@ -69,11 +65,7 @@ export default function SelectedImageDialog({
         </div>
       )}
       renderInput={params => (
-        <TextField
-          {...params}
-          {...textFieldProps}
-          autoFocus
-        />
+        <TextField {...params} {...textFieldProps} autoFocus />
       )}
     />
   );
