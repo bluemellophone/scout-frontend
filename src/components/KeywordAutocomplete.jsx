@@ -7,7 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import useGetKeywords from '../models/keywords/useGetKeywords';
 import { getKeywordColor } from '../utils/colorUtils';
 
-export default function SelectedImageDialog({
+export default function KeywordAutocomplete({
   filterAsset, // optionally omit all keywords present on a given asset
   textFieldProps = {},
   value,

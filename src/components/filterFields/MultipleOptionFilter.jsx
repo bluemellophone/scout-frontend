@@ -16,13 +16,13 @@ function getLabelFromValue(options, value) {
   return matchingItem?.label;
 }
 
-export default function OptionFilter({
+export default function MultipleOptionFilter({
   label,
   options = [],
-  multiple = false,
   value,
   onChange,
   openDirection = 'right',
+  buttonStyle = {},
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [filter, setFilter] = useState('');
@@ -36,21 +36,30 @@ export default function OptionFilter({
     setFilter('');
   };
 
-  const showChip = multiple ? value?.length > 0 : Boolean(value);
-  const chipLabel = multiple ? value?.length : 1;
+  const showChip = value?.length > 0;
 
-  const visibleOptions = options.filter(
-    o => o?.value?.includes(filter) || o?.label?.includes(filter),
-  );
+  const visibleOptions = options.filter(o => {
+    const filterMatch = filter.toUpperCase();
+    const valueMatch = o?.value?.toUpperCase(); // what if value is not a string?
+    const labelMatch = o?.label?.toUpperCase();
+    return (
+      valueMatch.includes(filterMatch) ||
+      labelMatch.includes(filterMatch)
+    );
+  });
 
   return (
     <div>
-      <Button onClick={handleClick} endIcon={<ExpandIcon />}>
+      <Button
+        onClick={handleClick}
+        endIcon={<ExpandIcon />}
+        style={buttonStyle}
+      >
         {label}
         {showChip && (
           <Chip
             size="small"
-            label={chipLabel}
+            label={value?.length}
             style={{ marginLeft: 8 }}
           />
         )}
@@ -72,12 +81,12 @@ export default function OptionFilter({
       >
         <div style={{ width: 340 }}>
           <div style={{ padding: '0 8px' }}>
-            <Button
+            {/* <Button
               display="text"
               style={{ float: 'right', marginBottom: 2 }}
             >
               Clear filters
-            </Button>
+            </Button> */}
             <TextField
               style={{ marginBottom: 8 }}
               variant="outlined"
@@ -85,13 +94,26 @@ export default function OptionFilter({
               value={filter}
               onChange={e => setFilter(e.target.value)}
               InputProps={{
+                style: {
+                  flexDirection: 'column',
+                  alignItems: 'flex-start',
+                },
+                size: 'small',
                 startAdornment: (
-                  <div style={{ marginLeft: 8 }}>
-                    {value.map(optionGuid => (
+                  <div style={{ marginTop: 8 }}>
+                    {value.map(optionValue => (
                       <Chip
-                        key={optionGuid}
-                        style={{ marginRight: 4, marginBottom: 2 }}
-                        label={getLabelFromValue(options, optionGuid)}
+                        key={optionValue}
+                        style={{ marginRight: 4, marginBottom: 4 }}
+                        label={getLabelFromValue(
+                          options,
+                          optionValue,
+                        )}
+                        onDelete={() => {
+                          onChange(
+                            value.filter(o => o !== optionValue),
+                          );
+                        }}
                       />
                     ))}
                   </div>
@@ -102,9 +124,7 @@ export default function OptionFilter({
           <Divider />
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             {visibleOptions.map(option => {
-              const isChecked = multiple
-                ? value.includes(option?.value)
-                : value === option?.value;
+              const isChecked = value.includes(option?.value);
               const optionLabel = option?.label || 'Unlabeled filter';
               return (
                 <FormControlLabel
@@ -115,20 +135,12 @@ export default function OptionFilter({
                       size="small"
                       checked={isChecked}
                       onChange={() => {
-                        if (multiple) {
-                          if (isChecked) {
-                            onChange(
-                              value.filter(o => o !== option?.value),
-                            );
-                          } else {
-                            onChange([...value, option?.value]);
-                          }
+                        if (isChecked) {
+                          onChange(
+                            value.filter(o => o !== option?.value),
+                          );
                         } else {
-                          if (isChecked) {
-                            onChange(null);
-                          } else {
-                            onChange(option?.value);
-                          }
+                          onChange([...value, option?.value]);
                         }
                       }}
                       name={`Checkbox for ${optionLabel}`}
