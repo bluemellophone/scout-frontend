@@ -16,8 +16,6 @@ export default function TaskDropdown({
 }) {
   const safeTasks = tasks || [];
 
-  console.log(rest);
-
   return (
     <FormControl
       variant="outlined"
