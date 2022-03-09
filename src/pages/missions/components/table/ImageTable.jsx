@@ -216,7 +216,7 @@ export default function ImageTable({
           style={{ margin: '16px 0' }}
         >
           <Grid item>
-            <Text variant="subtitle1">{title}</Text>
+            <Text variant="body2">{title}</Text>
           </Grid>
           <Grid item>
             <IconButton

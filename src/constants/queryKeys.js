@@ -25,8 +25,8 @@ export function getMissionQueryKey(id) {
   return ['mission', id];
 }
 
-export function getMissionAssetsQueryKey(id) {
-  return ['missionAssets', id];
+export function getMissionAssetsQueryKey(id, data) {
+  return ['missionAssets', id, data];
 }
 
 export function getTaskQueryKey(id) {
