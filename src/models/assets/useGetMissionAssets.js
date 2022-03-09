@@ -3,7 +3,7 @@ import { getMissionAssetsQueryKey } from '../../constants/queryKeys';
 
 export default function useGetMissionAssets(id, data = {}) {
   return useGet({
-    queryKey: getMissionAssetsQueryKey(id),
+    queryKey: getMissionAssetsQueryKey(id, data),
     method: 'post',
     url: `/missions/${id}/assets`,
     queryOptions: {

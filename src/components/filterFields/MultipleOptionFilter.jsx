@@ -128,6 +128,7 @@ export default function MultipleOptionFilter({
               const optionLabel = option?.label || 'Unlabeled filter';
               return (
                 <FormControlLabel
+                  key={option?.value}
                   style={{ marginLeft: 0 }}
                   label={<Text variant="body2">{optionLabel}</Text>}
                   control={

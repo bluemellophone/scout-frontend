@@ -73,7 +73,7 @@ export default function MissionDashboard({
         ) : (
           <ImageDisplay
             missionData={missionData}
-            data={images}
+            images={images}
             loading={assetsLoading}
             onClickImage={asset => setClickedImage(asset)}
             selectedImages={selectedImages}

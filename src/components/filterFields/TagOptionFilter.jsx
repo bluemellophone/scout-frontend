@@ -144,6 +144,7 @@ export default function TagOptionFilter({
               const optionLabel = option?.value || 'Unlabeled filter';
               return (
                 <FormControlLabel
+                  key={option?.guid}
                   style={{ marginLeft: 0 }}
                   label={
                     <Chip
