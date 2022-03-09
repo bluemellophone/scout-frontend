@@ -10,5 +10,11 @@ export default function useGetMissionAssets(id, data = {}) {
       enabled: Boolean(id),
     },
     data,
+    params: {
+      limit: 50,
+      offset: 0,
+      sort: 'path',
+      reverse: false,
+    },
   });
 }

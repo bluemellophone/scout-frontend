@@ -14,6 +14,7 @@ export default function useGet({
   queryKey,
   url,
   data,
+  params,
   method = 'get',
   dataAccessor = result => result?.data?.data,
   onSuccess = Function.prototype,
@@ -33,6 +34,7 @@ export default function useGet({
         url: apiUrl,
         method,
         data,
+        params,
       });
       const status = response?.status;
       setStatusCode(status);
