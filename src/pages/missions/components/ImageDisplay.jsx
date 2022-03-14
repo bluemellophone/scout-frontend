@@ -4,6 +4,7 @@ import Text from '../../../components/Text';
 import MultipleOptionFilter from '../../../components/filterFields/MultipleOptionFilter';
 import TagOptionFilter from '../../../components/filterFields/TagOptionFilter';
 import StringFilter from '../../../components/filterFields/StringFilter';
+import IntegerFilter from '../../../components/filterFields/IntegerFilter';
 import buildAssetQueries from '../utils/buildAssetQueries';
 import ImageTable from './table/ImageTable';
 
@@ -19,6 +20,7 @@ export default function ImageDisplay({
   const [filename, setFilename] = useState('');
   const [tasks, setTasks] = useState([]);
   const [tags, setTags] = useState([]);
+  const [assetCountRange, setAssetCountRange] = useState({});
 
   const safeMissionTasks = missionData?.tasks || [];
   const taskOptions = safeMissionTasks.map(t => ({
@@ -80,8 +82,8 @@ export default function ImageDisplay({
           }}
           label="Tasks"
           options={taskOptions}
-          openDirection="left"
           buttonStyle={buttonStyle}
+          noOptionsText="This project has no tasks."
         />
         <TagOptionFilter
           value={tags}
@@ -95,7 +97,20 @@ export default function ImageDisplay({
             setTags(newTags);
           }}
           label="Tags"
-          openDirection="left"
+          buttonStyle={buttonStyle}
+        />
+        <IntegerFilter
+          value={assetCountRange}
+          onChange={newAssetCountRange => {
+            const newQuery = buildAssetQueries({
+              filename,
+              tasks,
+              tags,
+            });
+            setImageQuery(newQuery);
+            setAssetCountRange(newAssetCountRange);
+          }}
+          label="Asset count"
           buttonStyle={buttonStyle}
         />
       </div>
