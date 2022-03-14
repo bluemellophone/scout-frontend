@@ -20,7 +20,16 @@ export default function ImageDisplay({
   const [filename, setFilename] = useState('');
   const [tasks, setTasks] = useState([]);
   const [tags, setTags] = useState([]);
-  const [assetCountRange, setAssetCountRange] = useState({});
+  const [annotationCountRange, setAnnotationCountRange] = useState(
+    {},
+  );
+
+  const filters = {
+    filename,
+    tasks,
+    tags,
+    annotationCountRange,
+  };
 
   const safeMissionTasks = missionData?.tasks || [];
   const taskOptions = safeMissionTasks.map(t => ({
@@ -73,9 +82,8 @@ export default function ImageDisplay({
           value={tasks}
           onChange={newTasks => {
             const newQuery = buildAssetQueries({
-              filename,
+              ...filters,
               tasks: newTasks,
-              tags,
             });
             setImageQuery(newQuery);
             setTasks(newTasks);
@@ -89,8 +97,7 @@ export default function ImageDisplay({
           value={tags}
           onChange={newTags => {
             const newQuery = buildAssetQueries({
-              filename,
-              tasks,
+              ...filters,
               tags: newTags,
             });
             setImageQuery(newQuery);
@@ -100,17 +107,16 @@ export default function ImageDisplay({
           buttonStyle={buttonStyle}
         />
         <IntegerFilter
-          value={assetCountRange}
-          onChange={newAssetCountRange => {
+          value={annotationCountRange}
+          onChange={newAnnotationCountRange => {
             const newQuery = buildAssetQueries({
-              filename,
-              tasks,
-              tags,
+              ...filters,
+              annotationCountRange: newAnnotationCountRange,
             });
             setImageQuery(newQuery);
-            setAssetCountRange(newAssetCountRange);
+            setAnnotationCountRange(newAnnotationCountRange);
           }}
-          label="Asset count"
+          label="Annotation count"
           buttonStyle={buttonStyle}
         />
       </div>

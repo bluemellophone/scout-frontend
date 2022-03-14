@@ -1,4 +1,11 @@
-export default function buildAssetQueries({ filename, tasks, tags }) {
+import { isEmpty } from 'lodash-es';
+
+export default function buildAssetQueries({
+  filename,
+  tasks,
+  tags,
+  annotationCountRange,
+}) {
   const filenameQuery = filename
     ? {
         query_string: {
@@ -30,9 +37,20 @@ export default function buildAssetQueries({ filename, tasks, tags }) {
         }
       : null;
 
-  const queries = [filenameQuery, tasksQuery, tagsQuery].filter(
-    f => f,
-  );
+  const annotationCountQuery = !isEmpty(annotationCountRange)
+    ? {
+        range: {
+          'annotations.length': annotationCountRange,
+        },
+      }
+    : null;
+
+  const queries = [
+    filenameQuery,
+    tasksQuery,
+    tagsQuery,
+    annotationCountQuery,
+  ].filter(f => f);
 
   return { bool: { filter: queries } };
 }

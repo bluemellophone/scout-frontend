@@ -29,15 +29,12 @@ const comparators = [
 
 export default function IntegerFilter({
   label,
-  value,
   onChange,
   openDirection = 'left',
   buttonStyle = {},
 }) {
   const [integerInput, setIntegerInput] = useState('');
   const [comparator, setComparator] = useState('gt');
-
-  console.log(value);
 
   return (
     <FilterButton
