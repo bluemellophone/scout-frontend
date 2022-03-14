@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import TextField from '@material-ui/core/TextField';
 
+import useOnEnter from '../../hooks/useOnEnter';
 import Button from '../Button';
 import FilterButton from './components/FilterButton';
 
@@ -15,6 +16,13 @@ export default function StringFilter({
   const [internalValue, setInternalValue] = useState('');
 
   const buttonLabel = value ? `${label}: ${value}` : label;
+  const inputId = `${label}-input`;
+
+  useOnEnter(e => {
+    if (e.target.id === inputId) {
+      onChange(internalValue);
+    }
+  });
 
   return (
     <FilterButton
@@ -44,6 +52,8 @@ export default function StringFilter({
         </Button>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <TextField
+            autoFocus
+            id={inputId}
             placeholder={label}
             variant="outlined"
             fullWidth

@@ -13,6 +13,7 @@ export default function FilterButton({
   chipLabel,
   chipProps = {},
   openDirection = 'left',
+  onOpenMenu = Function.prototype,
   onCloseMenu = Function.prototype,
   children,
 }) {
@@ -20,6 +21,7 @@ export default function FilterButton({
 
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
+    onOpenMenu();
   };
 
   const handleClose = () => {

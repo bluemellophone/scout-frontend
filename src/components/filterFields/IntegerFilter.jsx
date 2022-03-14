@@ -5,6 +5,7 @@ import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 
+import useOnEnter from '../../hooks/useOnEnter';
 import Button from '../Button';
 import FilterButton from './components/FilterButton';
 
@@ -35,6 +36,16 @@ export default function IntegerFilter({
 }) {
   const [integerInput, setIntegerInput] = useState('');
   const [comparator, setComparator] = useState('gt');
+
+  const inputId = `${label}-number-input`;
+
+  function updateFilter() {
+    onChange({ [comparator]: parseInt(integerInput, 10) });
+  }
+
+  useOnEnter(e => {
+    if (e.target.id === inputId) updateFilter();
+  });
 
   return (
     <FilterButton
@@ -79,6 +90,8 @@ export default function IntegerFilter({
             </Select>
           </FormControl>
           <TextField
+            autoFocus
+            id={inputId}
             placeholder="Count"
             variant="outlined"
             value={integerInput}
@@ -105,9 +118,7 @@ export default function IntegerFilter({
               height: 'fit-content',
               flexShrink: 0,
             }}
-            onClick={() => {
-              onChange({ [comparator]: parseInt(integerInput, 10) });
-            }}
+            onClick={updateFilter}
           >
             Go
           </Button>
