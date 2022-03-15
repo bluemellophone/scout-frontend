@@ -20,12 +20,13 @@ export default function MissionDashboard({
   const [clickedImage, setClickedImage] = useState(null);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
+  const [searchParams, setSearchParams] = useState({});
   const [imageQuery, setImageQuery] = useState({});
 
   const {
     data: missionAssets,
     isLoading: assetsLoading,
-  } = useGetMissionAssets(id, imageQuery);
+  } = useGetMissionAssets(id, imageQuery, searchParams);
   const images = missionAssets || [];
 
   const noImages = missionData?.asset_count === 0;
@@ -79,6 +80,8 @@ export default function MissionDashboard({
             selectedImages={selectedImages}
             setSelectedImages={setSelectedImages}
             setImageQuery={setImageQuery}
+              searchParams={searchParams}
+              setSearchParams={setSearchParams}
           />
         )}
         <AddImagesDialog

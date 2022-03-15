@@ -40,7 +40,8 @@ export default function buildAssetQueries({
   const annotationCountQuery = !isEmpty(annotationCountRange)
     ? {
         range: {
-          'annotations.length': annotationCountRange,
+          // 'annotation_count': annotationCountRange,
+          size_bytes: annotationCountRange,
         },
       }
     : null;

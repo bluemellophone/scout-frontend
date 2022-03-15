@@ -1,9 +1,13 @@
 import useGet from '../../hooks/useGet';
 import { getMissionAssetsQueryKey } from '../../constants/queryKeys';
 
-export default function useGetMissionAssets(id, data = {}) {
+export default function useGetMissionAssets(
+  id,
+  data = {},
+  params = {},
+) {
   return useGet({
-    queryKey: getMissionAssetsQueryKey(id, data),
+    queryKey: getMissionAssetsQueryKey(id, data, params),
     method: 'post',
     url: `/missions/${id}/assets`,
     queryOptions: {
@@ -15,6 +19,7 @@ export default function useGetMissionAssets(id, data = {}) {
       offset: 0,
       sort: 'path',
       reverse: false,
+      ...params,
     },
   });
 }

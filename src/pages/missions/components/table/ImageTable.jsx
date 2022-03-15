@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { get, sortBy } from 'lodash-es';
+import { get } from 'lodash-es';
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -66,6 +66,8 @@ export default function ImageTable({
   dataCount, // in a paginated table there will be more data than provided to the data prop
   paperStyles = {},
   cellStyles = {},
+  searchParams,
+  setSearchParams,
   ...rest
 }) {
   const columns = [
@@ -73,6 +75,8 @@ export default function ImageTable({
       name: 'filename',
       label: 'Filename',
       align: 'left',
+      sortable: true,
+      sortProperty: 'path',
       options: {
         customBodyRender: (filename, asset) => {
           return (
@@ -91,24 +95,28 @@ export default function ImageTable({
       name: 'created',
       label: 'Date added',
       align: 'left',
+      sortable: true,
       options: dateRendererOptions,
     },
     {
       name: 'updated',
       label: 'Last updated',
       align: 'left',
+      sortable: true,
       options: dateRendererOptions,
     },
     {
       name: 'annotation_count',
       label: '# Annotations',
       align: 'left',
+      sortable: false,
       options: countRendererOptions,
     },
     {
       name: 'tags',
       label: 'Tags',
       align: 'left',
+      sortable: false,
       options: {
         customBodyRender: (_, asset) => (
           <Keywords
@@ -124,8 +132,6 @@ export default function ImageTable({
   const [visibleColumnNames, setVisibleColumnNames] = useState(
     initialColumnNames,
   );
-  const [sortColumn, setSortColumn] = useState(null);
-  const [sortDirection, setSortDirection] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const filterPopperOpen = Boolean(anchorEl);
 
@@ -139,12 +145,6 @@ export default function ImageTable({
     if (index > endIndex && !paginatedExternally) return false;
     return true;
   });
-
-  let sortedData = visibleData;
-  if (sortColumn) {
-    sortedData = sortBy(data, sortColumn);
-    if (sortDirection === 'asc') sortedData.reverse();
-  }
 
   const visibleColumns = columns.filter(column =>
     visibleColumnNames.includes(column.name),
@@ -263,26 +263,34 @@ export default function ImageTable({
                 />
               </TableCell>
               {visibleColumns.map((c, i) => {
-                const activeSort = c.name === sortColumn;
+                const sortProperty = c?.sortProperty || c.name;
+                const activeSort = sortProperty === searchParams?.sort;
+                const reverseSearch = get(searchParams, 'reverse', false);
+                const sortDirection = reverseSearch ? 'desc' : 'asc';
                 return (
                   <TableCell
                     key={c.name}
                     align={getCellAlignment(i, c)}
-                    sortDirection={activeSort ? sortDirection : false}
+                    sortDirection={sortDirection}
                     style={{ whiteSpace: 'nowrap' }}
                   >
+                    {c?.sortable ? (
                     <TableSortLabel
-                      active={activeSort}
-                      direction={activeSort ? sortDirection : 'asc'}
-                      onClick={() => {
-                        setSortDirection(
-                          sortDirection === 'asc' ? 'desc' : 'asc',
-                        );
-                        setSortColumn(c.name);
-                      }}
-                    >
-                      {c.label}
-                    </TableSortLabel>
+                        active={activeSort}
+                        direction={sortDirection}
+                        onClick={() =>
+                        {
+                          const nextReverse = activeSort ? !reverseSearch : false;
+                          setSearchParams({
+                            ...searchParams,
+                            sort: sortProperty,
+                            reverse: nextReverse,
+                          })
+                        }}
+                      >
+                        {c.label}
+                      </TableSortLabel>
+                    ) : c.label}
                   </TableCell>
                 );
               })}
@@ -290,7 +298,8 @@ export default function ImageTable({
           </TableHead>
           <TableBody style={{ whiteSpace: 'nowrap' }}>
             {!loading &&
-              sortedData.map(datum => {
+              visibleData.map(datum =>
+              {
                 const datumGuid = get(datum, idKey);
                 const datumSelected = selectedImages.includes(
                   datumGuid,

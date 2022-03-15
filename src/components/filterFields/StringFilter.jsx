@@ -46,6 +46,7 @@ export default function StringFilter({
           }}
           onClick={() => {
             onChange('');
+            setInternalValue('');
           }}
         >
           Clear filter
