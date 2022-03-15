@@ -264,8 +264,13 @@ export default function ImageTable({
               </TableCell>
               {visibleColumns.map((c, i) => {
                 const sortProperty = c?.sortProperty || c.name;
-                const activeSort = sortProperty === searchParams?.sort;
-                const reverseSearch = get(searchParams, 'reverse', false);
+                const activeSort =
+                  sortProperty === searchParams?.sort;
+                const reverseSearch = get(
+                  searchParams,
+                  'reverse',
+                  false,
+                );
                 const sortDirection = reverseSearch ? 'desc' : 'asc';
                 return (
                   <TableCell
@@ -275,22 +280,25 @@ export default function ImageTable({
                     style={{ whiteSpace: 'nowrap' }}
                   >
                     {c?.sortable ? (
-                    <TableSortLabel
+                      <TableSortLabel
                         active={activeSort}
                         direction={sortDirection}
-                        onClick={() =>
-                        {
-                          const nextReverse = activeSort ? !reverseSearch : false;
+                        onClick={() => {
+                          const nextReverse = activeSort
+                            ? !reverseSearch
+                            : false;
                           setSearchParams({
                             ...searchParams,
                             sort: sortProperty,
                             reverse: nextReverse,
-                          })
+                          });
                         }}
                       >
                         {c.label}
                       </TableSortLabel>
-                    ) : c.label}
+                    ) : (
+                      c.label
+                    )}
                   </TableCell>
                 );
               })}
@@ -298,8 +306,7 @@ export default function ImageTable({
           </TableHead>
           <TableBody style={{ whiteSpace: 'nowrap' }}>
             {!loading &&
-              visibleData.map(datum =>
-              {
+              visibleData.map(datum => {
                 const datumGuid = get(datum, idKey);
                 const datumSelected = selectedImages.includes(
                   datumGuid,

@@ -80,8 +80,8 @@ export default function MissionDashboard({
             selectedImages={selectedImages}
             setSelectedImages={setSelectedImages}
             setImageQuery={setImageQuery}
-              searchParams={searchParams}
-              setSearchParams={setSearchParams}
+            searchParams={searchParams}
+            setSearchParams={setSearchParams}
           />
         )}
         <AddImagesDialog

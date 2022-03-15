@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useTheme } from '@material-ui/core/styles';
 import Menu from '@material-ui/core/Menu';
@@ -21,7 +21,16 @@ export default function BatchUpdateFooter({
   const [addingTag, setAddingTag] = useState(false);
   const [creatingTask, setCreatingTask] = useState(false);
   const [addingToTask, setAddingToTask] = useState(false);
-  const selectedImageCount = selectedImages.length;
+  const [selectedImageCount, setSelectedImageCount] = useState(null);
+
+  useEffect(
+    () => {
+      /* Helps keep imageCount constant during animation */
+      const imageCount = selectedImages?.length;
+      if (imageCount) setSelectedImageCount(imageCount);
+    },
+    [selectedImages?.length],
+  );
 
   return (
     <div
@@ -31,6 +40,7 @@ export default function BatchUpdateFooter({
         width: 'inherit',
         background: theme.palette.common.black,
         transform: open ? 'translate(0, 0)' : 'translate(0, 80px)',
+        opacity: open ? 1 : 0,
         transition: '0.15s ease-in-out 0s',
       }}
     >
