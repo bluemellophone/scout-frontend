@@ -5,6 +5,7 @@ import MultipleOptionFilter from '../../../components/filterFields/MultipleOptio
 import TagOptionFilter from '../../../components/filterFields/TagOptionFilter';
 import StringFilter from '../../../components/filterFields/StringFilter';
 import IntegerFilter from '../../../components/filterFields/IntegerFilter';
+import DateFilter from '../../../components/filterFields/DateFilter';
 import buildAssetQueries from '../utils/buildAssetQueries';
 import ImageTable from './table/ImageTable';
 
@@ -23,6 +24,8 @@ export default function ImageDisplay({
   const [annotationCountRange, setAnnotationCountRange] = useState(
     {},
   );
+  const [createdRange, setCreatedRange] = useState({});
+  const [updatedRange, setUpdatedRange] = useState({});
 
   const filters = {
     filename,
@@ -78,6 +81,11 @@ export default function ImageDisplay({
           }}
           buttonStyle={buttonStyle}
         />
+        <DateFilter
+          label="Created"
+          onChange={Function.prototype}
+          buttonStyle={buttonStyle}
+        />
         <MultipleOptionFilter
           value={tasks}
           onChange={newTasks => {
@@ -93,22 +101,10 @@ export default function ImageDisplay({
           buttonStyle={buttonStyle}
           noOptionsText="This project has no tasks."
         />
-        <TagOptionFilter
-          value={tags}
-          onChange={newTags => {
-            const newQuery = buildAssetQueries({
-              ...filters,
-              tags: newTags,
-            });
-            setImageQuery(newQuery);
-            setTags(newTags);
-          }}
-          label="Tags"
-          buttonStyle={buttonStyle}
-        />
         <IntegerFilter
           value={annotationCountRange}
-          onChange={newAnnotationCountRange => {
+          onChange={newAnnotationCountRange =>
+          {
             const newQuery = buildAssetQueries({
               ...filters,
               annotationCountRange: newAnnotationCountRange,
@@ -117,6 +113,20 @@ export default function ImageDisplay({
             setAnnotationCountRange(newAnnotationCountRange);
           }}
           label="Annotation count"
+          buttonStyle={buttonStyle}
+        />
+        <TagOptionFilter
+          value={tags}
+          onChange={newTags =>
+          {
+            const newQuery = buildAssetQueries({
+              ...filters,
+              tags: newTags,
+            });
+            setImageQuery(newQuery);
+            setTags(newTags);
+          }}
+          label="Tags"
           buttonStyle={buttonStyle}
         />
       </div>

@@ -107,7 +107,7 @@ export default function ImageTable({
     },
     {
       name: 'annotation_count',
-      label: '# Annotations',
+      label: 'Annotation count',
       align: 'left',
       sortable: false,
       options: countRendererOptions,
