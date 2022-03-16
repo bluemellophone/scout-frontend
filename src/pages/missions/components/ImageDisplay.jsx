@@ -9,7 +9,7 @@ import DateFilter from '../../../components/filterFields/DateFilter';
 import buildAssetQueries from '../utils/buildAssetQueries';
 import ImageTable from './table/ImageTable';
 
-const buttonStyle = { marginRight: 4 };
+const buttonStyle = { marginRight: 4, marginTop: 4 };
 
 export default function ImageDisplay({
   images,
@@ -32,6 +32,8 @@ export default function ImageDisplay({
     tasks,
     tags,
     annotationCountRange,
+    createdRange,
+    updatedRange,
   };
 
   const safeMissionTasks = missionData?.tasks || [];
@@ -54,7 +56,7 @@ export default function ImageDisplay({
       <Text
         style={{
           marginTop: 32,
-          marginBottom: 12,
+          marginBottom: 8,
           fontWeight: 'bold',
         }}
       >
@@ -72,9 +74,8 @@ export default function ImageDisplay({
           value={filename}
           onChange={newFilename => {
             const newQuery = buildAssetQueries({
+              ...filters,
               filename: newFilename,
-              tasks,
-              tags,
             });
             setImageQuery(newQuery);
             setFilename(newFilename);
@@ -83,7 +84,26 @@ export default function ImageDisplay({
         />
         <DateFilter
           label="Created"
-          onChange={Function.prototype}
+          onChange={newCreatedRange => {
+            const newQuery = buildAssetQueries({
+              ...filters,
+              createdRange: newCreatedRange,
+            });
+            setImageQuery(newQuery);
+            setCreatedRange(newCreatedRange);
+          }}
+          buttonStyle={buttonStyle}
+        />
+        <DateFilter
+          label="Updated"
+          onChange={newUpdatedRange => {
+            const newQuery = buildAssetQueries({
+              ...filters,
+              updatedRange: newUpdatedRange,
+            });
+            setImageQuery(newQuery);
+            setUpdatedRange(newUpdatedRange);
+          }}
           buttonStyle={buttonStyle}
         />
         <MultipleOptionFilter
@@ -103,8 +123,7 @@ export default function ImageDisplay({
         />
         <IntegerFilter
           value={annotationCountRange}
-          onChange={newAnnotationCountRange =>
-          {
+          onChange={newAnnotationCountRange => {
             const newQuery = buildAssetQueries({
               ...filters,
               annotationCountRange: newAnnotationCountRange,
@@ -117,8 +136,7 @@ export default function ImageDisplay({
         />
         <TagOptionFilter
           value={tags}
-          onChange={newTags =>
-          {
+          onChange={newTags => {
             const newQuery = buildAssetQueries({
               ...filters,
               tags: newTags,
