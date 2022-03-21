@@ -1,5 +1,15 @@
 import { isEmpty } from 'lodash-es';
 
+function formatRange(range) {
+  if (range?.eq) {
+    return {
+      lte: range.eq,
+      gte: range.eq,
+    };
+  }
+  return range;
+}
+
 export default function buildAssetQueries({
   filename,
   tasks,
@@ -41,7 +51,7 @@ export default function buildAssetQueries({
     ? {
         range: {
           // 'annotation_count': annotationCountRange,
-          size_bytes: annotationCountRange,
+          size_bytes: formatRange(annotationCountRange),
         },
       }
     : null;

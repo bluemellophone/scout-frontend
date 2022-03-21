@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { parseISO, format } from 'date-fns';
 
 import DateFnsUtils from '@date-io/date-fns';
-import
-{
+import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
@@ -18,22 +17,20 @@ export default function DateFilter({
   onChange,
   openDirection = 'left',
   buttonStyle = {},
-})
-{
+}) {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
   const startInputId = `${label}-start-date-input`;
   const endInputId = `${label}-start-date-input`;
 
-  function updateFilter()
-  {
+  function updateFilter() {
     onChange({});
   }
 
-  useOnEnter(e =>
-  {
-    if ([startInputId, endInputId].includes(e.target.id)) updateFilter();
+  useOnEnter(e => {
+    if ([startInputId, endInputId].includes(e.target.id))
+      updateFilter();
   });
 
   return (
@@ -54,8 +51,7 @@ export default function DateFilter({
           style={{
             float: 'right',
           }}
-          onClick={() =>
-          {
+          onClick={() => {
             setStartDate(null);
             setEndDate(null);
             onChange({});
@@ -72,8 +68,7 @@ export default function DateFilter({
             id={`${label}-start-date`}
             label="Start date"
             value={startDate}
-            onChange={nextStartDate =>
-            {
+            onChange={nextStartDate => {
               setStartDate(nextStartDate);
             }}
             style={{ margin: 0 }}
@@ -90,8 +85,7 @@ export default function DateFilter({
             style={{ marginTop: 0 }}
             label="End date"
             value={endDate}
-            onChange={nextEndDate =>
-            {
+            onChange={nextEndDate => {
               setEndDate(nextEndDate);
             }}
             KeyboardButtonProps={{

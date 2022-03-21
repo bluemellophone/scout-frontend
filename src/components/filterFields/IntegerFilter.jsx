@@ -26,6 +26,10 @@ const comparators = [
     label: 'Less than or equal to',
     value: 'lte',
   },
+  {
+    label: 'Equals',
+    value: 'eq',
+  },
 ];
 
 export default function IntegerFilter({

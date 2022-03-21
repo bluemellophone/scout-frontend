@@ -24,6 +24,7 @@ import CloudDownload from '@material-ui/icons/CloudDownload';
 
 import Text from '../../../../components/Text';
 import Keywords from '../../../../components/Keywords';
+import TaskChips from '../../../../components/TaskChips';
 import { formatDate } from '../../../../utils/formatters';
 import TablePaginationActions from './TablePaginationActions';
 import SelectableRow from './SelectableRow';
@@ -104,6 +105,21 @@ export default function ImageTable({
       align: 'left',
       sortable: true,
       options: dateRendererOptions,
+    },
+    {
+      name: 'tasks',
+      label: 'Tasks',
+      align: 'left',
+      sortable: false,
+      options: {
+        customBodyRender: tasks => (
+          <TaskChips
+            tasks={tasks}
+            chipSize="small"
+            style={{ margin: '0 0 4px' }}
+          />
+        ),
+      },
     },
     {
       name: 'annotation_count',
