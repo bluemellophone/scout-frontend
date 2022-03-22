@@ -9,6 +9,7 @@ import AddImagesDialog from './AddImagesDialog';
 import MissionActionsMenu from './MissionActionsMenu';
 import BatchUpdateFooter from './BatchUpdateFooter';
 import ImageDisplay from './ImageDisplay';
+import { resultsPerPage } from './constants';
 
 export default function MissionDashboard({
   missionData,
@@ -20,7 +21,10 @@ export default function MissionDashboard({
   const [clickedImage, setClickedImage] = useState(null);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
-  const [searchParams, setSearchParams] = useState({});
+  const [searchParams, setSearchParams] = useState({
+    limit: resultsPerPage,
+    offset: 0,
+  });
   const [imageQuery, setImageQuery] = useState({});
 
   const {
