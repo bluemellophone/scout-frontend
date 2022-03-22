@@ -12,8 +12,10 @@ import AddToTaskDialog from './dialogs/AddToTaskDialog';
 
 export default function BatchUpdateFooter({
   open,
+  allImages,
   selectedImages,
-  missionGuid,
+  missionData,
+  imageQuery,
 }) {
   const theme = useTheme();
 
@@ -23,13 +25,22 @@ export default function BatchUpdateFooter({
   const [addingToTask, setAddingToTask] = useState(false);
   const [selectedImageCount, setSelectedImageCount] = useState(null);
 
+  const missionGuid = missionData?.guid;
+
   useEffect(
     () => {
-      /* Helps keep imageCount constant during animation */
-      const imageCount = selectedImages?.length;
+      const startCount = imageQuery
+        ? missionData?.asset_count - allImages?.length
+        : 0;
+      const imageCount = startCount + selectedImages?.length;
       if (imageCount) setSelectedImageCount(imageCount);
     },
-    [selectedImages?.length],
+    [
+      selectedImages?.length,
+      allImages?.length,
+      imageQuery,
+      missionData,
+    ],
   );
 
   return (

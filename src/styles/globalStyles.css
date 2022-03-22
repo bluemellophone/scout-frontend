@@ -13,3 +13,7 @@
 .MuiTableCell-sizeSmall {
   padding: 2px 8px 2px 8px;
 }
+
+.MuiTablePagination-toolbar {
+  float: left;
+}

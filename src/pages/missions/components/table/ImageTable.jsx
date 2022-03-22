@@ -18,6 +18,8 @@ import Fade from '@material-ui/core/Fade';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import FilterList from '@material-ui/icons/FilterList';
 import CloudDownload from '@material-ui/icons/CloudDownload';
@@ -59,16 +61,15 @@ export default function ImageTable({
   tableSize = 'small',
   noTitleBar,
   loading,
-  paginated = false,
-  paginatedExternally = true, // display all data provided and let parent component(s) paginate
-  page,
-  onChangePage,
-  rowsPerPage,
+  page = 1,
+  onChangePage = Function.prototype,
+  rowsPerPage = 50,
   dataCount, // in a paginated table there will be more data than provided to the data prop
   paperStyles = {},
   cellStyles = {},
   searchParams,
   setSearchParams,
+  setQuerySelected,
   ...rest
 }) {
   const columns = [
@@ -148,19 +149,12 @@ export default function ImageTable({
   const [visibleColumnNames, setVisibleColumnNames] = useState(
     initialColumnNames,
   );
-  const [anchorEl, setAnchorEl] = useState(null);
-  const filterPopperOpen = Boolean(anchorEl);
+  const [filterAnchorEl, setFilterAnchorEl] = useState(null);
+  const [selectionAnchorEl, setSelectionAnchorEl] = useState(null);
+  const filterPopperOpen = Boolean(filterAnchorEl);
+  const selectionMenuOpen = Boolean(selectionAnchorEl);
 
-  const startIndex = paginated ? page * rowsPerPage : 0;
-  const endIndex = paginated
-    ? (page + 1) * rowsPerPage - 1
-    : Infinity;
-
-  const visibleData = data.filter((_, index) => {
-    if (index < startIndex && !paginatedExternally) return false;
-    if (index > endIndex && !paginatedExternally) return false;
-    return true;
-  });
+  const visibleData = data;
 
   const visibleColumns = columns.filter(column =>
     visibleColumnNames.includes(column.name),
@@ -170,11 +164,24 @@ export default function ImageTable({
   const allImagesSelected =
     selectedImages.length === visibleData.length;
 
+  const onClickSelectAll = event => {
+    if (allImagesSelected) {
+      setSelectedImages([]);
+      setQuerySelected(false);
+    } else {
+      setSelectionAnchorEl(event.currentTarget);
+    }
+  };
+
+  const closeSelectionMenu = () => {
+    setSelectionAnchorEl(null);
+  };
+
   return (
     <div {...rest}>
       <Popper
         open={filterPopperOpen}
-        anchorEl={anchorEl}
+        anchorEl={filterAnchorEl}
         placement="bottom-end"
         transition
       >
@@ -243,7 +250,9 @@ export default function ImageTable({
             </IconButton>
             <IconButton
               onClick={event => {
-                setAnchorEl(anchorEl ? null : event.currentTarget);
+                setFilterAnchorEl(
+                  filterAnchorEl ? null : event.currentTarget,
+                );
               }}
               size="small"
             >
@@ -266,17 +275,48 @@ export default function ImageTable({
                     selectedImages.length > 0 && !allImagesSelected
                   }
                   checked={allImagesSelected}
-                  onChange={() => {
-                    if (allImagesSelected) {
-                      setSelectedImages([]);
-                    } else {
+                  onClick={onClickSelectAll}
+                  inputProps={{ 'aria-label': 'Select all images' }}
+                />
+                <Menu
+                  id="selection-menu"
+                  anchorEl={selectionAnchorEl}
+                  keepMounted
+                  open={selectionMenuOpen}
+                  onClose={closeSelectionMenu}
+                  getContentAnchorEl={null}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                  }}
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                  }}
+                >
+                  <MenuItem
+                    onClick={() => {
                       setSelectedImages(
                         visibleData.map(datum => get(datum, idKey)),
                       );
-                    }
-                  }}
-                  inputProps={{ 'aria-label': 'Select all images' }}
-                />
+                      setQuerySelected(false);
+                      closeSelectionMenu();
+                    }}
+                  >
+                    Select all images on this page
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      setSelectedImages(
+                        visibleData.map(datum => get(datum, idKey)),
+                      );
+                      setQuerySelected(true);
+                      closeSelectionMenu();
+                    }}
+                  >
+                    Select all matching images
+                  </MenuItem>
+                </Menu>
               </TableCell>
               {visibleColumns.map((c, i) => {
                 const sortProperty = c?.sortProperty || c.name;
@@ -350,10 +390,11 @@ export default function ImageTable({
                 );
               })}
           </TableBody>
-          {paginated && !loading && !noResults && (
+          {!loading && !noResults && (
             <TableFooter>
               <TableRow>
                 <TablePagination
+                  style={{ float: 'left' }}
                   page={page}
                   count={dataCount || get(data, 'length', 0)}
                   onChangePage={onChangePage}

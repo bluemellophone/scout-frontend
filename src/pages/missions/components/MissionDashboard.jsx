@@ -21,6 +21,7 @@ export default function MissionDashboard({
   const [clickedImage, setClickedImage] = useState(null);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
+  const [querySelected, setQuerySelected] = useState(false);
   const [searchParams, setSearchParams] = useState({
     limit: resultsPerPage,
     offset: 0,
@@ -86,6 +87,8 @@ export default function MissionDashboard({
             setImageQuery={setImageQuery}
             searchParams={searchParams}
             setSearchParams={setSearchParams}
+            querySelected={querySelected}
+            setQuerySelected={setQuerySelected}
           />
         )}
         <AddImagesDialog
@@ -100,9 +103,11 @@ export default function MissionDashboard({
         />
       </div>
       <BatchUpdateFooter
-        missionGuid={id}
+        missionData={missionData}
         open={footerOpen}
+        allImages={images}
         selectedImages={selectedImages}
+        imageQuery={querySelected ? imageQuery : null}
       />
     </div>
   );
