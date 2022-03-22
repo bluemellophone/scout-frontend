@@ -15,6 +15,8 @@ export default function buildAssetQueries({
   tasks,
   tags,
   annotationCountRange,
+  createdRange,
+  updatedRange,
 }) {
   const filenameQuery = filename
     ? {
@@ -30,7 +32,9 @@ export default function buildAssetQueries({
       ? {
           bool: {
             should: tasks.map(taskGuid => ({
-              match: { 'tasks.guid': taskGuid },
+              match: {
+                'tasks.guid': taskGuid,
+              },
             })),
           },
         }
@@ -41,7 +45,9 @@ export default function buildAssetQueries({
       ? {
           bool: {
             should: tags.map(tagGuid => ({
-              match: { 'tags.guid': tagGuid },
+              match: {
+                'tags.guid': tagGuid,
+              },
             })),
           },
         }
@@ -56,11 +62,21 @@ export default function buildAssetQueries({
       }
     : null;
 
+  const createdRangeQuery = !isEmpty(createdRange)
+    ? { range: { created: createdRange } }
+    : null;
+
+  const updatedRangeQuery = !isEmpty(updatedRange)
+    ? { range: { updated: updatedRange } }
+    : null;
+
   const queries = [
     filenameQuery,
     tasksQuery,
     tagsQuery,
     annotationCountQuery,
+    createdRangeQuery,
+    updatedRangeQuery,
   ].filter(f => f);
 
   return { bool: { filter: queries } };

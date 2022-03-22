@@ -83,7 +83,7 @@ export default function ImageDisplay({
           buttonStyle={buttonStyle}
         />
         <DateFilter
-          label="Created"
+          label="Date added"
           onChange={newCreatedRange => {
             const newQuery = buildAssetQueries({
               ...filters,
@@ -95,7 +95,7 @@ export default function ImageDisplay({
           buttonStyle={buttonStyle}
         />
         <DateFilter
-          label="Updated"
+          label="Last updated"
           onChange={newUpdatedRange => {
             const newQuery = buildAssetQueries({
               ...filters,

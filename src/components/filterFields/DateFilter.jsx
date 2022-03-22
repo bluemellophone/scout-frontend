@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { parseISO, format } from 'date-fns';
 
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -9,7 +8,6 @@ import {
 
 import useOnEnter from '../../hooks/useOnEnter';
 import Button from '../Button';
-import Text from '../Text';
 import FilterButton from './components/FilterButton';
 
 export default function DateFilter({
@@ -25,7 +23,10 @@ export default function DateFilter({
   const endInputId = `${label}-start-date-input`;
 
   function updateFilter() {
-    onChange({});
+    const newFilter = {};
+    if (startDate) newFilter.gte = startDate;
+    if (endDate) newFilter.lte = endDate;
+    onChange(newFilter);
   }
 
   useOnEnter(e => {
