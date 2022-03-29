@@ -9,7 +9,7 @@ export default function usePostMissionCollection() {
       description: 'MWS mission image upload',
       transaction_id: transactionId,
     }),
-    deriveQueryKeys: ({ missionGuid }) => [
+    deriveFetchKeys: ({ missionGuid }) => [
       getMissionAssetsQueryKey(missionGuid),
     ],
   });

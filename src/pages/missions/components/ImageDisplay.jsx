@@ -45,7 +45,7 @@ export default function ImageDisplay({
   const imageCount = images?.length;
   const totalAssets = missionData?.asset_count;
 
-  let tableTitle = `${imageCount} out of ${totalAssets} images.`;
+  let tableTitle = `Displaying ${imageCount} out of ${totalAssets} matching images.`;
   if (imageCount === 0) tableTitle = 'No images match these filters.';
   if (imageCount === totalAssets)
     tableTitle = `${totalAssets} images in this project.`;
@@ -152,6 +152,7 @@ export default function ImageDisplay({
         title={tableTitle}
         data={images}
         loading={loading}
+        totalAssets={totalAssets}
         {...rest}
       />
     </div>

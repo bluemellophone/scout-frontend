@@ -59,11 +59,8 @@ export default function ImageTable({
   setSelectedImages = Function.prototype,
   idKey = 'guid',
   tableSize = 'small',
-  noTitleBar,
+  totalAssets,
   loading,
-  page = 1,
-  onChangePage = Function.prototype,
-  rowsPerPage = 50,
   dataCount, // in a paginated table there will be more data than provided to the data prop
   paperStyles = {},
   cellStyles = {},
@@ -177,6 +174,17 @@ export default function ImageTable({
     setSelectionAnchorEl(null);
   };
 
+  const currentPage = Math.round(
+    searchParams?.offset / searchParams?.limit,
+  );
+
+  const onChangePage = (_, nextPage) => {
+    setSearchParams({
+      ...searchParams,
+      offset: searchParams?.limit * nextPage,
+    });
+  };
+
   return (
     <div {...rest}>
       <Popper
@@ -231,36 +239,35 @@ export default function ImageTable({
           </Fade>
         )}
       </Popper>
-      {!noTitleBar && (
-        <Grid
-          container
-          justifyContent="space-between"
-          alignItems="center"
-          style={{ margin: '16px 0' }}
-        >
-          <Grid item>
-            <Text variant="body2">{title}</Text>
-          </Grid>
-          <Grid item>
-            <IconButton
-              onClick={() => sendCsv(visibleColumns, visibleData)}
-              size="small"
-            >
-              <CloudDownload style={{ marginRight: 4 }} />
-            </IconButton>
-            <IconButton
-              onClick={event => {
-                setFilterAnchorEl(
-                  filterAnchorEl ? null : event.currentTarget,
-                );
-              }}
-              size="small"
-            >
-              <FilterList />
-            </IconButton>
-          </Grid>
+      <Grid
+        container
+        justifyContent="space-between"
+        alignItems="center"
+        style={{ margin: '16px 0' }}
+      >
+        <Grid item>
+          <Text variant="body2">{title}</Text>
         </Grid>
-      )}
+        <Grid item>
+          <IconButton
+            onClick={() => sendCsv(visibleColumns, visibleData)}
+            size="small"
+          >
+            <CloudDownload style={{ marginRight: 4 }} />
+          </IconButton>
+          <IconButton
+            onClick={event =>
+            {
+              setFilterAnchorEl(
+                filterAnchorEl ? null : event.currentTarget,
+              );
+            }}
+            size="small"
+          >
+            <FilterList />
+          </IconButton>
+        </Grid>
+      </Grid>
       <TableContainer style={paperStyles}>
         <Table
           style={{ minWidth: 10 }}
@@ -394,12 +401,11 @@ export default function ImageTable({
             <TableFooter>
               <TableRow>
                 <TablePagination
-                  style={{ float: 'left' }}
-                  page={page}
-                  count={dataCount || get(data, 'length', 0)}
+                  page={currentPage}
+                  count={totalAssets}
                   onChangePage={onChangePage}
-                  rowsPerPage={rowsPerPage}
-                  rowsPerPageOptions={[rowsPerPage]}
+                  rowsPerPage={searchParams?.limit}
+                  rowsPerPageOptions={[searchParams?.limit]}
                   ActionsComponent={TablePaginationActions}
                 />
               </TableRow>
