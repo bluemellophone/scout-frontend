@@ -4,10 +4,12 @@ import Text from '../../../components/Text';
 import MultipleOptionFilter from '../../../components/filterFields/MultipleOptionFilter';
 import TagOptionFilter from '../../../components/filterFields/TagOptionFilter';
 import StringFilter from '../../../components/filterFields/StringFilter';
+import IntegerFilter from '../../../components/filterFields/IntegerFilter';
+import DateFilter from '../../../components/filterFields/DateFilter';
 import buildAssetQueries from '../utils/buildAssetQueries';
 import ImageTable from './table/ImageTable';
 
-const buttonStyle = { marginRight: 4 };
+const buttonStyle = { marginRight: 4, marginTop: 4 };
 
 export default function ImageDisplay({
   images,
@@ -19,6 +21,20 @@ export default function ImageDisplay({
   const [filename, setFilename] = useState('');
   const [tasks, setTasks] = useState([]);
   const [tags, setTags] = useState([]);
+  const [annotationCountRange, setAnnotationCountRange] = useState(
+    {},
+  );
+  const [createdRange, setCreatedRange] = useState({});
+  const [updatedRange, setUpdatedRange] = useState({});
+
+  const filters = {
+    filename,
+    tasks,
+    tags,
+    annotationCountRange,
+    createdRange,
+    updatedRange,
+  };
 
   const safeMissionTasks = missionData?.tasks || [];
   const taskOptions = safeMissionTasks.map(t => ({
@@ -29,7 +45,7 @@ export default function ImageDisplay({
   const imageCount = images?.length;
   const totalAssets = missionData?.asset_count;
 
-  let tableTitle = `${imageCount} out of ${totalAssets} images.`;
+  let tableTitle = `Displaying ${imageCount} out of ${totalAssets} matching images.`;
   if (imageCount === 0) tableTitle = 'No images match these filters.';
   if (imageCount === totalAssets)
     tableTitle = `${totalAssets} images in this project.`;
@@ -40,7 +56,7 @@ export default function ImageDisplay({
       <Text
         style={{
           marginTop: 32,
-          marginBottom: 12,
+          marginBottom: 8,
           fontWeight: 'bold',
         }}
       >
@@ -58,12 +74,35 @@ export default function ImageDisplay({
           value={filename}
           onChange={newFilename => {
             const newQuery = buildAssetQueries({
+              ...filters,
               filename: newFilename,
-              tasks,
-              tags,
             });
             setImageQuery(newQuery);
             setFilename(newFilename);
+          }}
+          buttonStyle={buttonStyle}
+        />
+        <DateFilter
+          label="Date added"
+          onChange={newCreatedRange => {
+            const newQuery = buildAssetQueries({
+              ...filters,
+              createdRange: newCreatedRange,
+            });
+            setImageQuery(newQuery);
+            setCreatedRange(newCreatedRange);
+          }}
+          buttonStyle={buttonStyle}
+        />
+        <DateFilter
+          label="Last updated"
+          onChange={newUpdatedRange => {
+            const newQuery = buildAssetQueries({
+              ...filters,
+              updatedRange: newUpdatedRange,
+            });
+            setImageQuery(newQuery);
+            setUpdatedRange(newUpdatedRange);
           }}
           buttonStyle={buttonStyle}
         />
@@ -71,31 +110,41 @@ export default function ImageDisplay({
           value={tasks}
           onChange={newTasks => {
             const newQuery = buildAssetQueries({
-              filename,
+              ...filters,
               tasks: newTasks,
-              tags,
             });
             setImageQuery(newQuery);
             setTasks(newTasks);
           }}
           label="Tasks"
           options={taskOptions}
-          openDirection="left"
+          buttonStyle={buttonStyle}
+          noOptionsText="This project has no tasks."
+        />
+        <IntegerFilter
+          value={annotationCountRange}
+          onChange={newAnnotationCountRange => {
+            const newQuery = buildAssetQueries({
+              ...filters,
+              annotationCountRange: newAnnotationCountRange,
+            });
+            setImageQuery(newQuery);
+            setAnnotationCountRange(newAnnotationCountRange);
+          }}
+          label="Annotation count"
           buttonStyle={buttonStyle}
         />
         <TagOptionFilter
           value={tags}
           onChange={newTags => {
             const newQuery = buildAssetQueries({
-              filename,
-              tasks,
+              ...filters,
               tags: newTags,
             });
             setImageQuery(newQuery);
             setTags(newTags);
           }}
           label="Tags"
-          openDirection="left"
           buttonStyle={buttonStyle}
         />
       </div>
@@ -103,6 +152,7 @@ export default function ImageDisplay({
         title={tableTitle}
         data={images}
         loading={loading}
+        totalAssets={totalAssets}
         {...rest}
       />
     </div>

@@ -23,14 +23,19 @@ export default function useMutate({
   deriveUrl = Function.prototype,
   data,
   deriveData = Function.prototype,
-  queryKeys = [],
-  deriveQueryKeys = () => [],
+  params,
+  deriveParams = Function.prototype,
+  fetchKeys = [],
+  deriveFetchKeys = () => [],
+  invalidateKeys = [],
+  deriveInvalidateKeys = () => [],
   dataAccessor = result => result?.data?.data,
   onSuccess = Function.prototype,
   prependHoustonApiUrl = true,
 }) {
   const queryClient = useQueryClient();
   const [displayedError, setDisplayedError] = useState(null);
+  const [success, setSuccess] = useState(null);
   const [statusCode, setStatusCode] = useState(null);
 
   const mutation = useMutation(async mutationArgs => {
@@ -44,15 +49,30 @@ export default function useMutate({
       // withCredentials: true,
       method,
       data: data || deriveData(mutationArgs),
+      params: params || deriveParams(mutationArgs),
     });
     const status = response?.status;
     setStatusCode(status);
     if (status === 200 || status === 204) {
-      const queryKeysFromArgs = deriveQueryKeys(mutationArgs);
-      const invalidationKeys = [...queryKeys, ...queryKeysFromArgs];
-      invalidationKeys.forEach(queryKey => {
+      const invalidations = [
+        ...invalidateKeys,
+        ...deriveInvalidateKeys(mutationArgs),
+      ];
+      invalidations.forEach(queryKey => {
         queryClient.invalidateQueries(queryKey);
       });
+
+      const fetches = [
+        ...fetchKeys,
+        ...deriveFetchKeys(mutationArgs),
+      ];
+
+      for (const queryKey of fetches) {
+        await queryClient.refetchQueries(queryKey);
+      }
+
+      if (displayedError) setDisplayedError(null);
+      setSuccess(true);
       onSuccess(response);
     }
     return response;
@@ -64,6 +84,7 @@ export default function useMutate({
     () => {
       if (error) {
         setDisplayedError(error);
+        if (success) setSuccess(null);
       }
     },
     [error],
@@ -78,9 +99,9 @@ export default function useMutate({
     data: dataAccessor(mutation),
     loading: mutation?.isLoading,
     error: displayedError,
-    clearError: () => {
-      setDisplayedError(null);
-    },
+    clearError: () => setDisplayedError(null),
+    success,
+    clearSuccess: () => setSuccess(null),
   };
 }
 

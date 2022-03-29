@@ -7,7 +7,7 @@ export default function usePatchMission() {
   return usePatch({
     deriveUrl: ({ missionGuid }) => `/missions/${missionGuid}`,
     deriveData: ({ operations }) => operations,
-    deriveQueryKeys: ({ missionGuid }) => [
+    deriveFetchKeys: ({ missionGuid }) => [
       getMissionQueryKey(missionGuid),
       queryKeys.me,
     ],

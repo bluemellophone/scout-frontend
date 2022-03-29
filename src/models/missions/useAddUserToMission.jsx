@@ -11,7 +11,7 @@ export default function useAddUserToMission() {
         value: userGuid,
       },
     ],
-    deriveQueryKeys: ({ missionGuid }) => [
+    deriveFetchKeys: ({ missionGuid }) => [
       getMissionQueryKey(missionGuid),
     ],
   });

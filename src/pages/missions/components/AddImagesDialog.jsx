@@ -119,6 +119,7 @@ export default function AddImagesDialog({
         <Button
           display="primary"
           disabled={addButtonDisabled}
+          loading={isLoading}
           onClick={async () => {
             const result = await postMissionCollection({
               missionGuid,

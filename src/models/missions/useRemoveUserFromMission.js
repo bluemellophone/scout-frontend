@@ -11,7 +11,7 @@ export default function useRemoveUserFromMission() {
         value: userGuid,
       },
     ],
-    deriveQueryKeys: ({ missionGuid }) => [
+    deriveFetchKeys: ({ missionGuid }) => [
       getMissionQueryKey(missionGuid),
     ],
   });

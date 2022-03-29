@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 
-import Menu from '@material-ui/core/Menu';
 import TextField from '@material-ui/core/TextField';
 import Chip from '@material-ui/core/Chip';
 import Divider from '@material-ui/core/Divider';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import ExpandIcon from '@material-ui/icons/ExpandMore';
 
-import Button from '../Button';
 import Text from '../Text';
+import FilterButton from './components/FilterButton';
 
 function getLabelFromValue(options, value) {
   const matchingItem = options.find(o => o?.value === value);
@@ -21,22 +19,11 @@ export default function MultipleOptionFilter({
   options = [],
   value,
   onChange,
-  openDirection = 'right',
+  openDirection = 'left',
   buttonStyle = {},
+  noOptionsText = 'No options to filter.',
 }) {
-  const [anchorEl, setAnchorEl] = useState(null);
   const [filter, setFilter] = useState('');
-
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-    setFilter('');
-  };
-
-  const showChip = value?.length > 0;
 
   const visibleOptions = options.filter(o => {
     const filterMatch = filter.toUpperCase();
@@ -49,44 +36,17 @@ export default function MultipleOptionFilter({
   });
 
   return (
-    <div>
-      <Button
-        onClick={handleClick}
-        endIcon={<ExpandIcon />}
-        style={buttonStyle}
-      >
-        {label}
-        {showChip && (
-          <Chip
-            size="small"
-            label={value?.length}
-            style={{ marginLeft: 8 }}
-          />
-        )}
-      </Button>
-      <Menu
-        getContentAnchorEl={null}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: openDirection,
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: openDirection,
-        }}
-        id={`${label}-filter-menu`}
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-      >
-        <div style={{ width: 340 }}>
+    <FilterButton
+      buttonLabel={label}
+      showChip={value?.length > 0}
+      chipLabel={value?.length}
+      buttonProps={{ style: buttonStyle }}
+      openDirection={openDirection}
+      onCloseMenu={() => setFilter('')}
+    >
+      {options.length > 0 ? (
+        <div>
           <div style={{ padding: '0 8px' }}>
-            {/* <Button
-              display="text"
-              style={{ float: 'right', marginBottom: 2 }}
-            >
-              Clear filters
-            </Button> */}
             <TextField
               style={{ marginBottom: 8 }}
               variant="outlined"
@@ -152,7 +112,11 @@ export default function MultipleOptionFilter({
             })}
           </div>
         </div>
-      </Menu>
-    </div>
+      ) : (
+        <Text variant="body2" style={{ padding: 12 }}>
+          {noOptionsText}
+        </Text>
+      )}
+    </FilterButton>
   );
 }

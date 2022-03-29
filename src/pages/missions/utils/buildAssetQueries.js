@@ -1,4 +1,23 @@
-export default function buildAssetQueries({ filename, tasks, tags }) {
+import { isEmpty } from 'lodash-es';
+
+function formatRange(range) {
+  if (range?.eq) {
+    return {
+      lte: range.eq,
+      gte: range.eq,
+    };
+  }
+  return range;
+}
+
+export default function buildAssetQueries({
+  filename,
+  tasks,
+  tags,
+  annotationCountRange,
+  createdRange,
+  updatedRange,
+}) {
   const filenameQuery = filename
     ? {
         query_string: {
@@ -13,7 +32,9 @@ export default function buildAssetQueries({ filename, tasks, tags }) {
       ? {
           bool: {
             should: tasks.map(taskGuid => ({
-              match: { 'tasks.guid': taskGuid },
+              match: {
+                'tasks.guid': taskGuid,
+              },
             })),
           },
         }
@@ -24,15 +45,39 @@ export default function buildAssetQueries({ filename, tasks, tags }) {
       ? {
           bool: {
             should: tags.map(tagGuid => ({
-              match: { 'tags.guid': tagGuid },
+              match: {
+                'tags.guid': tagGuid,
+              },
             })),
           },
         }
       : null;
 
-  const queries = [filenameQuery, tasksQuery, tagsQuery].filter(
-    f => f,
-  );
+  const annotationCountQuery = !isEmpty(annotationCountRange)
+    ? {
+        range: {
+          // 'annotation_count': annotationCountRange,
+          size_bytes: formatRange(annotationCountRange),
+        },
+      }
+    : null;
+
+  const createdRangeQuery = !isEmpty(createdRange)
+    ? { range: { created: createdRange } }
+    : null;
+
+  const updatedRangeQuery = !isEmpty(updatedRange)
+    ? { range: { updated: updatedRange } }
+    : null;
+
+  const queries = [
+    filenameQuery,
+    tasksQuery,
+    tagsQuery,
+    annotationCountQuery,
+    createdRangeQuery,
+    updatedRangeQuery,
+  ].filter(f => f);
 
   return { bool: { filter: queries } };
 }

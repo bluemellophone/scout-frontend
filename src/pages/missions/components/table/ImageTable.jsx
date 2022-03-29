@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { get, sortBy } from 'lodash-es';
+import { get } from 'lodash-es';
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -18,12 +18,15 @@ import Fade from '@material-ui/core/Fade';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import FilterList from '@material-ui/icons/FilterList';
 import CloudDownload from '@material-ui/icons/CloudDownload';
 
 import Text from '../../../../components/Text';
 import Keywords from '../../../../components/Keywords';
+import TaskChips from '../../../../components/TaskChips';
 import { formatDate } from '../../../../utils/formatters';
 import TablePaginationActions from './TablePaginationActions';
 import SelectableRow from './SelectableRow';
@@ -56,16 +59,14 @@ export default function ImageTable({
   setSelectedImages = Function.prototype,
   idKey = 'guid',
   tableSize = 'small',
-  noTitleBar,
+  totalAssets,
   loading,
-  paginated = false,
-  paginatedExternally = true, // display all data provided and let parent component(s) paginate
-  page,
-  onChangePage,
-  rowsPerPage,
   dataCount, // in a paginated table there will be more data than provided to the data prop
   paperStyles = {},
   cellStyles = {},
+  searchParams,
+  setSearchParams,
+  setQuerySelected,
   ...rest
 }) {
   const columns = [
@@ -73,6 +74,8 @@ export default function ImageTable({
       name: 'filename',
       label: 'Filename',
       align: 'left',
+      sortable: true,
+      sortProperty: 'path',
       options: {
         customBodyRender: (filename, asset) => {
           return (
@@ -91,24 +94,43 @@ export default function ImageTable({
       name: 'created',
       label: 'Date added',
       align: 'left',
+      sortable: true,
       options: dateRendererOptions,
     },
     {
       name: 'updated',
       label: 'Last updated',
       align: 'left',
+      sortable: true,
       options: dateRendererOptions,
     },
     {
-      name: 'annotation_count',
-      label: '# Annotations',
+      name: 'tasks',
+      label: 'Tasks',
       align: 'left',
+      sortable: false,
+      options: {
+        customBodyRender: tasks => (
+          <TaskChips
+            tasks={tasks}
+            chipSize="small"
+            style={{ margin: '0 0 4px' }}
+          />
+        ),
+      },
+    },
+    {
+      name: 'annotation_count',
+      label: 'Annotation count',
+      align: 'left',
+      sortable: false,
       options: countRendererOptions,
     },
     {
       name: 'tags',
       label: 'Tags',
       align: 'left',
+      sortable: false,
       options: {
         customBodyRender: (_, asset) => (
           <Keywords
@@ -124,27 +146,12 @@ export default function ImageTable({
   const [visibleColumnNames, setVisibleColumnNames] = useState(
     initialColumnNames,
   );
-  const [sortColumn, setSortColumn] = useState(null);
-  const [sortDirection, setSortDirection] = useState(null);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const filterPopperOpen = Boolean(anchorEl);
+  const [filterAnchorEl, setFilterAnchorEl] = useState(null);
+  const [selectionAnchorEl, setSelectionAnchorEl] = useState(null);
+  const filterPopperOpen = Boolean(filterAnchorEl);
+  const selectionMenuOpen = Boolean(selectionAnchorEl);
 
-  const startIndex = paginated ? page * rowsPerPage : 0;
-  const endIndex = paginated
-    ? (page + 1) * rowsPerPage - 1
-    : Infinity;
-
-  const visibleData = data.filter((_, index) => {
-    if (index < startIndex && !paginatedExternally) return false;
-    if (index > endIndex && !paginatedExternally) return false;
-    return true;
-  });
-
-  let sortedData = visibleData;
-  if (sortColumn) {
-    sortedData = sortBy(data, sortColumn);
-    if (sortDirection === 'asc') sortedData.reverse();
-  }
+  const visibleData = data;
 
   const visibleColumns = columns.filter(column =>
     visibleColumnNames.includes(column.name),
@@ -154,11 +161,35 @@ export default function ImageTable({
   const allImagesSelected =
     selectedImages.length === visibleData.length;
 
+  const onClickSelectAll = event => {
+    if (allImagesSelected) {
+      setSelectedImages([]);
+      setQuerySelected(false);
+    } else {
+      setSelectionAnchorEl(event.currentTarget);
+    }
+  };
+
+  const closeSelectionMenu = () => {
+    setSelectionAnchorEl(null);
+  };
+
+  const currentPage = Math.round(
+    searchParams?.offset / searchParams?.limit,
+  );
+
+  const onChangePage = (_, nextPage) => {
+    setSearchParams({
+      ...searchParams,
+      offset: searchParams?.limit * nextPage,
+    });
+  };
+
   return (
     <div {...rest}>
       <Popper
         open={filterPopperOpen}
-        anchorEl={anchorEl}
+        anchorEl={filterAnchorEl}
         placement="bottom-end"
         transition
       >
@@ -208,34 +239,35 @@ export default function ImageTable({
           </Fade>
         )}
       </Popper>
-      {!noTitleBar && (
-        <Grid
-          container
-          justifyContent="space-between"
-          alignItems="center"
-          style={{ margin: '16px 0' }}
-        >
-          <Grid item>
-            <Text variant="body2">{title}</Text>
-          </Grid>
-          <Grid item>
-            <IconButton
-              onClick={() => sendCsv(visibleColumns, visibleData)}
-              size="small"
-            >
-              <CloudDownload style={{ marginRight: 4 }} />
-            </IconButton>
-            <IconButton
-              onClick={event => {
-                setAnchorEl(anchorEl ? null : event.currentTarget);
-              }}
-              size="small"
-            >
-              <FilterList />
-            </IconButton>
-          </Grid>
+      <Grid
+        container
+        justifyContent="space-between"
+        alignItems="center"
+        style={{ margin: '16px 0' }}
+      >
+        <Grid item>
+          <Text variant="body2">{title}</Text>
         </Grid>
-      )}
+        <Grid item>
+          <IconButton
+            onClick={() => sendCsv(visibleColumns, visibleData)}
+            size="small"
+          >
+            <CloudDownload style={{ marginRight: 4 }} />
+          </IconButton>
+          <IconButton
+            onClick={event =>
+            {
+              setFilterAnchorEl(
+                filterAnchorEl ? null : event.currentTarget,
+              );
+            }}
+            size="small"
+          >
+            <FilterList />
+          </IconButton>
+        </Grid>
+      </Grid>
       <TableContainer style={paperStyles}>
         <Table
           style={{ minWidth: 10 }}
@@ -250,39 +282,86 @@ export default function ImageTable({
                     selectedImages.length > 0 && !allImagesSelected
                   }
                   checked={allImagesSelected}
-                  onChange={() => {
-                    if (allImagesSelected) {
-                      setSelectedImages([]);
-                    } else {
+                  onClick={onClickSelectAll}
+                  inputProps={{ 'aria-label': 'Select all images' }}
+                />
+                <Menu
+                  id="selection-menu"
+                  anchorEl={selectionAnchorEl}
+                  keepMounted
+                  open={selectionMenuOpen}
+                  onClose={closeSelectionMenu}
+                  getContentAnchorEl={null}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                  }}
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                  }}
+                >
+                  <MenuItem
+                    onClick={() => {
                       setSelectedImages(
                         visibleData.map(datum => get(datum, idKey)),
                       );
-                    }
-                  }}
-                  inputProps={{ 'aria-label': 'Select all images' }}
-                />
+                      setQuerySelected(false);
+                      closeSelectionMenu();
+                    }}
+                  >
+                    Select all images on this page
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      setSelectedImages(
+                        visibleData.map(datum => get(datum, idKey)),
+                      );
+                      setQuerySelected(true);
+                      closeSelectionMenu();
+                    }}
+                  >
+                    Select all matching images
+                  </MenuItem>
+                </Menu>
               </TableCell>
               {visibleColumns.map((c, i) => {
-                const activeSort = c.name === sortColumn;
+                const sortProperty = c?.sortProperty || c.name;
+                const activeSort =
+                  sortProperty === searchParams?.sort;
+                const reverseSearch = get(
+                  searchParams,
+                  'reverse',
+                  false,
+                );
+                const sortDirection = reverseSearch ? 'desc' : 'asc';
                 return (
                   <TableCell
                     key={c.name}
                     align={getCellAlignment(i, c)}
-                    sortDirection={activeSort ? sortDirection : false}
+                    sortDirection={sortDirection}
                     style={{ whiteSpace: 'nowrap' }}
                   >
-                    <TableSortLabel
-                      active={activeSort}
-                      direction={activeSort ? sortDirection : 'asc'}
-                      onClick={() => {
-                        setSortDirection(
-                          sortDirection === 'asc' ? 'desc' : 'asc',
-                        );
-                        setSortColumn(c.name);
-                      }}
-                    >
-                      {c.label}
-                    </TableSortLabel>
+                    {c?.sortable ? (
+                      <TableSortLabel
+                        active={activeSort}
+                        direction={sortDirection}
+                        onClick={() => {
+                          const nextReverse = activeSort
+                            ? !reverseSearch
+                            : false;
+                          setSearchParams({
+                            ...searchParams,
+                            sort: sortProperty,
+                            reverse: nextReverse,
+                          });
+                        }}
+                      >
+                        {c.label}
+                      </TableSortLabel>
+                    ) : (
+                      c.label
+                    )}
                   </TableCell>
                 );
               })}
@@ -290,7 +369,7 @@ export default function ImageTable({
           </TableHead>
           <TableBody style={{ whiteSpace: 'nowrap' }}>
             {!loading &&
-              sortedData.map(datum => {
+              visibleData.map(datum => {
                 const datumGuid = get(datum, idKey);
                 const datumSelected = selectedImages.includes(
                   datumGuid,
@@ -318,15 +397,15 @@ export default function ImageTable({
                 );
               })}
           </TableBody>
-          {paginated && !loading && !noResults && (
+          {!loading && !noResults && (
             <TableFooter>
               <TableRow>
                 <TablePagination
-                  page={page}
-                  count={dataCount || get(data, 'length', 0)}
+                  page={currentPage}
+                  count={totalAssets}
                   onChangePage={onChangePage}
-                  rowsPerPage={rowsPerPage}
-                  rowsPerPageOptions={[rowsPerPage]}
+                  rowsPerPage={searchParams?.limit}
+                  rowsPerPageOptions={[searchParams?.limit]}
                   ActionsComponent={TablePaginationActions}
                 />
               </TableRow>

@@ -15,6 +15,6 @@ export default function usePatchUser() {
         ...operations,
       ];
     },
-    queryKeys: [queryKeys.me, queryKeys.users],
+    fetchKeys: [queryKeys.me, queryKeys.users],
   });
 }

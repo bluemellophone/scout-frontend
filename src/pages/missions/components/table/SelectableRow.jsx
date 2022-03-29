@@ -24,36 +24,34 @@ export default function SelectableRow({
   ...rest
 }) {
   return (
-    <>
-      <TableRow {...rest}>
-        <TableCell padding="checkbox">
-          <Checkbox
-            checked={selected}
-            onChange={onSelectRow}
-            inputProps={{ 'aria-label': 'Select all images' }}
-          />
-        </TableCell>
-        {columns.map((c, i) => {
-          const cellValue = get(datum, c.name);
-          const cellRenderer = get(
-            c,
-            'options.customBodyRender',
-            defaultCellRenderer,
-          );
+    <TableRow {...rest}>
+      <TableCell padding="checkbox">
+        <Checkbox
+          checked={selected}
+          onChange={onSelectRow}
+          inputProps={{ 'aria-label': 'Select this image' }}
+        />
+      </TableCell>
+      {columns.map((c, i) => {
+        const cellValue = get(datum, c.name);
+        const cellRenderer = get(
+          c,
+          'options.customBodyRender',
+          defaultCellRenderer,
+        );
 
-          return (
-            <TableCell
-              key={c.name}
-              align={getCellAlignment(i, c)}
-              style={{
-                ...cellStyles,
-              }}
-            >
-              {cellRenderer(cellValue, datum)}
-            </TableCell>
-          );
-        })}
-      </TableRow>
-    </>
+        return (
+          <TableCell
+            key={c.name}
+            align={getCellAlignment(i, c)}
+            style={{
+              ...cellStyles,
+            }}
+          >
+            {cellRenderer(cellValue, datum)}
+          </TableCell>
+        );
+      })}
+    </TableRow>
   );
 }
