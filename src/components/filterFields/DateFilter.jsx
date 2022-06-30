@@ -1,17 +1,36 @@
 import React, { useState } from 'react';
-
+import { isEmpty } from 'lodash-es';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
+import { format } from 'date-fns';
 
 import useOnEnter from '../../hooks/useOnEnter';
 import Button from '../Button';
 import FilterButton from './components/FilterButton';
 
+const dateFormat = 'yyyy-MM-dd';
+
+function deriveChipLabel(value) {
+  const gte = value?.gte && format(value.gte, dateFormat);
+  const lte = value?.lte && format(value.lte, dateFormat);
+
+  if (gte && lte) {
+    return `${gte} to ${lte}`;
+  } else if (gte) {
+    return `After ${gte}`;
+  } else if (lte) {
+    return `Before ${lte}`;
+  } else {
+    return '';
+  }
+}
+
 export default function DateFilter({
   label,
+  value,
   onChange,
   openDirection = 'left',
   buttonStyle = {},
@@ -39,6 +58,9 @@ export default function DateFilter({
       buttonLabel={label}
       buttonProps={{ style: buttonStyle }}
       openDirection={openDirection}
+      showChip={!isEmpty(value)}
+      chipLabel={deriveChipLabel(value)}
+      chipStyles={{ textTransform: 'none' }}
     >
       <div
         style={{
