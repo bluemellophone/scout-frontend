@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { get, keys, isEmpty } from 'lodash-es';
 
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
@@ -12,28 +13,44 @@ import FilterButton from './components/FilterButton';
 const comparators = [
   {
     label: 'Greater than',
+    symbol: '>',
     value: 'gt',
   },
   {
     label: 'Greater than or equal to',
+    symbol: '≥',
     value: 'gte',
   },
   {
     label: 'Less than',
+    symbol: '<',
     value: 'lt',
   },
   {
     label: 'Less than or equal to',
+    symbol: '≤',
     value: 'lte',
   },
   {
     label: 'Equals',
+    symbol: '=',
     value: 'eq',
   },
 ];
 
+function deriveChipLabel(value) {
+  const comparatorType = get(keys(value), 0);
+  const comparator = value?.[comparatorType];
+  const comparatorSymbol = comparators.find(
+    c => c.value === comparatorType,
+  )?.symbol;
+  if (!comparator || !comparatorSymbol) return '';
+  return `${comparatorSymbol} ${comparator}`;
+}
+
 export default function IntegerFilter({
   label,
+  value,
   onChange,
   openDirection = 'left',
   buttonStyle = {},
@@ -56,6 +73,8 @@ export default function IntegerFilter({
       buttonLabel={label}
       buttonProps={{ style: buttonStyle }}
       openDirection={openDirection}
+      showChip={!isEmpty(value)}
+      chipLabel={deriveChipLabel(value)}
     >
       <div
         style={{
