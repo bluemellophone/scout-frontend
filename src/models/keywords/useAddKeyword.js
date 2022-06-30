@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { get } from 'lodash-es';
-import { formatError } from '../../utils/formatters';
 import { useQueryClient } from 'react-query';
+import { formatError } from '../../utils/formatters';
 
 export default function useAddKeyword() {
   const queryClient = useQueryClient();

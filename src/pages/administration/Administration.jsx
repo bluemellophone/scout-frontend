@@ -21,7 +21,7 @@ export default function UserManagement() {
       <BodyHeader
         title="Administration"
         showBackButton
-        backButtonHref={`/`}
+        backButtonHref="/"
         backButtonText="Return home"
       />
       <Grid

@@ -32,16 +32,14 @@ export default function CreateAdminUser() {
       }}
       loading={loading}
       error={error}
-      renderInputs={() => {
-        return (
-          <Grid item>
-            <RoleDropdown
-              value={newUserRole}
-              onChange={newValue => setNewUserRole(newValue)}
-            />
-          </Grid>
-        );
-      }}
+      renderInputs={() => (
+        <Grid item>
+          <RoleDropdown
+            value={newUserRole}
+            onChange={newValue => setNewUserRole(newValue)}
+          />
+        </Grid>
+      )}
     />
   );
 }

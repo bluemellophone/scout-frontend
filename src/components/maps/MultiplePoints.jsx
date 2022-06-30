@@ -53,25 +53,23 @@ export default function ManyPoints({ latLongLabelArr }) {
         const bounds = new maps.LatLngBounds(sw, ne);
         map.setCenter(bounds.getCenter());
         map.fitBounds(bounds, 10);
-        var opt = { minZoom: 0, maxZoom: 5 };
+        const opt = { minZoom: 0, maxZoom: 5 };
         map.setOptions(opt);
         map.setZoom(Math.max(map.getZoom() - 1, 0)); // add some buffer space to it
       }}
     >
-      {latLongLabelArr.map(entry => {
-        return (
-          <Marker
-            entry={entry}
-            currentMarkerToShow={currentMarkerToShow}
-            setCurrentMarkerToShow={setCurrentMarkerToShow}
-            key={get(entry, 'text', '')}
-            lat={get(entry, 'lat')}
-            lng={get(entry, 'long')}
-          >
-            <RoomIcon />
-          </Marker>
-        );
-      })}
+      {latLongLabelArr.map(entry => (
+        <Marker
+          entry={entry}
+          currentMarkerToShow={currentMarkerToShow}
+          setCurrentMarkerToShow={setCurrentMarkerToShow}
+          key={get(entry, 'text', '')}
+          lat={get(entry, 'lat')}
+          lng={get(entry, 'long')}
+        >
+          <RoomIcon />
+        </Marker>
+      ))}
     </GoogleMapReact>
   );
 }

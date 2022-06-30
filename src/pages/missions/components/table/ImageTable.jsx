@@ -77,17 +77,15 @@ export default function ImageTable({
       sortable: true,
       sortProperty: 'path',
       options: {
-        customBodyRender: (filename, asset) => {
-          return (
-            <button
-              type="button"
-              style={{ cursor: 'pointer' }}
-              onClick={() => onClickImage(asset)}
-            >
-              {filename}
-            </button>
-          );
-        },
+        customBodyRender: (filename, asset) => (
+          <button
+            type="button"
+            style={{ cursor: 'pointer' }}
+            onClick={() => onClickImage(asset)}
+          >
+            {filename}
+          </button>
+        ),
       },
     },
     {
@@ -256,8 +254,7 @@ export default function ImageTable({
             <CloudDownload style={{ marginRight: 4 }} />
           </IconButton>
           <IconButton
-            onClick={event =>
-            {
+            onClick={event => {
               setFilterAnchorEl(
                 filterAnchorEl ? null : event.currentTarget,
               );
