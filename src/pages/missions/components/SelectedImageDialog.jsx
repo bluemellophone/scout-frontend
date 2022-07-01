@@ -29,16 +29,16 @@ export default function SelectedImageDialog({
       if (!assetKeywords || !keywordOptions) return [];
       return differenceBy(keywordOptions, assetKeywords, 'guid');
     },
-    [get(asset, 'guid'), keywordOptions],
+    [asset?.guid, keywordOptions],
   );
   const [newTagSelectValue, setNewTagSelectValue] = useState(null);
   const [newTagInputValue, setNewTagInputValue] = useState('');
 
   const {
-    addKeyword,
+    mutate: addKeyword,
     loading: addKeywordLoading,
     error: addKeywordError,
-    setError: setAddKeywordError,
+    clearError: clearAddKeywordError,
   } = useAddKeyword();
 
   function onCloseDialog() {
@@ -74,7 +74,7 @@ export default function SelectedImageDialog({
               <Alert
                 style={{ marginTop: 16, marginBottom: 8 }}
                 severity="error"
-                onClose={() => setAddKeywordError(null)}
+                onClose={clearAddKeywordError}
                 title="Server error"
                 description={addKeywordError}
               />
@@ -151,11 +151,11 @@ export default function SelectedImageDialog({
                           ? selectKeywordId
                           : null;
 
-                      const successful = await addKeyword(
-                        asset?.guid,
-                        matchingKeywordId,
-                        newTagInputValue,
-                      );
+                      const successful = await addKeyword({
+                        assetGuid: asset?.guid,
+                        keywordGuid: matchingKeywordId,
+                        keywordValue: newTagInputValue,
+                      });
                       if (successful) {
                         setNewTagInputValue('');
                         setNewTagSelectValue(null);

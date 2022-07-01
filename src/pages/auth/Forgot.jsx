@@ -21,9 +21,7 @@ export default function Forgot() {
         instructions="Your password reset request has been sent. In a few moments you should receive an email from noreply@wildme.org with next steps. If you do not receive the email, double-check your spam folder before trying again."
         buttonId="resendEmail"
         buttonText="Try again"
-        onSubmit={() => {
-          setRequestSent(false);
-        }}
+        onSubmit={() => setRequestSent(false)}
       />
     );
   }
