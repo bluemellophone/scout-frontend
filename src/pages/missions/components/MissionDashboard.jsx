@@ -16,9 +16,7 @@ export default function MissionDashboard({
   projectName,
   createdDate,
 }) {
-  const id = missionData?.guid;
-
-  const [clickedImage, setClickedImage] = useState(null);
+  const [clickedAssetGuid, setClickedAssetGuid] = useState(null);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
   const [querySelected, setQuerySelected] = useState(false);
@@ -31,7 +29,11 @@ export default function MissionDashboard({
   const {
     data: missionAssets,
     isLoading: assetsLoading,
-  } = useGetMissionAssets(id, imageQuery, searchParams);
+  } = useGetMissionAssets(
+    missionData?.guid,
+    imageQuery,
+    searchParams,
+  );
   const images = missionAssets || [];
 
   const noImages = missionData?.asset_count === 0;
@@ -63,7 +65,7 @@ export default function MissionDashboard({
           MenuComponent={MissionActionsMenu}
           menuComponentProps={{
             onAddImages,
-            missionGuid: id,
+            missionGuid: missionData?.guid,
           }}
         />
         {noImages ? (
@@ -81,7 +83,7 @@ export default function MissionDashboard({
             missionData={missionData}
             images={images}
             loading={assetsLoading}
-            onClickImage={asset => setClickedImage(asset)}
+            onClickImage={asset => setClickedAssetGuid(asset?.guid)}
             selectedImages={selectedImages}
             setSelectedImages={setSelectedImages}
             setImageQuery={setImageQuery}
@@ -97,9 +99,11 @@ export default function MissionDashboard({
           onClose={() => setAddDialogOpen(false)}
         />
         <SelectedImageDialog
-          asset={clickedImage}
-          open={Boolean(clickedImage)}
-          onClose={() => setClickedImage(null)}
+          missionAssets={missionAssets}
+          missionGuid={missionData?.guid}
+          assetGuid={clickedAssetGuid}
+          open={Boolean(clickedAssetGuid)}
+          onClose={() => setClickedAssetGuid(null)}
         />
       </div>
       <BatchUpdateFooter

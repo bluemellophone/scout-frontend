@@ -19,10 +19,18 @@ import Alert from '../../../components/Alert';
 export default function SelectedImageDialog({
   open,
   onClose,
-  asset,
+  missionGuid,
+  missionAssets = [],
+  assetGuid,
 }) {
   const [addingTag, setAddingTag] = useState(false);
   const { data: keywordOptions } = useGetKeywords();
+
+  const asset = useMemo(
+    () => missionAssets.find(a => a?.guid === assetGuid),
+    [assetGuid, missionAssets],
+  );
+
   const filteredKeywordOptions = useMemo(
     () => {
       const assetKeywords = asset?.tags;
@@ -79,7 +87,11 @@ export default function SelectedImageDialog({
                 description={addKeywordError}
               />
             )}
-            <Keywords asset={asset} deletable>
+            <Keywords
+              asset={asset}
+              missionGuid={missionGuid}
+              deletable
+            >
               {addingTag ? (
                 <div
                   style={{ display: 'flex', alignItems: 'center' }}
@@ -155,6 +167,7 @@ export default function SelectedImageDialog({
                         assetGuid: asset?.guid,
                         keywordGuid: matchingKeywordId,
                         keywordValue: newTagInputValue,
+                        missionGuid,
                       });
                       if (successful) {
                         setNewTagInputValue('');

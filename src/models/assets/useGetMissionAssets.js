@@ -2,16 +2,16 @@ import useGet from '../../hooks/useGet';
 import { getMissionAssetsQueryKey } from '../../constants/queryKeys';
 
 export default function useGetMissionAssets(
-  id,
+  guid,
   data = {},
   params = {},
 ) {
   return useGet({
-    queryKey: getMissionAssetsQueryKey(id, data, params),
+    queryKey: getMissionAssetsQueryKey(guid, data, params),
     method: 'post',
-    url: `/missions/${id}/assets`,
+    url: `/missions/${guid}/assets`,
     queryOptions: {
-      enabled: Boolean(id),
+      enabled: Boolean(guid),
     },
     data,
     params: {

@@ -11,6 +11,7 @@ import { getKeywordColor } from '../utils/colorUtils';
 
 export default function Keywords({
   asset,
+  missionGuid,
   deletable = false,
   style,
   children,
@@ -20,13 +21,17 @@ export default function Keywords({
   const keywords = get(asset, 'tags', []);
 
   const {
-    deleteKeyword,
+    mutate: deleteKeyword,
     error: deleteError,
-    setError: setDeleteError,
+    clearError: clearDeleteError,
   } = useDeleteKeyword();
 
   async function onDelete(keywordId) {
-    const successful = await deleteKeyword(asset?.guid, keywordId);
+    const successful = await deleteKeyword({
+      missionGuid,
+      assetGuid: asset?.guid,
+      keywordGuid: keywordId,
+    });
     console.log(successful);
   }
 
@@ -36,7 +41,7 @@ export default function Keywords({
         <CustomAlert
           style={{ marginTop: 16, marginBottom: 8 }}
           severity="error"
-          onClose={() => setDeleteError(null)}
+          onClose={clearDeleteError}
           titleId="SERVER_ERROR"
           description={deleteError}
         />
