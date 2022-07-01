@@ -9,9 +9,15 @@ const methods = {
   delete: 'delete',
 };
 
-function formatError(response) {
+function formatError(failureObject) {
   try {
-    return response?.error ? response.error.toJSON().message : null;
+    const jsError = failureObject?.error;
+    if (jsError) return jsError.toJSON().message;
+    const houstonErrorMessage =
+      failureObject?.response?.data?.message;
+    if (houstonErrorMessage) return houstonErrorMessage;
+    const browserErrorMessage = failureObject?.message;
+    return browserErrorMessage || null;
   } catch (e) {
     return 'Error could not be formatted as JSON';
   }
@@ -44,38 +50,48 @@ export default function useMutate({
       ? `${__houston_url__}/api/v1${urlSuffix}`
       : urlSuffix;
 
-    const response = await axios.request({
-      url: completeUrl,
-      // withCredentials: true,
-      method,
-      data: data || deriveData(mutationArgs),
-      params: params || deriveParams(mutationArgs),
-    });
-    const status = response?.status;
-    setStatusCode(status);
-    if (status === 200 || status === 204) {
-      const invalidations = [
-        ...invalidateKeys,
-        ...deriveInvalidateKeys(mutationArgs),
-      ];
-      invalidations.forEach(queryKey => {
-        queryClient.invalidateQueries(queryKey);
+    try {
+      const response = await axios.request({
+        url: completeUrl,
+        // withCredentials: true,
+        method,
+        data: data || deriveData(mutationArgs),
+        params: params || deriveParams(mutationArgs),
       });
 
-      const fetches = [
-        ...fetchKeys,
-        ...deriveFetchKeys(mutationArgs),
-      ];
+      const status = response?.status;
+      setStatusCode(status);
+      if (status === 200 || status === 204) {
+        const invalidations = [
+          ...invalidateKeys,
+          ...deriveInvalidateKeys(mutationArgs),
+        ];
+        invalidations.forEach(queryKey => {
+          queryClient.invalidateQueries(queryKey);
+        });
 
-      for (const queryKey of fetches) {
-        await queryClient.refetchQueries(queryKey);
+        const fetches = [
+          ...fetchKeys,
+          ...deriveFetchKeys(mutationArgs),
+        ];
+
+        /* eslint-disable */
+        for (const queryKey of fetches) {
+          await queryClient.refetchQueries(queryKey);
+        }
+        /* eslint-enable */
+
+        if (displayedError) setDisplayedError(null);
+        setSuccess(true);
+        onSuccess(response);
       }
 
-      if (displayedError) setDisplayedError(null);
-      setSuccess(true);
-      onSuccess(response);
+      return response;
+    } catch (error) {
+      setStatusCode(error?.response?.status);
+      setDisplayedError(formatError(error));
+      return error?.response;
     }
-    return response;
   });
 
   const error = formatError(mutation);
@@ -87,7 +103,7 @@ export default function useMutate({
         if (success) setSuccess(null);
       }
     },
-    [error],
+    [success, error],
   );
 
   const mutate = mutationArgs => mutation.mutateAsync(mutationArgs);

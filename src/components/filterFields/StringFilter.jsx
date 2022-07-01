@@ -15,7 +15,6 @@ export default function StringFilter({
 }) {
   const [internalValue, setInternalValue] = useState('');
 
-  const buttonLabel = value ? `${label}: ${value}` : label;
   const inputId = `${label}-input`;
 
   useOnEnter(e => {
@@ -26,9 +25,12 @@ export default function StringFilter({
 
   return (
     <FilterButton
-      buttonLabel={buttonLabel}
+      buttonLabel={label}
       buttonProps={{ style: buttonStyle }}
       openDirection={openDirection}
+      showChip={Boolean(value)}
+      chipLabel={value}
+      chipStyles={{ textTransform: 'none' }}
     >
       <div
         style={{

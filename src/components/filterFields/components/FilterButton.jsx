@@ -12,6 +12,7 @@ export default function FilterButton({
   showChip = false,
   chipLabel,
   chipProps = {},
+  chipStyles = {},
   openDirection = 'left',
   onOpenMenu = Function.prototype,
   onCloseMenu = Function.prototype,
@@ -41,7 +42,7 @@ export default function FilterButton({
           <Chip
             size="small"
             label={chipLabel}
-            style={{ marginLeft: 8 }}
+            style={{ marginLeft: 8, ...chipStyles }}
             {...chipProps}
           />
         )}
