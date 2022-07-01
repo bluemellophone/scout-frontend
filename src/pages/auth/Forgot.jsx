@@ -16,6 +16,7 @@ export default function Forgot() {
   if (requestSent) {
     return (
       <SimpleFormPage
+        disableLogout
         title="Email sent"
         instructions="Your password reset request has been sent. In a few moments you should receive an email from noreply@wildme.org with next steps. If you do not receive the email, double-check your spam folder before trying again."
         buttonId="resendEmail"
@@ -29,6 +30,7 @@ export default function Forgot() {
 
   return (
     <SimpleFormPage
+      disableLogout
       title="Forgot password"
       instructions="Enter your email to reset your password."
       buttonId="resetPassword"

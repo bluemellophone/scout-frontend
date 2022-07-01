@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import Text from '../../../components/Text';
+import Button from '../../../components/Button';
 import MultipleOptionFilter from '../../../components/filterFields/MultipleOptionFilter';
 import TagOptionFilter from '../../../components/filterFields/TagOptionFilter';
 import StringFilter from '../../../components/filterFields/StringFilter';
@@ -8,6 +9,13 @@ import IntegerFilter from '../../../components/filterFields/IntegerFilter';
 import DateFilter from '../../../components/filterFields/DateFilter';
 import buildAssetQueries from '../utils/buildAssetQueries';
 import ImageTable from './table/ImageTable';
+
+const initialFilename = '';
+const initialTasks = [];
+const initialTags = [];
+const initialCountRange = {};
+const initialCreatedRange = {};
+const initialUpdatedRange = {};
 
 const buttonStyle = { marginRight: 4, marginTop: 4 };
 
@@ -18,14 +26,39 @@ export default function ImageDisplay({
   setImageQuery,
   ...rest
 }) {
-  const [filename, setFilename] = useState('');
-  const [tasks, setTasks] = useState([]);
-  const [tags, setTags] = useState([]);
+  const [filename, setFilename] = useState(initialFilename);
+  const [tasks, setTasks] = useState(initialTasks);
+  const [tags, setTags] = useState(initialTags);
   const [annotationCountRange, setAnnotationCountRange] = useState(
-    {},
+    initialCountRange,
   );
-  const [createdRange, setCreatedRange] = useState({});
-  const [updatedRange, setUpdatedRange] = useState({});
+  const [createdRange, setCreatedRange] = useState(
+    initialCreatedRange,
+  );
+  const [updatedRange, setUpdatedRange] = useState(
+    initialUpdatedRange,
+  );
+
+  const clearAllFilters = useMemo(() => {
+    return () => {
+      setFilename(initialFilename);
+      setTasks(initialTasks);
+      setTags(initialTags);
+      setAnnotationCountRange(initialCountRange);
+      setCreatedRange(initialCreatedRange);
+      setUpdatedRange(initialUpdatedRange);
+
+      const newQuery = buildAssetQueries({
+        filename: initialFilename,
+        tasks: initialTasks,
+        tags: initialTags,
+        annotationCountRange: initialCountRange,
+        createdRange: initialCreatedRange,
+        updatedRange: initialUpdatedRange,
+      });
+      setImageQuery(newQuery);
+    };
+  }, []);
 
   const filters = {
     filename,
@@ -149,6 +182,9 @@ export default function ImageDisplay({
           label="Tags"
           buttonStyle={buttonStyle}
         />
+        <Button onClick={clearAllFilters} style={buttonStyle}>
+          Clear all
+        </Button>
       </div>
       <ImageTable
         title={tableTitle}
