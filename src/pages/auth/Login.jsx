@@ -18,6 +18,7 @@ export default function Login({ showBanner, redirect = '/' }) {
 
   return (
     <SimpleFormPage
+      disableBack
       disableLogout
       title="Login to continue"
       buttonId="submitLogin"

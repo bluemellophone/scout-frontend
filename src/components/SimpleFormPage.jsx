@@ -1,6 +1,7 @@
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import { useTheme } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
 
 import WildMeLogo from '../assets/wild-me-gradient-logo.png';
 import useDocumentTitle from '../hooks/useDocumentTitle';
@@ -11,16 +12,18 @@ import Text from './Text';
 export default function SimpleFormPage({
   title,
   instructions,
-  buttonId = 'submit form',
+  buttonId = 'submit-form',
   buttonText,
   onSubmit,
   buttonProps = {},
-  renderBelowButton = Function.prototype,
+  renderBelowButton,
+  disableBack = false,
   disableLogout = false,
   children,
 }) {
-  useDocumentTitle(title);
+  const history = useHistory();
   const theme = useTheme();
+  useDocumentTitle(title);
 
   useOnEnter(() => {
     document.querySelector(`#${buttonId}`).click();
@@ -37,6 +40,15 @@ export default function SimpleFormPage({
         background: theme.palette.grey['100'],
       }}
     >
+      {!disableBack && (
+        <Button
+          display="back"
+          onClick={history.goBack}
+          style={{ position: 'absolute', left: 16, top: 12 }}
+        >
+          Back
+        </Button>
+      )}
       {!disableLogout && (
         <form
           action={`${__houston_url__}/logout?next=/`}
