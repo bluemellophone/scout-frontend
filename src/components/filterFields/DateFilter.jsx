@@ -11,7 +11,7 @@ import useOnEnter from '../../hooks/useOnEnter';
 import Button from '../Button';
 import FilterButton from './components/FilterButton';
 
-const dateFormat = 'yyyy-MM-dd';
+const dateFormat = 'yyyy-MM-dd'; // US: MM/dd/yyyy
 
 function deriveChipLabel(value) {
   const gte = value?.gte && format(value.gte, dateFormat);
@@ -86,7 +86,7 @@ export default function DateFilter({
           <KeyboardDatePicker
             disableToolbar
             variant="inline"
-            format="yyyy-MM-dd" // US: MM/dd/yyyy
+            format={dateFormat}
             margin="normal"
             id={`${label}-start-date`}
             label="Start date"
@@ -102,7 +102,7 @@ export default function DateFilter({
           <KeyboardDatePicker
             disableToolbar
             variant="inline"
-            format="yyyy-MM-dd" // US: MM/dd/yyyy
+            format={dateFormat}
             margin="normal"
             id={`${label}-end-date`}
             style={{ marginTop: 0 }}

@@ -45,7 +45,7 @@ export default function buildAssetQueries({
       ? {
           bool: {
             should: tags.map(tagGuid => ({
-              match: {
+              term: {
                 'tags.guid': tagGuid,
               },
             })),
