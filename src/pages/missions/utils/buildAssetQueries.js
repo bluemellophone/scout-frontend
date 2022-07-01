@@ -32,7 +32,7 @@ export default function buildAssetQueries({
       ? {
           bool: {
             should: tasks.map(taskGuid => ({
-              match: {
+              term: {
                 'tasks.guid': taskGuid,
               },
             })),
@@ -57,7 +57,7 @@ export default function buildAssetQueries({
     ? {
         range: {
           // 'annotation_count': annotationCountRange,
-          size_bytes: formatRange(annotationCountRange),
+          annotation_count: formatRange(annotationCountRange),
         },
       }
     : null;

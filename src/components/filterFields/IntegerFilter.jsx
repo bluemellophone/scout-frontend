@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { get, keys, isEmpty } from 'lodash-es';
+import { get, keys, isEmpty, isNumber } from 'lodash-es';
 
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
@@ -44,7 +44,7 @@ function deriveChipLabel(value) {
   const comparatorSymbol = comparators.find(
     c => c.value === comparatorType,
   )?.symbol;
-  if (!comparator || !comparatorSymbol) return '';
+  if (!isNumber(comparator) || !comparatorSymbol) return '';
   return `${comparatorSymbol} ${comparator}`;
 }
 
@@ -120,10 +120,11 @@ export default function IntegerFilter({
             value={integerInput}
             onChange={e => {
               const inputValue = e.target.value;
-              const isPositiveInteger = /^[0-9]*[1-9][0-9]*$/.test(
-                inputValue,
-              );
-              if (isPositiveInteger || inputValue === '') {
+              // const isPositiveInteger = /^[0-9]*[1-9][0-9]*$/.test(
+              //   inputValue,
+              // );
+              const isNotNegative = /^[0-9]*[0-9]*$/.test(inputValue);
+              if (isNotNegative || inputValue === '') {
                 setIntegerInput(e.target.value);
               }
             }}
