@@ -21,8 +21,8 @@ export default function TagOptionFilter({
   label,
   value,
   onChange,
-  openDirection = 'left',
   buttonStyle = {},
+  ...rest
 }) {
   const { data: keywordOptions } = useGetKeywords();
 
@@ -46,8 +46,8 @@ export default function TagOptionFilter({
       showChip={value?.length > 0}
       chipLabel={value?.length}
       buttonProps={{ style: buttonStyle }}
-      openDirection={openDirection}
       onCloseMenu={() => setFilter('')}
+      {...rest}
     >
       {safeKeywordOptions.length > 0 ? (
         <div>

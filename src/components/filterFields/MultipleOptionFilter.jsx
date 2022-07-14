@@ -19,9 +19,9 @@ export default function MultipleOptionFilter({
   options = [],
   value,
   onChange,
-  openDirection = 'left',
   buttonStyle = {},
   noOptionsText = 'No options to filter.',
+  ...rest
 }) {
   const [filter, setFilter] = useState('');
 
@@ -41,8 +41,8 @@ export default function MultipleOptionFilter({
       showChip={value?.length > 0}
       chipLabel={value?.length}
       buttonProps={{ style: buttonStyle }}
-      openDirection={openDirection}
       onCloseMenu={() => setFilter('')}
+      {...rest}
     >
       {options.length > 0 ? (
         <div>

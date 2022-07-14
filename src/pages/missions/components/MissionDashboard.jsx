@@ -26,10 +26,7 @@ export default function MissionDashboard({
   });
   const [imageQuery, setImageQuery] = useState({});
 
-  const {
-    data,
-    isLoading: assetsLoading,
-  } = useGetMissionAssets(
+  const { data, isLoading: assetsLoading } = useGetMissionAssets(
     missionData?.guid,
     imageQuery,
     searchParams,
@@ -85,9 +82,10 @@ export default function MissionDashboard({
             images={images}
             loading={assetsLoading}
             onClickImage={asset => setClickedAssetGuid(asset?.guid)}
-              resultCount={resultCount}
+            resultCount={resultCount}
             selectedImages={selectedImages}
             setSelectedImages={setSelectedImages}
+            imageQuery={imageQuery}
             setImageQuery={setImageQuery}
             searchParams={searchParams}
             setSearchParams={setSearchParams}

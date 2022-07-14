@@ -52,8 +52,8 @@ export default function IntegerFilter({
   label,
   value,
   onChange,
-  openDirection = 'left',
   buttonStyle = {},
+  ...rest
 }) {
   const [integerInput, setIntegerInput] = useState('');
   const [comparator, setComparator] = useState('gt');
@@ -72,9 +72,9 @@ export default function IntegerFilter({
     <FilterButton
       buttonLabel={label}
       buttonProps={{ style: buttonStyle }}
-      openDirection={openDirection}
       showChip={!isEmpty(value)}
       chipLabel={deriveChipLabel(value)}
+      {...rest}
     >
       <div
         style={{

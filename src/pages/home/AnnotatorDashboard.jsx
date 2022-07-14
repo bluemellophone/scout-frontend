@@ -8,8 +8,7 @@ import Link from '../../components/Link';
 import Text from '../../components/Text';
 import GlobalActionsMenu from '../../components/GlobalActionsMenu';
 
-export default function TaskDashboard({ userData })
-{
+export default function TaskDashboard({ userData }) {
   const createdDate = formatDate(userData?.created, true);
   const tasks = userData?.assigned_mission_tasks || [];
 
@@ -34,19 +33,31 @@ export default function TaskDashboard({ userData })
           subtitle={`User since ${createdDate}`}
           MenuComponent={GlobalActionsMenu}
         />
-        <Text variant="h5" style={{ margin: '20px 0 12px 0' }}>Assigned tasks</Text>
+        <Text variant="h5" style={{ margin: '20px 0 12px 0' }}>
+          Assigned tasks
+        </Text>
         {tasks.length === 0 ? (
-          <Text>
-            No tasks have been assigned to you.
-          </Text>
+          <Text>No tasks have been assigned to you.</Text>
         ) : (
-          <div style={{ display: 'flex', flexWrap: 'wrap' }}>{tasks.map(task => <Link href={`/tasks/${task?.guid}`} noUnderline style={{ padding: '0 12px 12px 0' }}>
-            <Card style={{ width: 320 }}>
-              <CardContent>
-                <Text>{task?.title}</Text>
-                <Text variant="body2">{`Created ${formatDate(task?.created, true)}`}</Text>
-              </CardContent>
-            </Card></Link>)}</div>
+          <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+            {tasks.map(task => (
+              <Link
+                href={`/tasks/${task?.guid}`}
+                noUnderline
+                style={{ padding: '0 12px 12px 0' }}
+              >
+                <Card style={{ width: 320 }}>
+                  <CardContent>
+                    <Text>{task?.title}</Text>
+                    <Text variant="body2">{`Created ${formatDate(
+                      task?.created,
+                      true,
+                    )}`}</Text>
+                  </CardContent>
+                </Card>
+              </Link>
+            ))}
+          </div>
         )}
       </div>
     </div>

@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import { isEmpty } from 'lodash-es';
 
 import Text from '../../../components/Text';
 import Button from '../../../components/Button';
@@ -24,7 +25,10 @@ export default function ImageDisplay({
   loading,
   resultCount,
   missionData,
+  imageQuery,
   setImageQuery,
+  selectedImages,
+  setSelectedImages,
   ...rest
 }) {
   const [filename, setFilename] = useState(initialFilename);
@@ -40,8 +44,8 @@ export default function ImageDisplay({
     initialUpdatedRange,
   );
 
-  const clearAllFilters = useMemo(() => {
-    return () => {
+  const clearAllFilters = useMemo(
+    () => () => {
       setFilename(initialFilename);
       setTasks(initialTasks);
       setTags(initialTags);
@@ -58,8 +62,22 @@ export default function ImageDisplay({
         updatedRange: initialUpdatedRange,
       });
       setImageQuery(newQuery);
-    };
-  }, []);
+    },
+    [],
+  );
+
+  const onClearSelection = useMemo(
+    () => () => {
+      if (imageQuery) setImageQuery({});
+      if (selectedImages) setSelectedImages([]);
+    },
+    [imageQuery, selectedImages],
+  );
+
+  const showClearSelectionWarning = useMemo(
+    () => selectedImages?.length > 0 || !isEmpty(imageQuery),
+    [isEmpty(imageQuery), selectedImages?.length],
+  );
 
   const filters = {
     filename,
@@ -77,7 +95,6 @@ export default function ImageDisplay({
   }));
 
   const imageCount = images?.length;
-  const totalAssets = missionData?.asset_count;
 
   let tableTitle = `Displaying ${imageCount} out of ${resultCount} matching images.`;
   if (imageCount === 0) tableTitle = 'No images match these filters.';
@@ -114,6 +131,8 @@ export default function ImageDisplay({
             setImageQuery(newQuery);
             setFilename(newFilename);
           }}
+          showClearSelectionWarning={showClearSelectionWarning}
+          onClearSelection={onClearSelection}
           buttonStyle={buttonStyle}
         />
         <DateFilter
@@ -127,6 +146,8 @@ export default function ImageDisplay({
             setImageQuery(newQuery);
             setCreatedRange(newCreatedRange);
           }}
+          showClearSelectionWarning={showClearSelectionWarning}
+          onClearSelection={onClearSelection}
           buttonStyle={buttonStyle}
         />
         <DateFilter
@@ -140,6 +161,8 @@ export default function ImageDisplay({
             setImageQuery(newQuery);
             setUpdatedRange(newUpdatedRange);
           }}
+          showClearSelectionWarning={showClearSelectionWarning}
+          onClearSelection={onClearSelection}
           buttonStyle={buttonStyle}
         />
         <MultipleOptionFilter
@@ -152,6 +175,8 @@ export default function ImageDisplay({
             setImageQuery(newQuery);
             setTasks(newTasks);
           }}
+          showClearSelectionWarning={showClearSelectionWarning}
+          onClearSelection={onClearSelection}
           label="Tasks"
           options={taskOptions}
           buttonStyle={buttonStyle}
@@ -167,6 +192,8 @@ export default function ImageDisplay({
             setImageQuery(newQuery);
             setAnnotationCountRange(newAnnotationCountRange);
           }}
+          showClearSelectionWarning={showClearSelectionWarning}
+          onClearSelection={onClearSelection}
           label="Annotation count"
           buttonStyle={buttonStyle}
         />
@@ -180,6 +207,8 @@ export default function ImageDisplay({
             setImageQuery(newQuery);
             setTags(newTags);
           }}
+          showClearSelectionWarning={showClearSelectionWarning}
+          onClearSelection={onClearSelection}
           label="Tags"
           buttonStyle={buttonStyle}
         />
@@ -192,6 +221,8 @@ export default function ImageDisplay({
         data={images}
         loading={loading}
         totalAssets={resultCount}
+        selectedImages={selectedImages}
+        setSelectedImages={setSelectedImages}
         {...rest}
       />
     </div>

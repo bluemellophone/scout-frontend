@@ -18,8 +18,7 @@ export default function BulkAddTagDialog({
   onClose,
   selectedImages,
   missionGuid,
-})
-{
+}) {
   const { data: keywordOptions } = useGetKeywords();
   const {
     mutate: addKeywordToAssets,

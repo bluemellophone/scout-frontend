@@ -32,8 +32,8 @@ export default function DateFilter({
   label,
   value,
   onChange,
-  openDirection = 'left',
   buttonStyle = {},
+  ...rest
 }) {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
@@ -57,10 +57,10 @@ export default function DateFilter({
     <FilterButton
       buttonLabel={label}
       buttonProps={{ style: buttonStyle }}
-      openDirection={openDirection}
       showChip={!isEmpty(value)}
       chipLabel={deriveChipLabel(value)}
       chipStyles={{ textTransform: 'none' }}
+      {...rest}
     >
       <div
         style={{

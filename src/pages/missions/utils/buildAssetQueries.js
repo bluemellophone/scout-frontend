@@ -79,5 +79,6 @@ export default function buildAssetQueries({
     updatedRangeQuery,
   ].filter(f => f);
 
+  if (queries.length === 0) return {};
   return { bool: { filter: queries } };
 }
