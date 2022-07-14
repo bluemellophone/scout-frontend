@@ -40,6 +40,7 @@ export default function ProfileSetup({ userData }) {
       instructions="Enter your name to begin using Scout."
       buttonId={buttonId}
       buttonText="Continue"
+      disableBack
       onSubmit={saveProfile}
       buttonProps={{
         disabled: actionDisabled,

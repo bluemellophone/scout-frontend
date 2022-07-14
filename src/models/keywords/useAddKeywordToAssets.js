@@ -1,12 +1,10 @@
-import axios from 'axios';
-import { useQueryClient, useMutation } from 'react-query';
-import { getMissionAssetsQueryKey } from '../../constants/queryKeys';
+import { usePatch } from '../../hooks/useMutate';
+import { getAllMissionAssetsQueryKeys } from '../../constants/queryKeys';
 
 export default function useAddKeywordToAssets() {
-  const queryClient = useQueryClient();
-
-  const mutation = useMutation(
-    async ({ missionGuid, imageGuids, keywordGuid, tag }) => {
+  return usePatch({
+    url: '/assets/',
+    deriveData: ({ imageGuids, keywordGuid, tag }) => {
       const testOperation = keywordGuid
         ? { op: 'test', path: '/tags', value: keywordGuid }
         : {
@@ -20,44 +18,11 @@ export default function useAddKeywordToAssets() {
         guid,
         value: '[0]',
       }));
-
-      const result = await axios.request({
-        url: `${__houston_url__}/api/v1/assets/`,
-        withCredentials: true,
-        method: 'patch',
-        data: [testOperation, ...addOperations],
-      });
-
-      if (result?.status === 200) {
-        queryClient.invalidateQueries(
-          getMissionAssetsQueryKey(missionGuid),
-        );
-      }
-
-      return result;
+      return [testOperation, ...addOperations];
     },
-  );
-
-  const addKeywordToAssets = (
-    missionGuid,
-    imageGuids,
-    keywordGuid,
-    tag,
-  ) =>
-    mutation.mutateAsync({
-      missionGuid,
-      imageGuids,
-      keywordGuid,
-      tag,
-    });
-
-  const error = mutation?.error
-    ? mutation?.error.toJSON().message
-    : null;
-
-  return {
-    ...mutation,
-    addKeywordToAssets,
-    error,
-  };
+    /* Note: for some reason when using fetch keys here it causes an erroneous
+     * fetch to occur in the form of POST /missions/undefined/assets */
+    deriveInvalidateKeys: ({ missionGuid }) =>
+      getAllMissionAssetsQueryKeys(missionGuid),
+  });
 }

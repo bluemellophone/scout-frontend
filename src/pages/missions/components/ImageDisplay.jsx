@@ -22,6 +22,7 @@ const buttonStyle = { marginRight: 4, marginTop: 4 };
 export default function ImageDisplay({
   images,
   loading,
+  resultCount,
   missionData,
   setImageQuery,
   ...rest
@@ -78,10 +79,10 @@ export default function ImageDisplay({
   const imageCount = images?.length;
   const totalAssets = missionData?.asset_count;
 
-  let tableTitle = `Displaying ${imageCount} out of ${totalAssets} matching images.`;
+  let tableTitle = `Displaying ${imageCount} out of ${resultCount} matching images.`;
   if (imageCount === 0) tableTitle = 'No images match these filters.';
-  if (imageCount === totalAssets)
-    tableTitle = `${totalAssets} images in this project.`;
+  if (imageCount === resultCount)
+    tableTitle = `${resultCount} images in this project.`;
   if (loading) tableTitle = 'Loading images...';
 
   return (
@@ -190,7 +191,7 @@ export default function ImageDisplay({
         title={tableTitle}
         data={images}
         loading={loading}
-        totalAssets={totalAssets}
+        totalAssets={resultCount}
         {...rest}
       />
     </div>

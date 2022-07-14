@@ -18,6 +18,8 @@ export default function useAddKeyword() {
         },
       ];
     },
+    /* Note: for some reason when using fetch keys here it causes an erroneous
+     * fetch to occur in the form of POST /missions/undefined/assets */
     deriveInvalidateKeys: ({ missionGuid }) =>
       getAllMissionAssetsQueryKeys(missionGuid),
   });

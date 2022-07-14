@@ -27,14 +27,15 @@ export default function MissionDashboard({
   const [imageQuery, setImageQuery] = useState({});
 
   const {
-    data: missionAssets,
+    data,
     isLoading: assetsLoading,
   } = useGetMissionAssets(
     missionData?.guid,
     imageQuery,
     searchParams,
   );
-  const images = missionAssets || [];
+  const { searchResults, resultCount } = data;
+  const images = searchResults || [];
 
   const noImages = missionData?.asset_count === 0;
   const footerOpen = selectedImages.length > 0;
@@ -84,6 +85,7 @@ export default function MissionDashboard({
             images={images}
             loading={assetsLoading}
             onClickImage={asset => setClickedAssetGuid(asset?.guid)}
+              resultCount={resultCount}
             selectedImages={selectedImages}
             setSelectedImages={setSelectedImages}
             setImageQuery={setImageQuery}
@@ -99,7 +101,7 @@ export default function MissionDashboard({
           onClose={() => setAddDialogOpen(false)}
         />
         <SelectedImageDialog
-          missionAssets={missionAssets}
+          missionAssets={searchResults}
           missionGuid={missionData?.guid}
           assetGuid={clickedAssetGuid}
           open={Boolean(clickedAssetGuid)}
@@ -107,6 +109,7 @@ export default function MissionDashboard({
         />
       </div>
       <BatchUpdateFooter
+        resultCount={resultCount}
         missionData={missionData}
         open={footerOpen}
         allImages={images}

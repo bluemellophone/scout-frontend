@@ -1,14 +1,13 @@
 import { get } from 'lodash-es';
 
 const keywordColors = [
-  '#977602',
   '#023697',
   '#970292',
   '#6A0297',
   '#970202',
   '#976002',
   '#02978B',
-  '#02972F',
+  '#029718',
 ];
 
 export function getKeywordColor(uuid) {
