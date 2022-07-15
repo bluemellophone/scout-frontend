@@ -6,15 +6,15 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import AddIcon from '@material-ui/icons/Add';
 
-import useAddKeyword from '../../../models/keywords/useAddKeyword';
-import useGetKeywords from '../../../models/keywords/useGetKeywords';
-import { formatDate } from '../../../utils/formatters';
-import { getKeywordColor } from '../../../utils/colorUtils';
-import StandardDialog from '../../../components/StandardDialog';
-import Text from '../../../components/Text';
-import Keywords from '../../../components/Keywords';
-import Button from '../../../components/Button';
-import Alert from '../../../components/Alert';
+import useAddKeyword from '../models/keywords/useAddKeyword';
+import useGetKeywords from '../models/keywords/useGetKeywords';
+import { formatDate } from '../utils/formatters';
+import { getKeywordColor } from '../utils/colorUtils';
+import StandardDialog from './StandardDialog';
+import Text from './Text';
+import Keywords from './Keywords';
+import Button from './Button';
+import Alert from './Alert';
 
 export default function SelectedImageDialog({
   open,

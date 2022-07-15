@@ -6,20 +6,28 @@ import IconButton from '@material-ui/core/IconButton';
 import CollapseIcon from '@material-ui/icons/ChevronLeft';
 
 import WildMeLogo from '../../../assets/wild-me-gradient-logo.png';
+import Button from '../../../components/Button';
 import Text from '../../../components/Text';
 import ImageList from './ImageList';
+import AddImagesDialog from './dialogs/AddImagesDialog';
 
 export default function TaskDrawer({
   taskData,
   selectedAsset,
   setSelectedAsset,
 }) {
+  const [addImagesDialogOpen, setAddImagesDialogOpen] = useState(
+    false,
+  );
   const [minimized, setMinimized] = useState(false);
 
   const minimizedStyles = {
     opacity: minimized ? 0 : 1,
     pointerEvents: minimized ? 'none' : undefined,
   };
+
+  const noImages = taskData?.assets?.length === 0;
+  const hasEditPermissions = true;
 
   return (
     <Drawer
@@ -37,6 +45,12 @@ export default function TaskDrawer({
         if (minimized) setMinimized(false);
       }}
     >
+      <AddImagesDialog
+        open={addImagesDialogOpen}
+        onClose={() => setAddImagesDialogOpen(false)}
+        missionGuid={taskData?.mission?.guid}
+        taskGuid={taskData?.guid}
+      />
       <div
         style={{
           display: 'flex',
@@ -76,13 +90,31 @@ export default function TaskDrawer({
       </div>
       <Divider style={minimizedStyles} />
 
-      <div style={minimizedStyles}>
-        <ImageList
-          taskData={taskData}
-          selectedAsset={selectedAsset}
-          setSelectedAsset={setSelectedAsset}
-        />
-      </div>
+      {noImages ? (
+        <div style={minimizedStyles}>
+          <Text style={{ margin: '20px 0 12px 0' }}>
+            {hasEditPermissions
+              ? 'This task has no images. Get started by adding some images!'
+              : 'This task has no images.'}
+          </Text>
+          {hasEditPermissions && (
+            <Button
+              display="primary"
+              onClick={() => setAddImagesDialogOpen(true)}
+            >
+              Add images
+            </Button>
+          )}
+        </div>
+      ) : (
+        <div style={minimizedStyles}>
+          <ImageList
+            taskData={taskData}
+            selectedAsset={selectedAsset}
+            setSelectedAsset={setSelectedAsset}
+          />
+        </div>
+      )}
     </Drawer>
   );
 }

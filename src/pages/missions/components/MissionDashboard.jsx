@@ -4,12 +4,12 @@ import useGetMissionAssets from '../../../models/assets/useGetMissionAssets';
 import BodyHeader from '../../../components/BodyHeader';
 import Text from '../../../components/Text';
 import Button from '../../../components/Button';
-import SelectedImageDialog from './SelectedImageDialog';
+import SelectedImageDialog from '../../../components/SelectedImageDialog';
+import ImageDisplay from '../../../components/ImageDisplay';
 import AddImagesDialog from './AddImagesDialog';
 import MissionActionsMenu from './MissionActionsMenu';
 import BatchUpdateFooter from './BatchUpdateFooter';
-import ImageDisplay from './ImageDisplay';
-import { resultsPerPage } from './constants';
+import { resultsPerPage } from '../../../constants/search';
 
 export default function MissionDashboard({
   missionData,

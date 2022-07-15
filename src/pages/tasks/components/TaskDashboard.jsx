@@ -1,6 +1,7 @@
 import React from 'react';
 
 import BodyHeader from '../../../components/BodyHeader';
+import Text from '../../../components/Text';
 import TaskActionsMenu from './TaskActionsMenu';
 
 export default function TaskDashboard({
@@ -32,14 +33,19 @@ export default function TaskDashboard({
           backButtonText="Back to project"
           backButtonHref={`/projects/${taskData?.mission?.guid}`}
           MenuComponent={TaskActionsMenu}
-          menuComponentProps={{ taskGuid: taskData?.guid }}
+          menuComponentProps={{
+            taskGuid: taskData?.guid,
+            missionGuid: taskData?.mission?.guid,
+          }}
         />
-        {selectedAsset && (
+        {selectedAsset ? (
           <img
             alt={selectedAsset?.filename}
             src={selectedAsset?.src}
             style={{ width: '100%', marginTop: 12 }}
           />
+        ) : (
+          <Text style={{ marginTop: 40 }}>No image selected.</Text>
         )}
       </div>
     </div>

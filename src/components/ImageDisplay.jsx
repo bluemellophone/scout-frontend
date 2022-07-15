@@ -1,15 +1,15 @@
 import React, { useMemo, useState } from 'react';
 import { isEmpty } from 'lodash-es';
 
-import Text from '../../../components/Text';
-import Button from '../../../components/Button';
-import MultipleOptionFilter from '../../../components/filterFields/MultipleOptionFilter';
-import TagOptionFilter from '../../../components/filterFields/TagOptionFilter';
-import StringFilter from '../../../components/filterFields/StringFilter';
-import IntegerFilter from '../../../components/filterFields/IntegerFilter';
-import DateFilter from '../../../components/filterFields/DateFilter';
-import buildAssetQueries from '../utils/buildAssetQueries';
-import ImageTable from './table/ImageTable';
+import Text from './Text';
+import Button from './Button';
+import MultipleOptionFilter from './filterFields/MultipleOptionFilter';
+import TagOptionFilter from './filterFields/TagOptionFilter';
+import StringFilter from './filterFields/StringFilter';
+import IntegerFilter from './filterFields/IntegerFilter';
+import DateFilter from './filterFields/DateFilter';
+import buildAssetQueries from '../pages/missions/utils/buildAssetQueries';
+import ImageTable from '../pages/missions/components/table/ImageTable';
 
 const initialFilename = '';
 const initialTasks = [];
