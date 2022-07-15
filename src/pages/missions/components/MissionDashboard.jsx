@@ -4,12 +4,12 @@ import useGetMissionAssets from '../../../models/assets/useGetMissionAssets';
 import BodyHeader from '../../../components/BodyHeader';
 import Text from '../../../components/Text';
 import Button from '../../../components/Button';
-import SelectedImageDialog from './SelectedImageDialog';
+import SelectedImageDialog from '../../../components/SelectedImageDialog';
+import ImageDisplay from '../../../components/ImageDisplay';
 import AddImagesDialog from './AddImagesDialog';
 import MissionActionsMenu from './MissionActionsMenu';
 import BatchUpdateFooter from './BatchUpdateFooter';
-import ImageDisplay from './ImageDisplay';
-import { resultsPerPage } from './constants';
+import { resultsPerPage } from '../../../constants/search';
 
 export default function MissionDashboard({
   missionData,
@@ -26,15 +26,13 @@ export default function MissionDashboard({
   });
   const [imageQuery, setImageQuery] = useState({});
 
-  const {
-    data: missionAssets,
-    isLoading: assetsLoading,
-  } = useGetMissionAssets(
+  const { data, isLoading: assetsLoading } = useGetMissionAssets(
     missionData?.guid,
     imageQuery,
     searchParams,
   );
-  const images = missionAssets || [];
+  const { searchResults, resultCount } = data;
+  const images = searchResults || [];
 
   const noImages = missionData?.asset_count === 0;
   const footerOpen = selectedImages.length > 0;
@@ -84,8 +82,10 @@ export default function MissionDashboard({
             images={images}
             loading={assetsLoading}
             onClickImage={asset => setClickedAssetGuid(asset?.guid)}
+            resultCount={resultCount}
             selectedImages={selectedImages}
             setSelectedImages={setSelectedImages}
+            imageQuery={imageQuery}
             setImageQuery={setImageQuery}
             searchParams={searchParams}
             setSearchParams={setSearchParams}
@@ -99,7 +99,7 @@ export default function MissionDashboard({
           onClose={() => setAddDialogOpen(false)}
         />
         <SelectedImageDialog
-          missionAssets={missionAssets}
+          missionAssets={searchResults}
           missionGuid={missionData?.guid}
           assetGuid={clickedAssetGuid}
           open={Boolean(clickedAssetGuid)}
@@ -107,6 +107,7 @@ export default function MissionDashboard({
         />
       </div>
       <BatchUpdateFooter
+        resultCount={resultCount}
         missionData={missionData}
         open={footerOpen}
         allImages={images}

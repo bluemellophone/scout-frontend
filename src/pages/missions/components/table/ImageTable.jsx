@@ -66,6 +66,7 @@ export default function ImageTable({
   cellStyles = {},
   searchParams,
   setSearchParams,
+  querySelected, // eslint-disable-line
   setQuerySelected,
   ...rest
 }) {

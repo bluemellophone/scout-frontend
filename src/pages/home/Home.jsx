@@ -6,7 +6,7 @@ import LoadingScreen from '../../components/LoadingScreen';
 import CreateMission from '../missions/CreateMission';
 import Mission from '../missions/Mission';
 import ProfileSetup from './ProfileSetup';
-import TaskDashboard from './TaskDashboard';
+import AnnotatorDashboard from './AnnotatorDashboard';
 
 export default function Home() {
   const { data, loading } = useGetMe();
@@ -20,7 +20,7 @@ export default function Home() {
   if (loading) return <LoadingScreen />;
   // if (error) handle error
   if (!fullName) return <ProfileSetup userData={data} />;
-  if (isBasicUser) return <TaskDashboard userData={data} />;
+  if (isBasicUser) return <AnnotatorDashboard userData={data} />;
 
   if (!atLeastOneMission) return <CreateMission />;
 

@@ -1,3 +1,4 @@
+import { get } from 'lodash-es';
 import useGet from '../../hooks/useGet';
 import { getMissionAssetsQueryKey } from '../../constants/queryKeys';
 
@@ -21,5 +22,9 @@ export default function useGetMissionAssets(
       reverse: false,
       ...params,
     },
+    dataAccessor: result => ({
+      resultCount: get(result, ['data', 'headers', 'x-total-count']),
+      searchResults: get(result, ['data', 'data'], []),
+    }),
   });
 }

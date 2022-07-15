@@ -21,7 +21,7 @@ export default function BulkAddTagDialog({
 }) {
   const { data: keywordOptions } = useGetKeywords();
   const {
-    addKeywordToAssets,
+    mutate: addKeywordToAssets,
     isLoading,
     error,
   } = useAddKeywordToAssets();
@@ -117,12 +117,12 @@ export default function BulkAddTagDialog({
                 ? selectKeywordId
                 : null;
 
-            const result = await addKeywordToAssets(
+            const result = await addKeywordToAssets({
               missionGuid,
-              selectedImages,
-              matchingKeywordId,
-              newTagInputValue,
-            );
+              imageGuids: selectedImages,
+              keywordGuid: matchingKeywordId,
+              tag: newTagInputValue,
+            });
             if (result?.status === 200) handleClose();
           }}
         >

@@ -1,14 +1,15 @@
 import React, { useMemo, useState } from 'react';
+import { isEmpty } from 'lodash-es';
 
-import Text from '../../../components/Text';
-import Button from '../../../components/Button';
-import MultipleOptionFilter from '../../../components/filterFields/MultipleOptionFilter';
-import TagOptionFilter from '../../../components/filterFields/TagOptionFilter';
-import StringFilter from '../../../components/filterFields/StringFilter';
-import IntegerFilter from '../../../components/filterFields/IntegerFilter';
-import DateFilter from '../../../components/filterFields/DateFilter';
-import buildAssetQueries from '../utils/buildAssetQueries';
-import ImageTable from './table/ImageTable';
+import Text from './Text';
+import Button from './Button';
+import MultipleOptionFilter from './filterFields/MultipleOptionFilter';
+import TagOptionFilter from './filterFields/TagOptionFilter';
+import StringFilter from './filterFields/StringFilter';
+import IntegerFilter from './filterFields/IntegerFilter';
+import DateFilter from './filterFields/DateFilter';
+import buildAssetQueries from '../pages/missions/utils/buildAssetQueries';
+import ImageTable from '../pages/missions/components/table/ImageTable';
 
 const initialFilename = '';
 const initialTasks = [];
@@ -22,8 +23,12 @@ const buttonStyle = { marginRight: 4, marginTop: 4 };
 export default function ImageDisplay({
   images,
   loading,
+  resultCount,
   missionData,
+  imageQuery,
   setImageQuery,
+  selectedImages,
+  setSelectedImages,
   ...rest
 }) {
   const [filename, setFilename] = useState(initialFilename);
@@ -39,8 +44,8 @@ export default function ImageDisplay({
     initialUpdatedRange,
   );
 
-  const clearAllFilters = useMemo(() => {
-    return () => {
+  const clearAllFilters = useMemo(
+    () => () => {
       setFilename(initialFilename);
       setTasks(initialTasks);
       setTags(initialTags);
@@ -57,8 +62,22 @@ export default function ImageDisplay({
         updatedRange: initialUpdatedRange,
       });
       setImageQuery(newQuery);
-    };
-  }, []);
+    },
+    [],
+  );
+
+  const onClearSelection = useMemo(
+    () => () => {
+      if (imageQuery) setImageQuery({});
+      if (selectedImages) setSelectedImages([]);
+    },
+    [imageQuery, selectedImages],
+  );
+
+  const showClearSelectionWarning = useMemo(
+    () => selectedImages?.length > 0 || !isEmpty(imageQuery),
+    [isEmpty(imageQuery), selectedImages?.length],
+  );
 
   const filters = {
     filename,
@@ -76,12 +95,11 @@ export default function ImageDisplay({
   }));
 
   const imageCount = images?.length;
-  const totalAssets = missionData?.asset_count;
 
-  let tableTitle = `Displaying ${imageCount} out of ${totalAssets} matching images.`;
+  let tableTitle = `Displaying ${imageCount} out of ${resultCount} matching images.`;
   if (imageCount === 0) tableTitle = 'No images match these filters.';
-  if (imageCount === totalAssets)
-    tableTitle = `${totalAssets} images in this project.`;
+  if (imageCount === resultCount)
+    tableTitle = `${resultCount} images in this project.`;
   if (loading) tableTitle = 'Loading images...';
 
   return (
@@ -113,6 +131,8 @@ export default function ImageDisplay({
             setImageQuery(newQuery);
             setFilename(newFilename);
           }}
+          showClearSelectionWarning={showClearSelectionWarning}
+          onClearSelection={onClearSelection}
           buttonStyle={buttonStyle}
         />
         <DateFilter
@@ -126,6 +146,8 @@ export default function ImageDisplay({
             setImageQuery(newQuery);
             setCreatedRange(newCreatedRange);
           }}
+          showClearSelectionWarning={showClearSelectionWarning}
+          onClearSelection={onClearSelection}
           buttonStyle={buttonStyle}
         />
         <DateFilter
@@ -139,6 +161,8 @@ export default function ImageDisplay({
             setImageQuery(newQuery);
             setUpdatedRange(newUpdatedRange);
           }}
+          showClearSelectionWarning={showClearSelectionWarning}
+          onClearSelection={onClearSelection}
           buttonStyle={buttonStyle}
         />
         <MultipleOptionFilter
@@ -151,6 +175,8 @@ export default function ImageDisplay({
             setImageQuery(newQuery);
             setTasks(newTasks);
           }}
+          showClearSelectionWarning={showClearSelectionWarning}
+          onClearSelection={onClearSelection}
           label="Tasks"
           options={taskOptions}
           buttonStyle={buttonStyle}
@@ -166,6 +192,8 @@ export default function ImageDisplay({
             setImageQuery(newQuery);
             setAnnotationCountRange(newAnnotationCountRange);
           }}
+          showClearSelectionWarning={showClearSelectionWarning}
+          onClearSelection={onClearSelection}
           label="Annotation count"
           buttonStyle={buttonStyle}
         />
@@ -179,6 +207,8 @@ export default function ImageDisplay({
             setImageQuery(newQuery);
             setTags(newTags);
           }}
+          showClearSelectionWarning={showClearSelectionWarning}
+          onClearSelection={onClearSelection}
           label="Tags"
           buttonStyle={buttonStyle}
         />
@@ -190,7 +220,9 @@ export default function ImageDisplay({
         title={tableTitle}
         data={images}
         loading={loading}
-        totalAssets={totalAssets}
+        totalAssets={resultCount}
+        selectedImages={selectedImages}
+        setSelectedImages={setSelectedImages}
         {...rest}
       />
     </div>

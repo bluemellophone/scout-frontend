@@ -10,8 +10,8 @@ export default function StringFilter({
   label,
   value,
   onChange,
-  openDirection = 'left',
   buttonStyle = {},
+  ...rest
 }) {
   const [internalValue, setInternalValue] = useState('');
 
@@ -27,10 +27,10 @@ export default function StringFilter({
     <FilterButton
       buttonLabel={label}
       buttonProps={{ style: buttonStyle }}
-      openDirection={openDirection}
       showChip={Boolean(value)}
       chipLabel={value}
       chipStyles={{ textTransform: 'none' }}
+      {...rest}
     >
       <div
         style={{

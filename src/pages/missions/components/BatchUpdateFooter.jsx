@@ -12,6 +12,7 @@ import AddToTaskDialog from './dialogs/AddToTaskDialog';
 
 export default function BatchUpdateFooter({
   open,
+  resultCount,
   allImages,
   selectedImages,
   missionData,
@@ -30,7 +31,7 @@ export default function BatchUpdateFooter({
   useEffect(
     () => {
       const startCount = imageQuery
-        ? missionData?.asset_count - allImages?.length
+        ? resultCount - allImages?.length
         : 0;
       const imageCount = startCount + selectedImages?.length;
       if (imageCount) setSelectedImageCount(imageCount);
@@ -39,7 +40,7 @@ export default function BatchUpdateFooter({
       selectedImages?.length,
       allImages?.length,
       imageQuery,
-      missionData,
+      resultCount,
     ],
   );
 

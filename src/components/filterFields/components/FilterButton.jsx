@@ -5,6 +5,7 @@ import Chip from '@material-ui/core/Chip';
 import ExpandIcon from '@material-ui/icons/ExpandMore';
 
 import Button from '../../Button';
+import ClearSelectionDialog from './ClearSelectionDialog';
 
 export default function FilterButton({
   buttonLabel,
@@ -16,13 +17,20 @@ export default function FilterButton({
   openDirection = 'left',
   onOpenMenu = Function.prototype,
   onCloseMenu = Function.prototype,
+  onClearSelection = Function.prototype,
+  showClearSelectionWarning = false,
   children,
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [warningDialogOpen, setWarningDialogOpen] = useState(false);
 
   const handleClick = event => {
-    setAnchorEl(event.currentTarget);
-    onOpenMenu();
+    if (showClearSelectionWarning) {
+      setWarningDialogOpen(true);
+    } else {
+      setAnchorEl(event.currentTarget);
+      onOpenMenu();
+    }
   };
 
   const handleClose = () => {
@@ -32,6 +40,11 @@ export default function FilterButton({
 
   return (
     <div>
+      <ClearSelectionDialog
+        open={warningDialogOpen}
+        onClose={() => setWarningDialogOpen(false)}
+        onClearSelection={onClearSelection}
+      />
       <Button
         onClick={handleClick}
         endIcon={<ExpandIcon />}
