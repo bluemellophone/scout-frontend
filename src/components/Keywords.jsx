@@ -32,7 +32,6 @@ export default function Keywords({
       assetGuid: asset?.guid,
       keywordGuid: keywordId,
     });
-    console.log(successful);
   }
 
   return (
