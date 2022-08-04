@@ -17,3 +17,15 @@
 .MuiTablePagination-toolbar {
   float: left;
 }
+
+::-webkit-scrollbar {
+  /* No scrollbars for Chrome + Brave */
+  display: none;
+}
+
+div {
+  /* No scrollbars for Firefox */
+  scrollbar-width: none;
+  /* No scrollbars for IE 10+ */
+  -ms-overflow-style: none;
+}

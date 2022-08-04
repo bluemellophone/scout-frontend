@@ -1,5 +1,7 @@
 import { usePatch } from '../../hooks/useMutate';
-import { getAllMissionAssetsQueryKeys } from '../../constants/queryKeys';
+import queryKeys, {
+  getAllMissionAssetsQueryKeys,
+} from '../../constants/queryKeys';
 
 export default function useDeleteKeyword() {
   return usePatch({
@@ -11,7 +13,11 @@ export default function useDeleteKeyword() {
         value: keywordGuid,
       },
     ],
-    deriveInvalidateKeys: ({ missionGuid }) =>
-      getAllMissionAssetsQueryKeys(missionGuid),
+    deriveInvalidateKeys: ({ missionGuid }) => {
+      return [
+        queryKeys.keywords,
+        getAllMissionAssetsQueryKeys(missionGuid),
+      ];
+    },
   });
 }

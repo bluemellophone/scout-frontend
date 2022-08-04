@@ -60,6 +60,7 @@ export default function MissionSettings() {
         open={addingUser}
         onClose={() => setAddingUser(false)}
         missionGuid={missionGuid}
+        missionUsers={safeUsers}
       />
       <RemoveUserDialog
         open={Boolean(userToRemove)}

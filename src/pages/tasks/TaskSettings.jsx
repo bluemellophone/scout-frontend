@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQueryClient } from 'react-query';
+import { get } from 'lodash-es';
 
 import { useTheme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -47,7 +48,6 @@ export default function TaskSettings() {
 
   if (isLoading) return null; // make this nicer...
 
-  console.log(data);
   const ownerGuid = data?.owner?.guid;
   const safeUsers = data?.assigned_users || [];
   const chipUsers = safeUsers.map(u => {
@@ -60,7 +60,9 @@ export default function TaskSettings() {
       <AddUserDialog
         open={addingUser}
         onClose={() => setAddingUser(false)}
+        taskUsers={safeUsers}
         taskGuid={taskGuid}
+        missionGuid={get(data, ['mission', 'guid'])}
         refreshTaskData={refreshTaskData}
       />
       <RemoveUserDialog

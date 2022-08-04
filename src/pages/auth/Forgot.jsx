@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import Typography from '@material-ui/core/Typography';
+
+import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
-import TextInput from '../../components/inputs/TextInput';
-import Link from '../../components/Link';
-import Text from '../../components/Text';
+import TextField from '@material-ui/core/TextField';
+
 import Alert from '../../components/Alert';
 import SimpleFormPage from '../../components/SimpleFormPage';
 
@@ -41,35 +41,29 @@ export default function Forgot() {
           setRequestSent(true);
         }, 1000);
       }}
-      renderBelowButton={
-        <Typography style={{ margin: '8px 0px 0px 4px' }}>
-          <Link href="/login">
-            <Text variant="subtitle2" component="span" id="LOG_IN" />
-          </Link>
-          <span style={{ margin: '0 4px' }}> | </span>
-          <Link href="/request">
-            <Text
-              variant="subtitle2"
-              component="span"
-              id="REQUEST_INVITE"
-            />
-          </Link>
-        </Typography>
-      }
     >
       <Grid
         container
         spacing={2}
         direction="column"
-        style={{ padding: '16px 0', width: 280 }}
+        style={{ padding: '8px 0 16px 0' }}
       >
         <Grid item>
-          <TextInput
-            schema={{ labelId: 'EMAIL_ADDRESS' }}
-            value={email}
-            onChange={newEmail => setEmail(newEmail)}
-            variant="outlined"
-          />
+          <FormControl
+            required
+            style={{ width: '100%', marginBottom: 4 }}
+          >
+            <TextField
+              id="email"
+              label="Email address"
+              value={email}
+              onChange={e => {
+                setEmail(e.target.value);
+                setError(null);
+              }}
+              variant="outlined"
+            />
+          </FormControl>
         </Grid>
         {error && (
           <Grid item>

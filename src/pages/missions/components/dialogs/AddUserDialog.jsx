@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { differenceBy } from 'lodash-es';
 
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -15,6 +16,7 @@ export default function AddUserDialog({
   open,
   onClose,
   missionGuid,
+  missionUsers,
 }) {
   const { data: userData } = useGetUsers();
 
@@ -31,21 +33,38 @@ export default function AddUserDialog({
     onClose();
   }
 
+  const allUsers = userData || [];
+  const availableUsers = differenceBy(allUsers, missionUsers, 'guid');
+  const noUsersAvailable = availableUsers.length === 0;
+
   return (
     <StandardDialog
       open={open}
       onClose={handleClose}
-      title="Add user to mission"
+      title={
+        noUsersAvailable
+          ? 'No users available'
+          : 'Add user to project'
+      }
     >
       <DialogContent>
-        <Text variant="body2">
-          Select a user to add to this project.
-        </Text>
-        <UserDropdown
-          users={userData}
-          value={selectedUser || ''}
-          onChange={userGuid => setSelectedUser(userGuid)}
-        />
+        {noUsersAvailable ? (
+          <Text variant="body2">
+            There are no users available. Users cannot be assigned to
+            the same project twice.
+          </Text>
+        ) : (
+          <>
+            <Text variant="body2">
+              Select a user to add to this project.
+            </Text>
+            <UserDropdown
+              users={availableUsers}
+              value={selectedUser || ''}
+              onChange={userGuid => setSelectedUser(userGuid)}
+            />
+          </>
+        )}
         {error && (
           <Alert
             style={{ marginTop: 16, marginBottom: 8 }}
