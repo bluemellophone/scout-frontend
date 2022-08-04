@@ -23,7 +23,7 @@ export default function Mission({ id: idFromProps }) {
 
   return (
     <div style={{ display: 'flex' }}>
-      <MissionDrawer />
+      <MissionDrawer missionData={data} />
       <MissionDashboard
         missionData={data}
         projectName={projectName}

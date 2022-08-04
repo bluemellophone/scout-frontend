@@ -16,13 +16,14 @@ const currrentProjectButtonId = 'current-project-button';
 
 const componentWidth = 320;
 
-export default function MissionSwitcher() {
+export default function MissionSwitcher({ missionData })
+{
   const { data: myMissions } = useGetMyMissions();
   const missionsForDisplay = myMissions.map(m => ({
     ...m,
     subtitle: `Created on ${formatDate(m?.created, true)}`,
   }));
-  const currentMission = missionsForDisplay[0]; // switch this to missionData once it includes creation date
+  const currentMission = missionsForDisplay.find(m => m?.guid === missionData?.guid);
 
   const [anchorEl, setAnchorEl] = useState(null);
 
