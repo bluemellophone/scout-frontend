@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { set } from 'lodash-es';
 import { useIntl, FormattedMessage } from 'react-intl';
-import { parseISO, format } from 'date-fns';
+import { add, parseISO, format } from 'date-fns';
 
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -23,8 +23,14 @@ function buildQuery(
   const formattedStartDate = startDate
     ? format(startDate, 'yyyy-MM-dd')
     : null;
-  const formattedEndDate = endDate
-    ? format(endDate, 'yyyy-MM-dd')
+
+  const adjustedEndDate = add(endDate, {
+    hours: 23,
+    minutes: 59,
+    seconds: 59,
+  });
+  const formattedEndDate = adjustedEndDate
+    ? format(adjustedEndDate, 'yyyy-MM-dd')
     : null;
 
   let descriptor;

@@ -5,17 +5,20 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
-import { format } from 'date-fns';
+import { startOfDay, endOfDay, format } from 'date-fns';
 
 import useOnEnter from '../../hooks/useOnEnter';
+import { isValidDate } from '../../utils/dateUtils';
 import Button from '../Button';
 import FilterButton from './components/FilterButton';
 
 const dateFormat = 'yyyy-MM-dd'; // US: MM/dd/yyyy
 
 function deriveChipLabel(value) {
-  const gte = value?.gte && format(value.gte, dateFormat);
-  const lte = value?.lte && format(value.lte, dateFormat);
+  const gte =
+    isValidDate(value?.gte) && format(value?.gte, dateFormat);
+  const lte =
+    isValidDate(value?.lte) && format(value?.lte, dateFormat);
 
   if (gte && lte) {
     return `${gte} to ${lte}`;
@@ -92,7 +95,8 @@ export default function DateFilter({
             label="Start date"
             value={startDate}
             onChange={nextStartDate => {
-              setStartDate(nextStartDate);
+              const adjustedStartDate = startOfDay(nextStartDate);
+              setStartDate(adjustedStartDate);
             }}
             style={{ margin: 0 }}
             KeyboardButtonProps={{
@@ -109,7 +113,8 @@ export default function DateFilter({
             label="End date"
             value={endDate}
             onChange={nextEndDate => {
-              setEndDate(nextEndDate);
+              const adjustedEndDate = endOfDay(nextEndDate);
+              setEndDate(adjustedEndDate);
             }}
             KeyboardButtonProps={{
               'aria-label': `Change ${label} end date`,
