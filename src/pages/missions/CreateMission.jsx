@@ -14,7 +14,7 @@ export default function CreateMission() {
   return (
     <SimpleFormPage
       title="Create a project"
-      instructions="Pick a short name for your new project."
+      instructions="Pick a short name for your new project. There are no character restrictions."
       buttonId="createMission"
       buttonText="Create project"
       onSubmit={() => {

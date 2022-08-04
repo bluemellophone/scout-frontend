@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { get } from 'lodash-es';
 
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -8,7 +7,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import Paper from '@material-ui/core/Paper';
 
-import useGetMe from '../../../models/users/useGetMe';
+import { formatDate } from '../../../utils/formatters';
+import useGetMyMissions from '../../../models/users/useGetMyMissions';
 import Link from '../../../components/Link';
 import ListTitle from './ListTitle';
 
@@ -16,16 +16,11 @@ const currrentProjectButtonId = 'current-project-button';
 
 const componentWidth = 320;
 
-export default function MissionDrawer({
-  missionData,
-  projectName,
-  createdDate,
-}) {
-  const { data: meData, loading } = useGetMe();
-  const missions = get(meData, 'owned_missions', []);
-  const missionsForDisplay = missions.map(m => ({
+export default function MissionSwitcher() {
+  const { data: myMissions } = useGetMyMissions();
+  const missionsForDisplay = myMissions.map(m => ({
     ...m,
-    subtitle: 'Created on January 24th, 2022',
+    subtitle: `Created on ${formatDate(m?.created, true)}`,
   }));
   const currentMission = missionsForDisplay[0]; // switch this to missionData once it includes creation date
 
@@ -57,13 +52,13 @@ export default function MissionDrawer({
             id={currrentProjectButtonId}
             aria-haspopup="listbox"
             aria-controls="current project"
-            aria-label={projectName}
+            aria-label={currentMission?.title}
             aria-expanded={anchorEl ? 'true' : undefined}
             onClick={handleClickListItem}
           >
             <ListItemText
-              primary={projectName}
-              secondary={`Created on ${createdDate}`}
+              primary={currentMission?.title}
+              secondary={currentMission?.subtitle}
             />
           </ListItem>
         </List>
