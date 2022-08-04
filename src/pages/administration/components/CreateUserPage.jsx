@@ -12,6 +12,8 @@ export default function CreateUserPage({
   loading,
   onSubmit,
   renderInputs = Function.prototype,
+  disableBack,
+  disableLogout,
 }) {
   const [email, setEmail] = useState('');
   const [password1, setPassword1] = useState('');
@@ -34,6 +36,8 @@ export default function CreateUserPage({
         }
       }}
       buttonProps={{ loading }}
+      disableBack={disableBack}
+      disableLogout={disableLogout}
     >
       <Grid
         container
