@@ -1,14 +1,14 @@
-# MWS-frontend
+# scout-frontend
 
-The frontend for MWS, written in React with Material UI components. This project is not in production yet, but it is under active development.
+The frontend for Scout, written in React with Material UI components. This project is not in production yet, but it is under active development.
 
 ## Contributions 
 
-Found a bug? Submit a report [here](https://github.com/WildMeOrg/mws-frontend/issues/new).
+Found a bug? Submit a report [here](https://github.com/WildMeOrg/scout-frontend/issues/new).
 
-Developer contributions are very much appreciated =). Take a gander at the [contribution guide](https://github.com/WildMeOrg/codex-frontend/blob/master/CONTRIBUTION_GUIDE.md). If you are a Python dev interested in helping with our project, take a look at the [backend](https://github.com/wildmeorg/houston). And if you are a data scientist/machine learning guru take a look at [WBIA](https://github.com/WildMeOrg/wildbook-ia). 
+Developer contributions are very much appreciated =). Take a gander at the [contribution guide](https://github.com/WildMeOrg/scout-frontend/blob/master/CONTRIBUTION_GUIDE.md). If you are a Python dev interested in helping with our project, take a look at the [backend](https://github.com/wildmeorg/houston). And if you are a data scientist/machine learning guru take a look at [WBIA](https://github.com/WildMeOrg/wildbook-ia). 
 
-We are also looking for help from designers and 3D modelers! Please send an email to ben@wildme.org if you are interested.
+We are also looking for help from graphic designers! Please send an email to ben@wildme.org if you are interested.
 
 ## Development 
 

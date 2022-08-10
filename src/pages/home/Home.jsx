@@ -14,7 +14,7 @@ export default function Home() {
   const { data: myMissions } = useGetMyMissions();
   const atLeastOneMission = myMissions.length > 0;
 
-  const isBasicUser = !data?.is_admin && !data?.is_data_manager;
+  const isBasicUser = !data?.is_admin;
 
   const fullName = get(data, ['full_name']);
 
