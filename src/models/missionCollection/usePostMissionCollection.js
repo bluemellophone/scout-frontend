@@ -6,7 +6,7 @@ export default function usePostMissionCollection() {
     deriveUrl: ({ missionGuid }) =>
       `/missions/${missionGuid}/tus/collect/`,
     deriveData: ({ transactionId }) => ({
-      description: 'MWS mission image upload',
+      description: 'Scout mission image upload',
       transaction_id: transactionId,
     }),
     deriveFetchKeys: ({ missionGuid }) => [

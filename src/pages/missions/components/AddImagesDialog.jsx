@@ -44,7 +44,7 @@ export default function AddImagesDialog({
         const newAssetSubmissionId = uuid();
 
         const uppyInstance = Uppy({
-          meta: { type: 'MWS mission image upload' },
+          meta: { type: 'Scout mission image upload' },
           restrictions: {
             allowedFileTypes: ['.jpg', '.jpeg', '.png'],
           },
