@@ -30,6 +30,7 @@ export default function CreateAdminUser() {
           window.location.href = '/administration';
         }
       }}
+      disableCreate={newUserRole === ''}
       loading={loading}
       error={error}
       renderInputs={() => (

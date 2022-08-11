@@ -12,6 +12,7 @@ export default function CreateUserPage({
   loading,
   onSubmit,
   renderInputs = Function.prototype,
+  disableCreate,
   disableBack,
   disableLogout,
 }) {
@@ -20,6 +21,11 @@ export default function CreateUserPage({
   const [password2, setPassword2] = useState('');
   const [formError, setFormError] = useState(null);
 
+  const disableAction =
+    email === '' ||
+    password1 === '' ||
+    password2 === '' ||
+    disableCreate;
   const displayError = formError || error;
 
   return (
@@ -35,7 +41,7 @@ export default function CreateUserPage({
           setFormError('Passwords do not match');
         }
       }}
-      buttonProps={{ loading }}
+      buttonProps={{ loading, disabled: disableAction }}
       disableBack={disableBack}
       disableLogout={disableLogout}
     >
