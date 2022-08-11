@@ -8,7 +8,7 @@ export default function CreateAdminUser() {
 
   return (
     <CreateUserPage
-      title="MWS Initialized!"
+      title="Scout Initialized!"
       instructions="First step is to create an admin user."
       onSubmit={(email, password) => {
         authenticate(email, password, '/');
