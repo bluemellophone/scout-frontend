@@ -1,8 +1,8 @@
 import React from 'react';
 
 import Popover from '@material-ui/core/Popover';
-import MenuList from '@material-ui/core/MenuList';
 
+import ActionsMenuList from './ActionsMenuList';
 import GlobalActionsMenuItems from './GlobalActionsMenuItems';
 
 export default function GlobalActionsMenu({ anchorEl, setAnchorEl }) {
@@ -20,12 +20,12 @@ export default function GlobalActionsMenu({ anchorEl, setAnchorEl }) {
       anchorEl={anchorEl}
       onClose={closePopover}
     >
-      <MenuList style={{ minWidth: 270 }}>
+      <ActionsMenuList>
         <GlobalActionsMenuItems
           noDivider
           closePopover={closePopover}
         />
-      </MenuList>
+      </ActionsMenuList>
     </Popover>
   );
 }

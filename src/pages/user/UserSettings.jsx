@@ -36,14 +36,14 @@ export default function UserSettings() {
 
   const emailChanged = data?.email !== email;
 
-  useDocumentTitle('Project settings');
+  useDocumentTitle('Profile settings');
 
   if (isLoading) return null; // make this nicer...
 
   return (
     <div style={{ padding: '32px 0 0 200px', maxWidth: 800 }}>
       <BodyHeader
-        title="User settings"
+        title="Profile settings"
         showBackButton
         backButtonHref="/"
         backButtonText="Return home"

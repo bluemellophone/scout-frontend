@@ -5,13 +5,13 @@ import { useTheme } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Popover from '@material-ui/core/Popover';
 import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
 import Divider from '@material-ui/core/Divider';
 import SettingsIcon from '@material-ui/icons/Settings';
 import ControlPanelIcon from '@material-ui/icons/PermDataSetting';
 import BulkImportIcon from '@material-ui/icons/PostAdd';
 import LogoutIcon from '@material-ui/icons/ExitToApp';
 
+import ActionsMenuList from '../ActionsMenuList';
 import Link from '../Link';
 import Text from '../Text';
 import defaultProfilePhoto from '../../assets/defaultProfile.jpg';
@@ -63,7 +63,7 @@ export default function NotificationsPane({
       anchorEl={anchorEl}
       onClose={closePopover}
     >
-      <MenuList style={{ minWidth: 270 }}>
+      <ActionsMenuList>
         <Link href="/" onClick={closePopover} noUnderline>
           <MenuItem style={{ minHeight: 'auto' }}>
             <Avatar
@@ -146,7 +146,7 @@ export default function NotificationsPane({
             </MenuItem>
           </button>
         </form>
-      </MenuList>
+      </ActionsMenuList>
     </Popover>
   );
 }
