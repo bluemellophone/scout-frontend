@@ -20,11 +20,22 @@ export default function GlobalActionsMenuItems({
   const theme = useTheme();
   return (
     <>
-      {!noDivider && <div style={{ display: 'flex', alignItems: 'center', width: '100%', padding: '16px 20px 8px 20px' }}>
-        <Divider style={{ flexGrow: 1, marginRight: 8 }} />
-        <Text variant="h6" style={{ whiteSpace: 'nowrap' }}>System administration</Text>
-        <Divider style={{ flexGrow: 1, marginLeft: 8 }} />
-      </div>}
+      {!noDivider && (
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            width: '100%',
+            padding: '16px 20px 8px 20px',
+          }}
+        >
+          <Divider style={{ flexGrow: 1, marginRight: 8 }} />
+          <Text variant="h6" style={{ whiteSpace: 'nowrap' }}>
+            System administration
+          </Text>
+          <Divider style={{ flexGrow: 1, marginLeft: 8 }} />
+        </div>
+      )}
       {isAdmin && (
         <Link
           href="/administration"
@@ -42,7 +53,9 @@ export default function GlobalActionsMenuItems({
             >
               <ManageUsersIcon />
             </div>
-            <Text style={{ margin: '0 8px' }}>User administration</Text>
+            <Text style={{ margin: '0 8px' }}>
+              User administration
+            </Text>
           </MenuItem>
         </Link>
       )}
