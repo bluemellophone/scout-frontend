@@ -3,12 +3,12 @@ import React, { useState } from 'react';
 import { useTheme } from '@material-ui/core/styles';
 import Popover from '@material-ui/core/Popover';
 import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
 import ProjectSettingsIcon from '@material-ui/icons/Build';
 import AddImagesIcon from '@material-ui/icons/AddAPhoto';
 
 import Link from '../../../components/Link';
 import Text from '../../../components/Text';
+import ActionsMenuList from '../../../components/ActionsMenuList';
 import GlobalActionsMenuItems from '../../../components/GlobalActionsMenuItems';
 import AddImagesDialog from './dialogs/AddImagesDialog';
 
@@ -43,7 +43,7 @@ export default function TaskActionsMenu({
         missionGuid={missionGuid}
         taskGuid={taskGuid}
       />
-      <MenuList style={{ minWidth: 270 }}>
+      <ActionsMenuList>
         <MenuItem
           style={{ minHeight: 'auto' }}
           onClick={() => {
@@ -82,7 +82,7 @@ export default function TaskActionsMenu({
           </MenuItem>
         </Link>
         <GlobalActionsMenuItems closePopover={closePopover} />
-      </MenuList>
+      </ActionsMenuList>
     </Popover>
   );
 }

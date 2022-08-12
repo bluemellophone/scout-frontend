@@ -99,7 +99,7 @@ export default function UserEditTable({ data, loading, usersError }) {
           margin: '36px 0 16px 4px',
         }}
       >
-        <Text variant="h5">User Management</Text>
+        <Text variant="h5">Manage users</Text>
         <ButtonLink
           href="/administration/create-new-user"
           display="primary"

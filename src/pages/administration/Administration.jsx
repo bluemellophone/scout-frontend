@@ -8,7 +8,7 @@ import useGetUsers from '../../models/users/useGetUsers';
 import UserEditTable from './UserEditTable';
 
 export default function UserManagement() {
-  useDocumentTitle('Administration');
+  useDocumentTitle('User Administration');
 
   const {
     data: userData,
@@ -19,7 +19,7 @@ export default function UserManagement() {
   return (
     <div style={{ margin: '32px 16px 0 200px', maxWidth: 800 }}>
       <BodyHeader
-        title="Administration"
+        title="User Administration"
         showBackButton
         backButtonHref="/"
         backButtonText="Return home"
