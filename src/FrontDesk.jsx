@@ -30,11 +30,7 @@ export default function FrontDesk() {
   }
 
   if (!initializedData?.initialized) return <CreateAdminUser />;
-
-  if (initializedError) {
-    document.title = 'Server Unavailable';
-    return <SadScreen variant="serverError" />;
-  }
+  if (initializedError) return <SadScreen variant="serverUnavailable" />;
   if (meDataError) return <UnauthenticatedSwitch />;
 
   return <AuthenticatedSwitch />;

@@ -1,56 +1,35 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { get } from 'lodash-es';
 import Paper from '@material-ui/core/Paper';
-import { useTheme } from '@material-ui/core/styles';
 
-import nature from '../assets/nature.jpg';
-import ocean from '../assets/ocean.jpeg';
-import savanna from '../assets/savanna.jpeg';
-import Link from './Link';
+import WildMeLogo from '../assets/wild-me-gradient-logo.png';
+import nothing from '../assets/nothing.jpeg';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 import Text from './Text';
+import ButtonLink from './ButtonLink';
 
 const variantMap = {
   genericError: {
-    photo: nature,
-    photoUrl: 'https://unsplash.com/photos/-f0YLss50Bs',
-    artistName: 'Kunal Shinde',
-    artistUrl: 'https://unsplash.com/@editholic7',
-    subtitleId: 'AN_ERROR_OCCURRED',
-    descriptionId: 'UNKNOWN_ERROR_DESCRIPTION',
+    documentTitle: 'An error occurred',
+    subtitle: 'An error occurred',
+    description: 'An unknown error occurred. If the problem persists, you can report this error on the Community Forums.',
   },
-  serverError: {
-    photo: nature,
-    photoUrl: 'https://unsplash.com/photos/-f0YLss50Bs',
-    artistName: 'Kunal Shinde',
-    artistUrl: 'https://unsplash.com/@editholic7',
-    subtitle: 'Server unavailable',
+  serverUnavailable: {
+    documentTitle: 'Server Unavailable',
+    subtitle: 'Server Unavailable',
     description:
       'The server could not be reached. Unfortunately, normal site functionality is currently unavailable. Check back at a later date or try refreshing the page.',
   },
-  notFoundOcean: {
-    photo: ocean,
-    photoUrl: 'https://unsplash.com/photos/k0Ynnf2CbKw',
-    artistName: 'Pierre Leverrier',
-    artistUrl: 'https://unsplash.com/@pierre_leverrier',
+  notFound: {
+    documentTitle: 'Page not found',
     title: '404',
-    subtitleId: 'PAGE_NOT_FOUND',
-    descriptionId: '404_DETAILS',
-  },
-  notFoundSavanna: {
-    photo: savanna,
-    photoUrl: 'https://unsplash.com/photos/92MgFhlWD-8',
-    artistName: 'David Clode',
-    artistUrl: 'https://unsplash.com/@davidclode',
-    title: '404',
-    subtitleId: 'PAGE_NOT_FOUND',
-    descriptionId: '404_DETAILS',
+    subtitle: 'Page not found',
+    description: 'The page you are looking for may have been removed or may be temporarily unavailable.',
   },
 };
 
 export default function SadScreen(props) {
   const { variant } = props;
-  const theme = useTheme();
 
   const screenMetadata = variantMap[variant];
 
@@ -59,74 +38,50 @@ export default function SadScreen(props) {
     return propertyFromProps || get(screenMetadata, property);
   }
 
-  function renderTranslatableText(propertyKey) {
-    const translatePropertyKey = `${propertyKey}Id`;
-    const translateProperty = getProperty(translatePropertyKey);
-    return translateProperty ? (
-      <FormattedMessage id={translateProperty} />
-    ) : (
-      getProperty(propertyKey)
-    );
-  }
+  useDocumentTitle(getProperty('documentTitle'));
 
   return (
     <div
       style={{
         width: '100%',
         height: '100vh',
-        backgroundImage: `url(${getProperty('photo')})`,
+        backgroundImage: `url(${nothing})`,
         backgroundSize: 'cover',
         position: 'relative',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
       }}
     >
-      <div
+      <Paper
         style={{
-          height: '100vh',
+          margin: '0 20px 80px 20px',
           display: 'flex',
-          alignItems: 'flex-start',
-          justifyContent: 'center',
+          flexDirection: 'column',
+          alignItems: 'center',
+          textAlign: 'center',
+          backgroundColor: '#ffffffc2',
+          padding: 20,
         }}
       >
-        <Paper
-          style={{
-            margin: '100px 20px 0 20px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            textAlign: 'center',
-            backgroundColor: '#ffffffc2',
-            padding: 20,
-          }}
-        >
-          <Text variant="h2" component="h2">
-            {renderTranslatableText('title')}
-          </Text>
-          <Text variant="h4">
-            {renderTranslatableText('subtitle')}
-          </Text>
-          <Text style={{ maxWidth: 400, marginTop: 16 }}>
-            {renderTranslatableText('description')}
-          </Text>
-        </Paper>
-      </div>
-      <div
-        style={{
-          position: 'absolute',
-          bottom: 12,
-          left: 12,
-          color: theme.palette.common.white,
-        }}
-      >
-        <Text>
-          {'Photo by '}
-          <Link external href={getProperty('artistUrl')}>
-            {getProperty('artistName')}
-          </Link>
-          {' on '}
-          <Link external href={getProperty('photoUrl')}>
-            Unsplash
-          </Link>
+        <Text variant="h2" component="h2">
+          {getProperty('title')}
         </Text>
+        <Text variant="h4">
+          {getProperty('subtitle')}
+        </Text>
+        <Text style={{ maxWidth: 400, marginTop: 16 }}>
+          {getProperty('description')}
+        </Text>
+        <ButtonLink href="/" display="primary" style={{ marginTop: 16 }}>Return home</ButtonLink>
+      </Paper>
+      <div style={{ position: 'absolute', bottom: 20, left: 20, display: 'flex', alignItems: 'center' }}>
+        <img
+          src={WildMeLogo}
+          style={{ width: 48, marginRight: 12 }}
+          alt="Wild Me logo"
+        />
+        <Text variant="h5">Wild Me Scout</Text>
       </div>
     </div>
   );
