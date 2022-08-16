@@ -12,7 +12,8 @@ const variantMap = {
   genericError: {
     documentTitle: 'An error occurred',
     subtitle: 'An error occurred',
-    description: 'An unknown error occurred. If the problem persists, you can report this error on the Community Forums.',
+    description:
+      'An unknown error occurred. If the problem persists, you can report this error on the Community Forums.',
   },
   serverUnavailable: {
     documentTitle: 'Server Unavailable',
@@ -24,12 +25,13 @@ const variantMap = {
     documentTitle: 'Page not found',
     title: '404',
     subtitle: 'Page not found',
-    description: 'The page you are looking for may have been removed or may be temporarily unavailable.',
+    description:
+      'The page you are looking for may have been removed or may be temporarily unavailable.',
   },
 };
 
 export default function SadScreen(props) {
-  const { variant } = props;
+  const { variant, children } = props;
 
   const screenMetadata = variantMap[variant];
 
@@ -50,7 +52,7 @@ export default function SadScreen(props) {
         position: 'relative',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
       }}
     >
       <Paper
@@ -67,15 +69,28 @@ export default function SadScreen(props) {
         <Text variant="h2" component="h2">
           {getProperty('title')}
         </Text>
-        <Text variant="h4">
-          {getProperty('subtitle')}
-        </Text>
+        <Text variant="h4">{getProperty('subtitle')}</Text>
         <Text style={{ maxWidth: 400, marginTop: 16 }}>
           {getProperty('description')}
         </Text>
-        <ButtonLink href="/" display="primary" style={{ marginTop: 16 }}>Return home</ButtonLink>
+        {children}
+        <ButtonLink
+          href="/"
+          display="primary"
+          style={{ marginTop: 16 }}
+        >
+          Return home
+        </ButtonLink>
       </Paper>
-      <div style={{ position: 'absolute', bottom: 20, left: 20, display: 'flex', alignItems: 'center' }}>
+      <div
+        style={{
+          position: 'absolute',
+          bottom: 20,
+          left: 20,
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
         <img
           src={WildMeLogo}
           style={{ width: 48, marginRight: 12 }}
