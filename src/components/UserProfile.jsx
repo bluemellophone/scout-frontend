@@ -53,8 +53,8 @@ export default function UserProfile({
   if (!userData)
     return (
       <SadScreen
-        variant="notFoundOcean"
-        subtitleId="USER_NOT_FOUND"
+        variant="notFound"
+        subtitle="User not found"
       />
     );
 

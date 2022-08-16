@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import Fade from '@material-ui/core/Fade';
 import { TransitionGroup } from 'react-transition-group';
 
+import SadScreen from './components/SadScreen';
 import CreateMission from './pages/missions/CreateMission';
 import Mission from './pages/missions/Mission';
 import MissionSettings from './pages/missions/MissionSettings';
@@ -12,7 +13,6 @@ import Home from './pages/home/Home';
 import UserSettings from './pages/user/UserSettings';
 import CreateUser from './pages/administration/CreateUser';
 import Administration from './pages/administration/Administration';
-import FourOhFour from './pages/fourohfour/FourOhFour';
 import { defaultCrossfadeDuration } from './constants/defaults';
 
 export default function AuthenticatedSwitch() {
@@ -78,7 +78,7 @@ export default function AuthenticatedSwitch() {
                       <Home />
                     </Route>
                     <Route>
-                      <FourOhFour />
+                      <SadScreen variant="notFound" />
                     </Route>
                   </Switch>
                 </div>

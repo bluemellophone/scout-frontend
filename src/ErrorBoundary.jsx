@@ -7,10 +7,8 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-import BaoSpills from './components/svg/BaoSpills';
-import ButtonLink from './components/ButtonLink';
-import Button from './components/Button';
 import Text from './components/Text';
+import SadScreen from './components/SadScreen';
 
 const initialState = {
   hasError: false,
@@ -33,90 +31,34 @@ class ErrorBoundary extends React.Component {
   }
 
   render() {
-    if (!this.state.hasError) {
-      return this.props.children;
-    }
-
-    const { theme } = this.props;
-    const themeColor = theme.palette.primary.main;
+    if (!this.state.hasError) return this.props.children;
 
     return (
-      <div
-        style={{
-          width: '100%',
-          height: '100vh',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
+      <SadScreen
+        variant="genericError"
+        description="If the problem persists, you can report this error on the Community Forums."
       >
-        <BaoSpills
+        <div
           style={{
-            maxWidth: 580,
-            width: '80vw',
-            margin: '60px 0 40px 0',
+            marginTop: 20,
+            width: '100%',
+            maxWidth: 400,
+            textAlign: 'left',
           }}
-          themeColor={themeColor}
-        />
-        <div>
-          <Text variant="h4" id="AN_ERROR_OCCURRED" />
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-            }}
-          >
-            <Button
-              style={{
-                width: '100%',
-                marginTop: 12,
-              }}
-              display="primary"
-              onClick={() => {
-                window.location.reload();
-              }}
-              id="RELOAD_THE_PAGE"
-            />
-            <ButtonLink
-              style={{
-                width: '100%',
-                marginTop: 8,
-              }}
-              display="secondary"
-              onClick={() => this.setState(initialState)}
-              href="/"
-              id="RETURN_HOME"
-            />
-            <ButtonLink
-              style={{
-                width: '100%',
-                marginTop: 8,
-              }}
-              href="https://community.wildme.org/"
-              display="tertiary"
-              external
-              newTab
-              id="REPORT_TO_COMMUNITY"
-            />
-          </div>
-          <div
-            style={{ marginTop: 20, width: '100%', maxWidth: 400 }}
-          >
-            <Accordion>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Text variant="h6" id="VIEW_ERROR_DETAILS" />
-              </AccordionSummary>
-              <AccordionDetails
-                style={{ display: 'flex', flexDirection: 'column' }}
-              >
-                <Text variant="h5">{this.state.errorName}</Text>
-                <Text variant="body2">{this.state.errorMessage}</Text>
-              </AccordionDetails>
-            </Accordion>
-          </div>
+        >
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Text variant="h6">View error details</Text>
+            </AccordionSummary>
+            <AccordionDetails
+              style={{ display: 'flex', flexDirection: 'column' }}
+            >
+              <Text variant="h5">{this.state.errorName}</Text>
+              <Text variant="body2">{this.state.errorMessage}</Text>
+            </AccordionDetails>
+          </Accordion>
         </div>
-      </div>
+      </SadScreen>
     );
   }
 }
