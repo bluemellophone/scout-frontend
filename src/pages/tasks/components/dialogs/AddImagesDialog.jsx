@@ -118,6 +118,7 @@ export default function AddImagesDialog({
                 ];
                 const result = await postAssetsToTask({
                   taskGuid,
+                  missionGuid,
                   operations,
                 });
                 if (result?.status === 200) handleClose();

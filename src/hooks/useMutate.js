@@ -9,6 +9,10 @@ const methods = {
   delete: 'delete',
 };
 
+function cleanArray(input) {
+  return input.filter(i => Boolean(i));
+}
+
 function formatError(failureObject) {
   try {
     const jsError = failureObject?.error;
@@ -62,18 +66,18 @@ export default function useMutate({
       const status = response?.status;
       setStatusCode(status);
       if (status === 200 || status === 204) {
-        const invalidations = [
+        const invalidations = cleanArray([
           ...invalidateKeys,
           ...deriveInvalidateKeys(mutationArgs),
-        ];
+        ]);
         invalidations.forEach(queryKey => {
           queryClient.invalidateQueries(queryKey);
         });
 
-        const fetches = [
+        const fetches = cleanArray([
           ...fetchKeys,
           ...deriveFetchKeys(mutationArgs),
-        ];
+        ]);
 
         /* eslint-disable */
         for (const queryKey of fetches) {
@@ -83,7 +87,7 @@ export default function useMutate({
 
         if (displayedError) setDisplayedError(null);
         setSuccess(true);
-        onSuccess(response);
+        onSuccess(response, mutationArgs);
       }
 
       return response;

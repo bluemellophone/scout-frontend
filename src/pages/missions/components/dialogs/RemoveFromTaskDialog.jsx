@@ -11,12 +11,13 @@ import Text from '../../../../components/Text';
 import Alert from '../../../../components/Alert';
 import TaskDropdown from '../../../../components/TaskDropdown';
 
-export default function AddToTaskDialog({
+export default function RemoveFromTaskDialog({
   open,
   onClose,
   selectedImages,
   missionGuid,
-}) {
+})
+{
   const [selectedTask, setSelectedTask] = useState('');
 
   const { data: missionData } = useGetMission(missionGuid);
@@ -26,7 +27,8 @@ export default function AddToTaskDialog({
     error,
   } = usePostAssetsToTask();
 
-  function handleClose() {
+  function handleClose()
+  {
     setSelectedTask('');
     onClose();
   }
@@ -35,12 +37,12 @@ export default function AddToTaskDialog({
     <StandardDialog
       open={open}
       onClose={handleClose}
-      title="Add to task"
+      title="Remove from task"
       PaperProps={{ style: { width: 400 } }}
     >
       <DialogContent>
         <Text variant="body2" style={{ marginBottom: 12 }}>
-          {`Select a task to add ${selectedImages?.length} images.`}
+          {`Select a task to remove ${selectedImages?.length} images. If one of the images you selected is not in the task, it will be skipped over.`}
         </Text>
         <TaskDropdown
           tasks={missionData?.tasks}
@@ -51,7 +53,7 @@ export default function AddToTaskDialog({
           <Alert
             style={{ marginTop: 16, marginBottom: 8 }}
             severity="error"
-            title="Failed to add images to task"
+            title="Failed to remove images from task"
           >
             {error}
           </Alert>
@@ -65,10 +67,11 @@ export default function AddToTaskDialog({
           display="primary"
           loading={isLoading}
           disabled={selectedTask === '' || isLoading}
-          onClick={async () => {
+          onClick={async () =>
+          {
             const operations = [
               {
-                op: 'union',
+                op: 'difference',
                 path: '/assets',
                 value: selectedImages,
               },
@@ -77,11 +80,12 @@ export default function AddToTaskDialog({
               taskGuid: selectedTask,
               missionGuid,
               operations,
+              goToTask: false,
             });
             if (result?.status === 200) handleClose();
           }}
         >
-          Add to task
+          Remove from task
         </Button>
       </DialogActions>
     </StandardDialog>
