@@ -9,6 +9,7 @@ import Text from '../../../components/Text';
 import BulkAddTagDialog from './BulkAddTagDialog';
 import CreateTaskDialog from './CreateTaskDialog';
 import AddToTaskDialog from './dialogs/AddToTaskDialog';
+import RemoveFromTaskDialog from './dialogs/RemoveFromTaskDialog';
 
 export default function BatchUpdateFooter({
   open,
@@ -24,6 +25,7 @@ export default function BatchUpdateFooter({
   const [addingTag, setAddingTag] = useState(false);
   const [creatingTask, setCreatingTask] = useState(false);
   const [addingToTask, setAddingToTask] = useState(false);
+  const [removingFromTask, setRemovingFromTask] = useState(false);
   const [selectedImageCount, setSelectedImageCount] = useState(null);
 
   const missionGuid = missionData?.guid;
@@ -73,6 +75,12 @@ export default function BatchUpdateFooter({
         missionGuid={missionGuid}
         open={addingToTask}
         onClose={() => setAddingToTask(false)}
+      />
+      <RemoveFromTaskDialog
+        selectedImages={selectedImages}
+        missionGuid={missionGuid}
+        open={removingFromTask}
+        onClose={() => setRemovingFromTask(false)}
       />
       <div
         style={{
@@ -125,6 +133,15 @@ export default function BatchUpdateFooter({
             }}
           >
             Add to task
+          </MenuItem>
+          <MenuItem
+            onClick={() =>
+            {
+              setRemovingFromTask(true);
+              setAnchorEl(null);
+            }}
+          >
+            Remove from task
           </MenuItem>
         </Menu>
       </div>
