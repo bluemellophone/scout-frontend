@@ -1,35 +1,16 @@
-import axios from 'axios';
-import { useQueryClient, useMutation } from 'react-query';
-import { getTaskQueryKey } from '../../constants/queryKeys';
+import {
+  getMissionQueryKey,
+  getTaskQueryKey,
+} from '../../constants/queryKeys';
+import { usePatch } from '../../hooks/useMutate';
 
 export default function usePatchTask() {
-  const queryClient = useQueryClient();
-
-  const mutation = useMutation(async ({ taskId, operations }) => {
-    const result = await axios.request({
-      url: `${__houston_url__}/api/v1/missions/tasks/${taskId}`,
-      withCredentials: true,
-      method: 'patch',
-      data: operations,
-    });
-
-    if (result?.status === 200) {
-      queryClient.invalidateQueries(getTaskQueryKey(taskId));
-    }
-
-    return result;
+  return usePatch({
+    deriveUrl: ({ taskGuid }) => `/missions/tasks/${taskGuid}`,
+    deriveData: ({ operations }) => operations,
+    deriveInvalidateKeys: ({ taskGuid, missionGuid }) => [
+      getTaskQueryKey(taskGuid),
+      getMissionQueryKey(missionGuid),
+    ],
   });
-
-  const patchTask = (taskId, operations) =>
-    mutation.mutateAsync({ taskId, operations });
-
-  const error = mutation?.error
-    ? mutation?.error.toJSON().message
-    : null;
-
-  return {
-    ...mutation,
-    patchTask,
-    error,
-  };
 }
