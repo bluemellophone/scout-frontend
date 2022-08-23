@@ -26,7 +26,7 @@ export default function TaskSettings() {
   const { id: taskGuid } = useParams();
 
   const { data, isLoading } = useGetTask(taskGuid);
-  const { patchTask } = usePatchTask();
+  const { mutate: patchTask } = usePatchTask();
 
   function refreshTaskData() {
     const queryKey = getTaskQueryKey(taskGuid);
@@ -55,6 +55,8 @@ export default function TaskSettings() {
     return u;
   });
 
+  const missionGuid = get(data, ['mission', 'guid']);
+
   return (
     <div style={{ padding: '32px 0 0 200px', maxWidth: 800 }}>
       <AddUserDialog
@@ -62,7 +64,7 @@ export default function TaskSettings() {
         onClose={() => setAddingUser(false)}
         taskUsers={safeUsers}
         taskGuid={taskGuid}
-        missionGuid={get(data, ['mission', 'guid'])}
+        missionGuid={missionGuid}
         refreshTaskData={refreshTaskData}
       />
       <RemoveUserDialog
@@ -105,7 +107,11 @@ export default function TaskSettings() {
               path: '/title',
               value: title,
             };
-            patchTask(taskGuid, [titlePatchOp]);
+            patchTask({
+              taskGuid,
+              missionGuid,
+              operations: [titlePatchOp],
+            });
           }}
         >
           Rename

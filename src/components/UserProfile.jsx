@@ -51,12 +51,7 @@ export default function UserProfile({
   const highestRoleLabelId = getHighestRoleLabelId(userData);
 
   if (!userData)
-    return (
-      <SadScreen
-        variant="notFound"
-        subtitle="User not found"
-      />
-    );
+    return <SadScreen variant="notFound" subtitle="User not found" />;
 
   return (
     <MainColumn fullWidth>
