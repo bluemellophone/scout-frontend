@@ -124,7 +124,6 @@ module.exports = env => {
           },
           title: '',
           filename: 'index.html',
-          publicPath: '/',
           minify: {
             useShortDoctype: true,
             keepClosingSlash: true,
