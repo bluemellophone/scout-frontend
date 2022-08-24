@@ -3,6 +3,7 @@ import { get } from 'lodash-es';
 import { v4 as uuid } from 'uuid';
 import Uppy from '@uppy/core';
 import Tus from '@uppy/tus';
+import { useHistory } from 'react-router-dom';
 
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -20,6 +21,7 @@ export default function AddImagesDialog({
   onClose,
   missionGuid,
 }) {
+  const history = useHistory();
   const {
     isLoading,
     mutate: postMissionCollection,
@@ -125,7 +127,10 @@ export default function AddImagesDialog({
               missionGuid,
               transactionId: assetSubmissionId,
             });
-            if (result?.status === 200) onCloseDialog();
+            if (result?.status === 200) {
+              onCloseDialog();
+              history.push(`/adding-images/${missionGuid}`);
+            }
           }}
         >
           Add images

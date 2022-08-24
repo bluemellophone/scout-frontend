@@ -48,12 +48,7 @@ module.exports = env => {
       },
       module: {
         rules: [
-          {
-            test: /\.m?js/,
-            resolve: {
-              fullySpecified: false,
-            },
-          },
+          { test: /\.m?js/, resolve: { fullySpecified: false } },
           {
             test: /\.(js|mjs|jsx|ts|tsx)$/,
             include: path.resolve(rootDir, 'src'),
@@ -73,21 +68,12 @@ module.exports = env => {
           {
             test: /\.(gif|jpg|jpeg|png|webm)$/,
             include: [resolve(rootDir, 'src')],
-            use: {
-              loader: 'file-loader',
-              options: {},
-            },
+            use: { loader: 'file-loader', options: {} },
           },
-          {
-            test: /\.svg$/,
-            use: ['file-loader', '@svgr/webpack'],
-          },
+          { test: /\.svg$/, use: ['file-loader', '@svgr/webpack'] },
           {
             test: /\.(woff|woff2|ttf|eot)$/,
-            use: {
-              loader: 'file-loader',
-              options: {},
-            },
+            use: { loader: 'file-loader', options: {} },
           },
         ],
       },
@@ -112,10 +98,7 @@ module.exports = env => {
               chunks: 'initial',
               priority: -10,
             },
-            icons: {
-              name: 'icons',
-              test: /[\\/]static\/icons[\\/]/,
-            },
+            icons: { name: 'icons', test: /[\\/]static\/icons[\\/]/ },
           },
         },
       },

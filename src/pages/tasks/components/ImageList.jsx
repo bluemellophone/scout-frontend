@@ -27,7 +27,7 @@ export default function ImageList({
           margin: '20px 0 8px 12px',
         }}
       >
-        <Text variant="h6">{`${assets.length} images`}</Text>
+        <Text variant="h6">{`${taskData?.asset_count} images`}</Text>
         <div>
           <IconButton size="small">
             <PreviousImageIcon />

@@ -24,25 +24,13 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FilterList from '@material-ui/icons/FilterList';
 import CloudDownload from '@material-ui/icons/CloudDownload';
 
+import { cellRendererTypes } from '../../../../components/dataDisplays/cellRenderers';
 import Text from '../../../../components/Text';
 import Keywords from '../../../../components/Keywords';
 import TaskChips from '../../../../components/TaskChips';
-import { formatDate } from '../../../../utils/formatters';
 import TablePaginationActions from './TablePaginationActions';
 import SelectableRow from './SelectableRow';
 import sendCsv from './sendCsv';
-
-const dateRendererOptions = {
-  customBodyRender: timestamp => (
-    <Text variant="body2">{formatDate(timestamp)}</Text>
-  ),
-};
-
-const countRendererOptions = {
-  customBodyRender: count => (
-    <Text variant="body2">{count.toString()}</Text>
-  ),
-};
 
 function getCellAlignment(cellIndex, columnDefinition) {
   if (columnDefinition.align) return columnDefinition.align;
@@ -94,14 +82,18 @@ export default function ImageTable({
       label: 'Date added',
       align: 'left',
       sortable: true,
-      options: dateRendererOptions,
+      options: {
+        cellRenderer: cellRendererTypes.date,
+      },
     },
     {
       name: 'updated',
       label: 'Last updated',
       align: 'left',
       sortable: true,
-      options: dateRendererOptions,
+      options: {
+        cellRenderer: cellRendererTypes.date,
+      },
     },
     {
       name: 'tasks',
@@ -123,7 +115,9 @@ export default function ImageTable({
       label: 'Annotation count',
       align: 'left',
       sortable: false,
-      options: countRendererOptions,
+      options: {
+        cellRenderer: cellRendererTypes.integer,
+      },
     },
     {
       name: 'tags',

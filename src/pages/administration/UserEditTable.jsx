@@ -5,8 +5,8 @@ import Grid from '@material-ui/core/Grid';
 import Skeleton from '@material-ui/lab/Skeleton';
 import AddIcon from '@material-ui/icons/Add';
 
+import { cellRendererTypes } from '../../components/dataDisplays/cellRenderers';
 import DataDisplay from '../../components/dataDisplays/DataDisplay';
-import ActionIcon from '../../components/ActionIcon';
 import ButtonLink from '../../components/ButtonLink';
 import UserDeleteDialog from '../../components/dialogs/UserDeleteDialog';
 import Text from '../../components/Text';
@@ -29,21 +29,11 @@ export default function UserEditTable({ data, loading, usersError }) {
     {
       name: 'email',
       label: 'Email address',
-      options: {
-        customBodyRender: email => (
-          <Text variant="body2">{email}</Text>
-        ),
-      },
     },
     {
       name: 'full_name',
       align: 'left',
       label: 'Full name',
-      options: {
-        customBodyRender: fullName => (
-          <Text variant="body2">{fullName}</Text>
-        ),
-      },
     },
     {
       name: 'roles',
@@ -59,24 +49,29 @@ export default function UserEditTable({ data, loading, usersError }) {
       align: 'right',
       label: intl.formatMessage({ id: 'ACTIONS' }),
       options: {
-        customBodyRender: (_, user) => (
-          <div
-            style={{ display: 'flex', justifyContent: 'flex-end' }}
-          >
-            <ActionIcon
-              variant="password"
-              onClick={() => setResetUser(user)}
-            />
-            <ActionIcon
-              variant="edit"
-              onClick={() => setEditUser(user)}
-            />
-            <ActionIcon
-              variant="delete"
-              onClick={() => setDeleteUser(user)}
-            />
-          </div>
-        ),
+        cellRenderer: cellRendererTypes.actions,
+        cellRendererProps: {
+          actions: [
+            {
+              variant: 'edit',
+              id: 'edit-user-data',
+              label: 'Edit user data',
+              onClick: (_, user) => setEditUser(user),
+            },
+            {
+              variant: 'password',
+              id: 'change-password',
+              label: 'Change password',
+              onClick: (_, user) => setResetUser(user),
+            },
+            {
+              variant: 'delete',
+              id: 'delete-account',
+              label: 'Delete account',
+              onClick: (_, user) => setDeleteUser(user),
+            },
+          ],
+        },
       },
     },
   ];
