@@ -5,14 +5,12 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
 
+import { cellRenderers } from '../../../../components/dataDisplays/cellRenderers';
+
 function getCellAlignment(cellIndex, columnDefinition) {
   if (columnDefinition.align) return columnDefinition.align;
   if (cellIndex === 0) return undefined;
   return 'right';
-}
-
-function defaultCellRenderer(value) {
-  return value || '';
 }
 
 export default function SelectableRow({
@@ -34,11 +32,20 @@ export default function SelectableRow({
       </TableCell>
       {columns.map((c, i) => {
         const cellValue = get(datum, c.name);
-        const cellRenderer = get(
+
+        const requestedCellRenderer = get(
           c,
-          'options.customBodyRender',
-          defaultCellRenderer,
+          'options.cellRenderer',
+          'default',
         );
+        const cellRendererProps = get(
+          c,
+          'options.cellRendererProps',
+          {},
+        );
+        const customCellRenderer = get(c, 'options.customBodyRender');
+        const RequestedCellRenderer =
+          cellRenderers[requestedCellRenderer];
 
         return (
           <TableCell
@@ -48,7 +55,15 @@ export default function SelectableRow({
               ...cellStyles,
             }}
           >
-            {cellRenderer(cellValue, datum)}
+            {customCellRenderer ? (
+              customCellRenderer(cellValue, datum)
+            ) : (
+              <RequestedCellRenderer
+                value={cellValue}
+                datum={datum}
+                {...cellRendererProps}
+              />
+            )}{' '}
           </TableCell>
         );
       })}
