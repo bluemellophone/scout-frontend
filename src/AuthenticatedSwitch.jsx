@@ -4,6 +4,7 @@ import Fade from '@material-ui/core/Fade';
 import { TransitionGroup } from 'react-transition-group';
 
 import SadScreen from './components/SadScreen';
+import AddingImages from './pages/addingImages/AddingImages';
 import CreateMission from './pages/missions/CreateMission';
 import Mission from './pages/missions/Mission';
 import MissionSettings from './pages/missions/MissionSettings';
@@ -61,6 +62,9 @@ export default function AuthenticatedSwitch() {
                     </Route>
                     <Route path="/projects/settings/:id">
                       <MissionSettings />
+                    </Route>
+                    <Route path="/adding-images/:id">
+                      <AddingImages />
                     </Route>
                     <Route path="/projects/:id">
                       <Mission />
