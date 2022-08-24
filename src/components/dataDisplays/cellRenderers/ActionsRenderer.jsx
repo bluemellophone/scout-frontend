@@ -1,95 +1,56 @@
-import React, { useMemo } from 'react';
-import ActionIcon from '../../ActionIcon';
+import React from 'react';
 
-function convertClickHandler(clickProp, value, datum) {
-  if (clickProp && typeof clickProp === 'function') {
-    return () => clickProp(value, datum);
-  }
-  return clickProp;
-}
+import ViewIcon from '@material-ui/icons/Visibility';
 
-function convertHref(hrefProp, value, datum) {
-  return typeof hrefProp === 'function'
-    ? hrefProp(value, datum)
-    : hrefProp;
-}
+import Button from '../../Button';
+import ButtonLink from '../../ButtonLink';
+import ButtonMenu from '../../ButtonMenu';
+
+const buttonStyles = {
+  borderRadius: 3,
+  margin: '4px 0',
+  padding: '0 8px',
+};
+const viewButtonProps = {
+  size: 'small',
+  display: 'panel',
+  style: { ...buttonStyles, marginRight: 4 },
+  startIcon: <ViewIcon />,
+};
 
 export default function ActionsRenderer({
   value,
   datum,
   onView,
   viewHref,
-  viewItemProps = {},
-  onEdit,
-  editHref,
-  editItemProps = {},
-  onDelete,
-  deleteHref,
-  deleteItemProps = {},
-  children,
+  actions,
 }) {
-  const showView = viewHref || onView;
-  const showEdit = editHref || onEdit;
-  const showDelete = deleteHref || onDelete;
-
-  const {
-    handleView,
-    handleEdit,
-    handleDelete,
-    finalViewHref,
-    finalEditHref,
-    finalDeleteHref,
-  } = useMemo(
-    () => ({
-      handleView: convertClickHandler(onView, value, datum),
-      handleEdit: convertClickHandler(onEdit, value, datum),
-      handleDelete: convertClickHandler(onDelete, value, datum),
-      finalViewHref: convertHref(viewHref, value, datum),
-      finalEditHref: convertHref(editHref, value, datum),
-      finalDeleteHref: convertHref(deleteHref, value, datum),
-    }),
-    [
-      value,
-      datum,
-      onView,
-      onEdit,
-      onDelete,
-      viewHref,
-      editHref,
-      deleteHref,
-    ],
-  );
+  const clickyActions = actions.map(action => ({
+    ...action,
+    onClick: () => action?.onClick(value, datum),
+  }));
 
   return (
-    <div>
-      {showView && (
-        <ActionIcon
-          variant="view"
-          labelId="VIEW"
-          {...viewItemProps}
-          href={finalViewHref}
-          onClick={handleView}
-        />
+    <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+      {onView && (
+        <Button onClick={onView} {...viewButtonProps}>
+          View
+        </Button>
       )}
-      {showEdit && (
-        <ActionIcon
-          variant="edit"
-          labelId="EDIT"
-          {...editItemProps}
-          href={finalEditHref}
-          onClick={handleEdit}
-        />
+      {viewHref && (
+        <ButtonLink href={viewHref} {...viewButtonProps}>
+          View
+        </ButtonLink>
       )}
-      {showDelete && (
-        <ActionIcon
-          variant="delete"
-          labelId="DELETE"
-          {...deleteItemProps}
-          href={finalDeleteHref}
-          onClick={handleDelete}
-        />
-      )}
-      {children}
+      <ButtonMenu
+        size="small"
+        display="panel"
+        buttonId="actions"
+        actions={clickyActions}
+        style={buttonStyles}
+      >
+        Actions
+      </ButtonMenu>
     </div>
   );
 }
