@@ -10,6 +10,7 @@ import BodyHeader from '../../components/BodyHeader';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
 import PasswordVerificationAlert from '../../components/PasswordVerificationAlert';
+import ChangeUserPasswordDialog from '../../components/dialogs/ChangeUserPasswordDialog';
 
 export default function UserSettings() {
   const { data, isLoading } = useGetMe();
@@ -23,6 +24,7 @@ export default function UserSettings() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [changePasswordOpen, setChangePasswordOpen] = useState(false);
 
   useEffect(
     () => {
@@ -42,6 +44,12 @@ export default function UserSettings() {
 
   return (
     <div style={{ padding: '32px 0 0 200px', maxWidth: 800 }}>
+      <ChangeUserPasswordDialog
+        title="Change password"
+        open={changePasswordOpen}
+        onClose={() => setChangePasswordOpen(false)}
+        userGuid={userGuid}
+      />
       <BodyHeader
         title="Profile settings"
         showBackButton
@@ -117,6 +125,17 @@ export default function UserSettings() {
           </Button>
         </PasswordVerificationAlert>
       )}
+      <Text style={{ fontWeight: 'bold', margin: '24px 0 4px 4px' }}>
+        Update your password
+      </Text>
+      <div style={{ display: 'flex' }}>
+        <Button
+          display="primary"
+          onClick={() => setChangePasswordOpen(true)}
+        >
+          Change password
+        </Button>
+      </div>
     </div>
   );
 }

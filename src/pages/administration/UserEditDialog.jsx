@@ -60,13 +60,13 @@ export default function UserEditDialog({ open, onClose, userData }) {
       ...rolePaths,
     ];
 
-    const success = await patchUser({
+    const result = await patchUser({
       userGuid: userData?.guid,
       operations,
       password,
     });
 
-    if (success) cleanupAndClose();
+    if (result?.status === 200) cleanupAndClose();
   }
 
   return (
@@ -76,7 +76,7 @@ export default function UserEditDialog({ open, onClose, userData }) {
         if (reason === 'backdropClick') return;
         cleanupAndClose();
       }}
-      titleId="EDIT_USER"
+      title="Edit user"
       maxWidth="xs"
     >
       <div style={{ padding: '12px 24px' }}>
@@ -126,11 +126,13 @@ export default function UserEditDialog({ open, onClose, userData }) {
       </div>
       <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
         <Button
+          disabled={password === ''}
           display="primary"
           onClick={saveProperties}
           loading={isLoading}
-          id="SAVE"
-        />
+        >
+          Save
+        </Button>
       </DialogActions>
     </StandardDialog>
   );
