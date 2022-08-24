@@ -16,8 +16,7 @@ export default function RemoveFromTaskDialog({
   onClose,
   selectedImages,
   missionGuid,
-})
-{
+}) {
   const [selectedTask, setSelectedTask] = useState('');
 
   const { data: missionData } = useGetMission(missionGuid);
@@ -27,8 +26,7 @@ export default function RemoveFromTaskDialog({
     error,
   } = usePostAssetsToTask();
 
-  function handleClose()
-  {
+  function handleClose() {
     setSelectedTask('');
     onClose();
   }
@@ -42,7 +40,9 @@ export default function RemoveFromTaskDialog({
     >
       <DialogContent>
         <Text variant="body2" style={{ marginBottom: 12 }}>
-          {`Select a task to remove ${selectedImages?.length} images. If one of the images you selected is not in the task, it will be skipped over.`}
+          {`Select a task to remove ${
+            selectedImages?.length
+          } images. If one of the images you selected is not in the task, it will be skipped over.`}
         </Text>
         <TaskDropdown
           tasks={missionData?.tasks}
@@ -67,8 +67,7 @@ export default function RemoveFromTaskDialog({
           display="primary"
           loading={isLoading}
           disabled={selectedTask === '' || isLoading}
-          onClick={async () =>
-          {
+          onClick={async () => {
             const operations = [
               {
                 op: 'difference',

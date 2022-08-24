@@ -135,8 +135,7 @@ export default function BatchUpdateFooter({
             Add to task
           </MenuItem>
           <MenuItem
-            onClick={() =>
-            {
+            onClick={() => {
               setRemovingFromTask(true);
               setAnchorEl(null);
             }}

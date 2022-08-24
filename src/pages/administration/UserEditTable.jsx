@@ -12,9 +12,11 @@ import UserDeleteDialog from '../../components/dialogs/UserDeleteDialog';
 import Text from '../../components/Text';
 import deriveUserRole from './utils/deriveUserRole';
 import UserEditDialog from './UserEditDialog';
+import ChangeUserPasswordDialog from '../../components/dialogs/ChangeUserPasswordDialog';
 
 export default function UserEditTable({ data, loading, usersError }) {
   const intl = useIntl();
+  const [resetUser, setResetUser] = useState(null);
   const [editUser, setEditUser] = useState(null);
   const [deleteUser, setDeleteUser] = useState(null);
 
@@ -62,6 +64,10 @@ export default function UserEditTable({ data, loading, usersError }) {
             style={{ display: 'flex', justifyContent: 'flex-end' }}
           >
             <ActionIcon
+              variant="password"
+              onClick={() => setResetUser(user)}
+            />
+            <ActionIcon
               variant="edit"
               onClick={() => setEditUser(user)}
             />
@@ -77,6 +83,14 @@ export default function UserEditTable({ data, loading, usersError }) {
 
   return (
     <Grid item>
+      <ChangeUserPasswordDialog
+        title="Reset user password"
+        open={Boolean(resetUser)}
+        onClose={() => {
+          setResetUser(null);
+        }}
+        userGuid={resetUser?.guid}
+      />
       <UserEditDialog
         open={Boolean(editUser)}
         onClose={() => {
