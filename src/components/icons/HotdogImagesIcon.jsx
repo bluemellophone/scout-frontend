@@ -19,7 +19,7 @@ export default function HotdogImagesIcon(props) {
           rx="1.5"
           transform="rotate(90 20.5 3.5)"
           stroke="currentColor"
-          strokeWeight="2"
+          strokeweight="2"
         />
         <rect
           x="11"
@@ -29,7 +29,7 @@ export default function HotdogImagesIcon(props) {
           rx="1.5"
           transform="rotate(90 11 3.5)"
           stroke="currentColor"
-          strokeWeight="2"
+          strokeweight="2"
         />
       </svg>
     </SvgIcon>

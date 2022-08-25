@@ -18,7 +18,7 @@ export default function HamburgerImagesIcon(props) {
           height="7.5"
           rx="1.5"
           stroke="currentColor"
-          strokeWeight="2"
+          strokeweight="2"
         />
         <rect
           x="3.5"
@@ -27,7 +27,7 @@ export default function HamburgerImagesIcon(props) {
           height="7.5"
           rx="1.5"
           stroke="currentColor"
-          strokeWeight="2"
+          strokeweight="2"
         />
       </svg>
     </SvgIcon>
