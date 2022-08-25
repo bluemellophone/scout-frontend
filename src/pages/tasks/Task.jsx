@@ -12,14 +12,14 @@ import viewModes from './constants/viewModes';
 export default function Task({ id: idFromProps }) {
   const { id: idFromUrl } = useParams();
   const id = idFromProps || idFromUrl;
-  const { data, isLoading } = useGetTask(id);
+  const { data, isLoading, dataUpdatedAt } = useGetTask(id);
 
   const [mode, setMode] = useState(viewModes.one);
   const [selectedAssets, setSelectedAssets] = useState([]);
 
   const taskAssets = useMemo(
     () => get(data, 'assets', []).map((a, i) => ({ ...a, index: i })),
-    [data],
+    [dataUpdatedAt],
   );
 
   useEffect(
