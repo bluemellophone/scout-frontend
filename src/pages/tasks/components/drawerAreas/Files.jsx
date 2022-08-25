@@ -8,17 +8,17 @@ import IconButton from '@material-ui/core/IconButton';
 import PreviousImageIcon from '@material-ui/icons/ChevronLeft';
 import NextImageIcon from '@material-ui/icons/ChevronRight';
 
-import Text from '../../../components/Text';
+import Text from '../../../../components/Text';
 
-export default function ImageList({
+export default function Files({
   taskData,
-  selectedAsset,
-  setSelectedAsset,
+  selectedAssets,
+  setSelectedAssets,
 }) {
   const assets = taskData?.assets || [];
 
   return (
-    <>
+    <div style={{ width: '100%' }}>
       <div
         style={{
           display: 'flex',
@@ -39,8 +39,6 @@ export default function ImageList({
       </div>
       <Paper
         style={{
-          marginBottom: 20,
-          maxHeight: 268,
           overflow: 'scroll',
         }}
       >
@@ -52,14 +50,17 @@ export default function ImageList({
         >
           {assets.map(asset => {
             const filename = asset?.filename || 'Filename not found';
+            const selectedAssetGuids = selectedAssets.map(
+              a => a?.guid,
+            );
             return (
               <ListItem
                 button
                 key={asset?.guid}
                 aria-controls="select asset"
                 aria-label={filename}
-                onClick={() => setSelectedAsset(asset)}
-                selected={asset?.guid === selectedAsset?.guid}
+                onClick={() => setSelectedAssets([asset])}
+                selected={selectedAssetGuids.includes(asset?.guid)}
               >
                 <ListItemText primary={filename} />
               </ListItem>
@@ -67,6 +68,6 @@ export default function ImageList({
           })}
         </List>
       </Paper>
-    </>
+    </div>
   );
 }

@@ -8,13 +8,13 @@ import CollapseIcon from '@material-ui/icons/ChevronLeft';
 import WildMeLogo from '../../../assets/wild-me-gradient-logo.png';
 import Button from '../../../components/Button';
 import Text from '../../../components/Text';
-import ImageList from './ImageList';
+import DrawerAccordion from './DrawerAccordion';
 import AddImagesDialog from './dialogs/AddImagesDialog';
 
 export default function TaskDrawer({
   taskData,
-  selectedAsset,
-  setSelectedAsset,
+  selectedAssets,
+  setSelectedAssets,
 }) {
   const [addImagesDialogOpen, setAddImagesDialogOpen] = useState(
     false,
@@ -39,7 +39,7 @@ export default function TaskDrawer({
         cursor: minimized ? 'pointer' : undefined,
       }}
       PaperProps={{
-        style: { padding: 20, width: minimized ? 88 : 361 },
+        style: { width: minimized ? 88 : 361 },
       }}
       onClick={() => {
         if (minimized) setMinimized(false);
@@ -54,7 +54,7 @@ export default function TaskDrawer({
       <div
         style={{
           display: 'flex',
-          alignItems: 'flex-start',
+          alignItems: 'center',
           justifyContent: 'space-between',
         }}
       >
@@ -62,7 +62,7 @@ export default function TaskDrawer({
           style={{
             display: 'flex',
             alignItems: 'center',
-            marginBottom: 16,
+            padding: 20,
           }}
         >
           <img
@@ -108,10 +108,10 @@ export default function TaskDrawer({
         </div>
       ) : (
         <div style={minimizedStyles}>
-          <ImageList
+          <DrawerAccordion
             taskData={taskData}
-            selectedAsset={selectedAsset}
-            setSelectedAsset={setSelectedAsset}
+            selectedAssets={selectedAssets}
+            setSelectedAssets={setSelectedAssets}
           />
         </div>
       )}
