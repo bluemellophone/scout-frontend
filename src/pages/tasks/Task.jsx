@@ -40,6 +40,7 @@ export default function Task({ id: idFromProps }) {
       <TaskDrawer
         taskData={data}
         taskName={displayTaskName}
+        taskAssets={taskAssets}
         createdDate={createdDate}
         selectedAssets={selectedAssets}
         setSelectedAssets={setSelectedAssets}
@@ -47,6 +48,7 @@ export default function Task({ id: idFromProps }) {
       />
       <TaskDashboard
         taskData={data}
+        taskAssets={taskAssets}
         taskName={displayTaskName}
         createdDate={createdDate}
         selectedAssets={selectedAssets}

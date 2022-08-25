@@ -1,5 +1,5 @@
 import React from 'react';
-import { get } from 'lodash-es';
+import { get, minBy, maxBy } from 'lodash-es';
 
 import PreviousIcon from '@material-ui/icons/ChevronLeft';
 import NextIcon from '@material-ui/icons/ChevronRight';
@@ -14,27 +14,25 @@ import IconButton from '../../../components/IconButton';
 import viewModes from '../constants/viewModes';
 import TaskActionsMenu from './TaskActionsMenu';
 
-function getImageTagline(selectedAssets, assetCount)
-{
+function getImageTagline(selectedAssets, assetCount) {
   if (selectedAssets.length === 0) return 'No images selected';
   const firstImageNumber = get(selectedAssets, [0, 'index'], NaN) + 1;
   const secondImageNumber =
     get(selectedAssets, [1, 'index'], NaN) + 1;
   if (selectedAssets.length === 1)
     return `Image ${firstImageNumber} of ${assetCount}`;
-  return `Images ${firstImageNumber} and ${secondImageNumber} of ${assetCount}`;
+  return `Images ${firstImageNumber}, ${secondImageNumber} of ${assetCount}`;
 }
 
 export default function TaskDashboard({
   taskData,
   taskName,
-  createdDate,
+  taskAssets,
   selectedAssets = [],
   setSelectedAssets,
   mode,
   setMode,
 }) {
-  const taskAssets = taskData?.assets || [];
   const hotdogView =
     selectedAssets.length > 1 && mode === viewModes.hotdog;
   const hamburgerView =
@@ -79,6 +77,23 @@ export default function TaskDashboard({
             style={{ borderRadius: 3 }}
             size="small"
             startIcon={<PreviousIcon />}
+            onClick={() => {
+              if (mode === viewModes.one) {
+                const index = get(selectedAssets, [0, 'index'], 0);
+                const nextIndex = Math.max(index - 1, 0);
+                const nextAsset = taskAssets?.[nextIndex];
+                if (nextAsset) setSelectedAssets([nextAsset]);
+              } else {
+                const lowestIndexAsset = minBy(
+                  selectedAssets,
+                  a => a?.index,
+                );
+                const nextIndex = lowestIndexAsset?.index - 1;
+                const nextAsset = taskAssets?.[nextIndex];
+                if (nextAsset)
+                  setSelectedAssets([nextAsset, lowestIndexAsset]);
+              }
+            }}
           >
             Previous
           </Button>
@@ -90,6 +105,23 @@ export default function TaskDashboard({
               style={{ borderRadius: 3 }}
               size="small"
               endIcon={<NextIcon />}
+              onClick={() => {
+                if (mode === viewModes.one) {
+                  const index = get(selectedAssets, [0, 'index'], 0);
+                  const nextIndex = Math.max(index + 1, 0);
+                  const nextAsset = taskAssets?.[nextIndex];
+                  if (nextAsset) setSelectedAssets([nextAsset]);
+                } else {
+                  const highestIndexAsset = maxBy(
+                    selectedAssets,
+                    a => a?.index,
+                  );
+                  const nextIndex = highestIndexAsset?.index + 1;
+                  const nextAsset = taskAssets?.[nextIndex];
+                  if (nextAsset)
+                    setSelectedAssets([highestIndexAsset, nextAsset]);
+                }
+              }}
             >
               Next
             </Button>

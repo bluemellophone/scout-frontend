@@ -13,6 +13,8 @@ import AddImagesDialog from './dialogs/AddImagesDialog';
 
 export default function TaskDrawer({
   taskData,
+  taskAssets,
+  mode,
   selectedAssets,
   setSelectedAssets,
 }) {
@@ -110,6 +112,8 @@ export default function TaskDrawer({
         <div style={minimizedStyles}>
           <DrawerAccordion
             taskData={taskData}
+            taskAssets={taskAssets}
+            mode={mode}
             selectedAssets={selectedAssets}
             setSelectedAssets={setSelectedAssets}
           />
