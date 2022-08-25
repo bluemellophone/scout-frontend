@@ -5,10 +5,12 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 
 import Alert from '../../../../components/Alert';
-import Button from '../../../../components/Button';
+import Button from '../../../../components/ButtonNew';
 import Text from '../../../../components/Text';
 import StandardDialog from '../../../../components/StandardDialog';
 import useDeleteMission from '../../../../models/missions/useDeleteMission';
+
+const title = 'DELETE PROJECT';
 
 export default function DeleteMissionDialog({
   open,
@@ -23,11 +25,7 @@ export default function DeleteMissionDialog({
   } = useDeleteMission();
 
   return (
-    <StandardDialog
-      open={open}
-      onClose={onClose}
-      title="Delete mission"
-    >
+    <StandardDialog open={open} onClose={onClose} title={title}>
       <DialogContent>
         <Text variant="body2">
           Are you sure you want to delete this project? This action
@@ -58,7 +56,7 @@ export default function DeleteMissionDialog({
             color: theme.palette.common.white,
           }}
         >
-          Delete project
+          {title}
         </Button>
       </DialogActions>
     </StandardDialog>

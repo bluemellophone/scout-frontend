@@ -79,7 +79,7 @@ export default function SadScreen(props) {
           display="primary"
           style={{ marginTop: 16 }}
         >
-          Return home
+          RETURN HOME
         </ButtonLink>
       </Paper>
       <div

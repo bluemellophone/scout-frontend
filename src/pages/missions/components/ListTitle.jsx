@@ -1,8 +1,7 @@
 import React from 'react';
-import AddIcon from '@material-ui/icons/Add';
 
 import Text from '../../../components/Text';
-import Button from '../../../components/Button';
+import Button from '../../../components/ButtonNew';
 import ButtonLink from '../../../components/ButtonLink';
 
 export default function ListTitle({
@@ -25,14 +24,12 @@ export default function ListTitle({
       <Text variant="h6">{title}</Text>
       <ButtonComponent
         {...rest}
-        display="secondary"
-        style={{
-          textTransform: 'none',
-          padding: '2px 6px',
-          borderRadius: 3,
-        }}
-        startIcon={<AddIcon />}
+        display="primary"
+        icon="add"
         size="small"
+        style={{
+          padding: '2px 6px',
+        }}
       >
         {buttonText}
       </ButtonComponent>

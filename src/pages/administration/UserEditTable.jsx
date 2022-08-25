@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import { useIntl } from 'react-intl';
 
 import Grid from '@material-ui/core/Grid';
 import Skeleton from '@material-ui/lab/Skeleton';
-import AddIcon from '@material-ui/icons/Add';
 
 import { cellRendererTypes } from '../../components/dataDisplays/cellRenderers';
 import DataDisplay from '../../components/dataDisplays/DataDisplay';
@@ -15,7 +13,6 @@ import UserEditDialog from './UserEditDialog';
 import ChangeUserPasswordDialog from '../../components/dialogs/ChangeUserPasswordDialog';
 
 export default function UserEditTable({ data, loading, usersError }) {
-  const intl = useIntl();
   const [resetUser, setResetUser] = useState(null);
   const [editUser, setEditUser] = useState(null);
   const [deleteUser, setDeleteUser] = useState(null);
@@ -47,7 +44,7 @@ export default function UserEditTable({ data, loading, usersError }) {
     {
       name: 'actions',
       align: 'right',
-      label: intl.formatMessage({ id: 'ACTIONS' }),
+      label: 'Actions',
       options: {
         cellRenderer: cellRendererTypes.actions,
         cellRendererProps: {
@@ -112,11 +109,7 @@ export default function UserEditTable({ data, loading, usersError }) {
         <ButtonLink
           href="/administration/create-new-user"
           display="primary"
-          style={{
-            textTransform: 'none',
-            borderRadius: 3,
-          }}
-          startIcon={<AddIcon />}
+          icon="add"
         >
           Create user
         </ButtonLink>

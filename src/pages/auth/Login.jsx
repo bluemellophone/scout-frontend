@@ -7,8 +7,7 @@ import TextField from '@material-ui/core/TextField';
 
 import CustomAlert from '../../components/Alert';
 import useLogin from '../../models/auth/useLogin';
-import Link from '../../components/Link';
-import Text from '../../components/Text';
+import ButtonLink from '../../components/ButtonLink';
 import SimpleFormPage from '../../components/SimpleFormPage';
 
 export default function Login({ showBanner, redirect = '/' }) {
@@ -19,20 +18,21 @@ export default function Login({ showBanner, redirect = '/' }) {
   return (
     <SimpleFormPage
       disableBack
-      disableLogout
       title="Login to continue"
       buttonId="submitLogin"
-      buttonText="login"
+      buttonText="LOGIN"
       onSubmit={() => {
         authenticate(email, password, redirect);
       }}
       buttonProps={{ loading }}
       renderBelowButton={
-        <Link href="/forgot">
-          <Text variant="subtitle2" style={{ margin: '8px 0 0 4px' }}>
-            Forgot password?
-          </Text>
-        </Link>
+        <ButtonLink
+          display="text"
+          href="/forgot"
+          style={{ margin: '8px 0 0 4px' }}
+        >
+          Forgot password?
+        </ButtonLink>
       }
     >
       {showBanner && (
@@ -46,7 +46,7 @@ export default function Login({ showBanner, redirect = '/' }) {
         container
         spacing={2}
         direction="column"
-        style={{ padding: '8px 0 16px 0' }}
+        style={{ padding: '8px 0 4px 0' }}
       >
         <Grid item>
           <FormControl

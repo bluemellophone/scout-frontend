@@ -51,7 +51,7 @@ export default function ProfileSetup({ userData }) {
         container
         spacing={2}
         direction="column"
-        style={{ padding: '8px 0 16px 0' }}
+        style={{ padding: '8px 0 4px 0' }}
       >
         <Grid item>
           <FormControl

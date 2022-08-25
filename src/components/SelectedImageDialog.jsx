@@ -4,7 +4,6 @@ import { get, differenceBy } from 'lodash-es';
 import DialogContent from '@material-ui/core/DialogContent';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
-import AddIcon from '@material-ui/icons/Add';
 
 import useAddKeyword from '../models/keywords/useAddKeyword';
 import useGetKeywords from '../models/keywords/useGetKeywords';
@@ -13,7 +12,7 @@ import { getKeywordColor } from '../utils/colorUtils';
 import StandardDialog from './StandardDialog';
 import Text from './Text';
 import Keywords from './Keywords';
-import Button from './Button';
+import Button from './ButtonNew';
 import Alert from './Alert';
 
 export default function SelectedImageDialog({
@@ -146,8 +145,8 @@ export default function SelectedImageDialog({
                     )}
                   />
                   <Button
-                    display="panel"
-                    size="small"
+                    display="tag"
+                    icon="add"
                     loading={addKeywordLoading}
                     onClick={async () => {
                       const selectValue = get(
@@ -174,17 +173,18 @@ export default function SelectedImageDialog({
                         setNewTagSelectValue(null);
                       }
                     }}
-                    id="ADD_TAG"
-                  />
+                  >
+                    Add tag
+                  </Button>
                 </div>
               ) : (
                 <Button
-                  display="basic"
-                  size="small"
-                  startIcon={<AddIcon />}
+                  display="tag"
+                  icon="add"
                   onClick={() => setAddingTag(true)}
-                  id="ADD_TAG"
-                />
+                >
+                  Add tag
+                </Button>
               )}
             </Keywords>
           </div>

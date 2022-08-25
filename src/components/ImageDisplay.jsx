@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { isEmpty } from 'lodash-es';
 
 import Text from './Text';
-import Button from './Button';
+import Button from './ButtonNew';
 import MultipleOptionFilter from './filterFields/MultipleOptionFilter';
 import TagOptionFilter from './filterFields/TagOptionFilter';
 import StringFilter from './filterFields/StringFilter';
@@ -212,7 +212,11 @@ export default function ImageDisplay({
           label="Tags"
           buttonStyle={buttonStyle}
         />
-        <Button onClick={clearAllFilters} style={buttonStyle}>
+        <Button
+          display="neutral"
+          onClick={clearAllFilters}
+          style={buttonStyle}
+        >
           Clear all
         </Button>
       </div>

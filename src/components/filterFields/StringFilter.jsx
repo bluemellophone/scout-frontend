@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 
 import useOnEnter from '../../hooks/useOnEnter';
-import Button from '../Button';
+import Button from '../ButtonNew';
 import FilterButton from './components/FilterButton';
 
 export default function StringFilter({
@@ -42,9 +42,7 @@ export default function StringFilter({
         <Button
           display="text"
           style={{
-            float: 'right',
-            marginBottom: 2,
-            marginRight: 48,
+            margin: '0 0 2px 2px',
           }}
           onClick={() => {
             onChange('');
@@ -67,10 +65,7 @@ export default function StringFilter({
             display="primary"
             style={{
               marginLeft: 4,
-              padding: '8px 12px',
-              minWidth: 12,
-              height: 'fit-content',
-              flexShrink: 0,
+              padding: 16,
             }}
             onClick={() => {
               onChange(internalValue);

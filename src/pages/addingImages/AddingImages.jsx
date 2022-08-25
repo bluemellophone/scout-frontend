@@ -56,7 +56,7 @@ export default function AddingImages() {
           display="primary"
           style={{ marginTop: 16 }}
         >
-          Go to project
+          GO TO PROJECT
         </ButtonLink>
       </Paper>
       <div

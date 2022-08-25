@@ -7,7 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 
 import useOnEnter from '../../hooks/useOnEnter';
-import Button from '../Button';
+import Button from '../ButtonNew';
 import FilterButton from './components/FilterButton';
 
 const comparators = [
@@ -86,9 +86,7 @@ export default function IntegerFilter({
         <Button
           display="text"
           style={{
-            float: 'right',
-            marginBottom: 2,
-            marginRight: 48,
+            margin: '0 0 2px 2px',
           }}
           onClick={() => {
             setIntegerInput('');
@@ -137,10 +135,7 @@ export default function IntegerFilter({
             display="primary"
             style={{
               marginLeft: 4,
-              padding: '8px 12px',
-              minWidth: 12,
-              height: 'fit-content',
-              flexShrink: 0,
+              padding: 16,
             }}
             onClick={updateFilter}
           >

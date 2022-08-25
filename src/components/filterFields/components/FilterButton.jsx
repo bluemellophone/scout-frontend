@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 
 import Menu from '@material-ui/core/Menu';
 import Chip from '@material-ui/core/Chip';
-import ExpandIcon from '@material-ui/icons/ExpandMore';
 
-import Button from '../../Button';
+import Button from '../../ButtonNew';
 import ClearSelectionDialog from './ClearSelectionDialog';
 
 export default function FilterButton({
@@ -46,8 +45,9 @@ export default function FilterButton({
         onClearSelection={onClearSelection}
       />
       <Button
+        display="neutral"
+        icon="expand"
         onClick={handleClick}
-        endIcon={<ExpandIcon />}
         {...buttonProps}
       >
         {buttonLabel}

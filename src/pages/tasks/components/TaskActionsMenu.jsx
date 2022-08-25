@@ -52,7 +52,6 @@ export default function TaskActionsMenu({
         >
           <div
             style={{
-              padding: 12,
               borderRadius: 1000,
               color: theme.palette.grey['600'],
               lineHeight: 0,
@@ -70,7 +69,6 @@ export default function TaskActionsMenu({
           <MenuItem style={{ minHeight: 'auto' }}>
             <div
               style={{
-                padding: 12,
                 borderRadius: 1000,
                 color: theme.palette.grey['600'],
                 lineHeight: 0,

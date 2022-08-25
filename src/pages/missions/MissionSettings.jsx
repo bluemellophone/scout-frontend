@@ -11,7 +11,7 @@ import useGetMission from '../../models/missions/useGetMission';
 import usePatchMission from '../../models/missions/usePatchMission';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import BodyHeader from '../../components/BodyHeader';
-import Button from '../../components/Button';
+import Button from '../../components/ButtonNew';
 import Text from '../../components/Text';
 import UserChips from '../../components/UserChips';
 import { getMissionQueryKey } from '../../constants/queryKeys';
@@ -105,7 +105,7 @@ export default function MissionSettings() {
             patchMission({ missionGuid, operations: [titlePatchOp] });
           }}
         >
-          Rename
+          RENAME
         </Button>
       </div>
       <Text style={{ fontWeight: 'bold', margin: '24px 0 4px 4px' }}>
@@ -117,14 +117,9 @@ export default function MissionSettings() {
         onDelete={user => setUserToRemove(user)}
       >
         <Button
+          display="tag"
           onClick={() => setAddingUser(true)}
           startIcon={<AddIcon />}
-          size="small"
-          style={{
-            margin: '4px 4px 0 0',
-            height: 32,
-            padding: '0 12px',
-          }}
         >
           Add user
         </Button>
@@ -152,13 +147,10 @@ export default function MissionSettings() {
           </Text>
         </div>
         <Button
+          display="danger"
           onClick={() => setDeletingMission(true)}
-          style={{
-            background: theme.palette.error.main,
-            color: theme.palette.common.white,
-          }}
         >
-          Delete project
+          DELETE PROJECT
         </Button>
       </div>
     </div>

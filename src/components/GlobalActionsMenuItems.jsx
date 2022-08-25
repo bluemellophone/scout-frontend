@@ -26,7 +26,7 @@ export default function GlobalActionsMenuItems({
             display: 'flex',
             alignItems: 'center',
             width: '100%',
-            padding: '16px 20px 8px 20px',
+            padding: '8px 20px 4px',
           }}
         >
           <Divider style={{ flexGrow: 1, marginRight: 8 }} />
@@ -45,7 +45,6 @@ export default function GlobalActionsMenuItems({
           <MenuItem style={{ minHeight: 'auto' }}>
             <div
               style={{
-                padding: 12,
                 borderRadius: 1000,
                 color: theme.palette.grey['600'],
                 lineHeight: 0,
@@ -63,7 +62,6 @@ export default function GlobalActionsMenuItems({
         <MenuItem style={{ minHeight: 'auto' }}>
           <div
             style={{
-              padding: 12,
               borderRadius: 1000,
               color: theme.palette.grey['600'],
               lineHeight: 0,
@@ -88,7 +86,6 @@ export default function GlobalActionsMenuItems({
           <MenuItem style={{ minHeight: 'auto' }}>
             <div
               style={{
-                padding: 12,
                 borderRadius: 1000,
                 color: theme.palette.grey['600'],
                 lineHeight: 0,

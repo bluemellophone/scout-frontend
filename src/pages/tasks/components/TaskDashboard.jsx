@@ -8,7 +8,7 @@ import OneImageIcon from '../../../components/icons/OneImageIcon';
 import HotdogImagesIcon from '../../../components/icons/HotdogImagesIcon';
 import HamburgerImagesIcon from '../../../components/icons/HamburgerImagesIcon';
 import BodyHeader from '../../../components/BodyHeader';
-import Button from '../../../components/Button';
+import Button from '../../../components/ButtonNew';
 import Text from '../../../components/Text';
 import IconButton from '../../../components/IconButton';
 import viewModes from '../constants/viewModes';
@@ -74,7 +74,7 @@ export default function TaskDashboard({
           }}
         >
           <Button
-            style={{ borderRadius: 3 }}
+            display="neutral"
             size="small"
             startIcon={<PreviousIcon />}
             onClick={() => {
@@ -102,7 +102,7 @@ export default function TaskDashboard({
           </Text>
           <div>
             <Button
-              style={{ borderRadius: 3 }}
+              display="neutral"
               size="small"
               endIcon={<NextIcon />}
               onClick={() => {

@@ -12,7 +12,7 @@ import useGetTask from '../../models/tasks/useGetTask';
 import usePatchTask from '../../models/tasks/usePatchTask';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import BodyHeader from '../../components/BodyHeader';
-import Button from '../../components/Button';
+import Button from '../../components/ButtonNew';
 import Text from '../../components/Text';
 import UserChips from '../../components/UserChips';
 import { getTaskQueryKey } from '../../constants/queryKeys';
@@ -128,12 +128,7 @@ export default function TaskSettings() {
         <Button
           onClick={() => setAddingUser(true)}
           startIcon={<AddIcon />}
-          size="small"
-          style={{
-            margin: '4px 4px 0 0',
-            height: 32,
-            padding: '0 12px',
-          }}
+          display="tag"
         >
           Add user
         </Button>
@@ -159,11 +154,8 @@ export default function TaskSettings() {
           </Text>
         </div>
         <Button
+          display="danger"
           onClick={() => setDeletingTask(true)}
-          style={{
-            background: theme.palette.error.main,
-            color: theme.palette.common.white,
-          }}
         >
           Delete task
         </Button>

@@ -16,7 +16,6 @@ export default function CreateAdminUser() {
       loading={loading}
       error={error}
       disableBack
-      disableLogout
     />
   );
 }
