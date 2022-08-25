@@ -6,6 +6,9 @@
   margin: 1px 0 !important;
 }
 
+.MuiAccordionSummary-content.Mui-expanded {
+  margin: 12px 0 !important;
+}
 .MuiTimelineItem-missingOppositeContent:before {
   flex: unset !important;
 }

@@ -41,7 +41,11 @@ export default function TaskDrawer({
         cursor: minimized ? 'pointer' : undefined,
       }}
       PaperProps={{
-        style: { width: minimized ? 88 : 361 },
+        style: {
+          width: minimized ? 88 : 361,
+          display: 'flex',
+          height: '100vh',
+        },
       }}
       onClick={() => {
         if (minimized) setMinimized(false);
@@ -109,7 +113,9 @@ export default function TaskDrawer({
           )}
         </div>
       ) : (
-        <div style={minimizedStyles}>
+        <div
+          style={{ ...minimizedStyles, flexGrow: 1, minHeight: 0 }}
+        >
           <DrawerAccordion
             taskData={taskData}
             taskAssets={taskAssets}

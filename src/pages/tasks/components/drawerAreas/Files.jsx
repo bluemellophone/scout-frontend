@@ -12,14 +12,12 @@ export default function Files({
   mode,
   selectedAssets,
   setSelectedAssets,
-})
-{
+}) {
   return (
     <div style={{ width: '100%' }}>
       <Paper
         style={{
           overflow: 'scroll',
-          maxHeight: 420,
         }}
       >
         <List
@@ -28,8 +26,7 @@ export default function Files({
           style={{ padding: 0 }}
           dense
         >
-          {taskAssets.map(asset =>
-          {
+          {taskAssets.map(asset => {
             const filename = asset?.filename || 'Filename not found';
             const selectedAssetGuids = selectedAssets.map(
               a => a?.guid,
@@ -40,20 +37,15 @@ export default function Files({
                 key={asset?.guid}
                 aria-controls="select asset"
                 aria-label={filename}
-                onClick={() =>
-                {
-                  if (mode === viewModes.one)
-                  {
+                onClick={() => {
+                  if (mode === viewModes.one) {
                     setSelectedAssets([asset]);
-                  } else
-                  {
+                  } else {
                     const secondAsset =
                       taskAssets?.[asset?.index + 1];
-                    if (secondAsset)
-                    {
+                    if (secondAsset) {
                       setSelectedAssets([asset, secondAsset]);
-                    } else
-                    {
+                    } else {
                       setSelectedAssets([asset]);
                     }
                   }

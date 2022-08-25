@@ -18,7 +18,7 @@ export default function OneImageIcon(props) {
           height="17"
           rx="1.5"
           stroke="currentColor"
-          strokeWeight="2"
+          strokeweight="2"
         />
       </svg>
     </SvgIcon>

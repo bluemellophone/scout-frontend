@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
-import { withStyles } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core/styles';
 import { alpha } from '@material-ui/core/styles/colorManipulator';
 import Accordion from '@material-ui/core/Accordion';
-import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
-import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
 
 import Text from '../../../components/Text';
 import Files from './drawerAreas/Files';
@@ -14,7 +14,7 @@ const items = [
   {
     id: 'annotations',
     label: 'Annotations',
-    component: Properties,
+    component: () => <div>Annotations</div>,
   },
   {
     id: 'files',
@@ -24,7 +24,7 @@ const items = [
   {
     id: 'counts',
     label: 'Counts',
-    component: Properties,
+    component: () => <div>Counts</div>,
   },
   {
     id: 'properties',
@@ -34,33 +34,12 @@ const items = [
   {
     id: 'tags',
     label: 'Tags',
-    component: Properties,
+    component: () => <div>Tags</div>,
   },
 ];
 
-const AccordionSummary = withStyles(theme => ({
-  root: {
-    backgroundColor: alpha(theme.palette.primary.main, 0.1),
-    minHeight: 56,
-    '&$expanded': {
-      minHeight: 56,
-    },
-  },
-  content: {
-    margin: '12px 0',
-    '&$expanded': {
-      margin: '12px 0',
-    },
-  },
-}))(MuiAccordionSummary);
-
-const AccordionDetails = withStyles({
-  root: {
-    padding: 'unset',
-  },
-})(MuiAccordionDetails);
-
 export default function DrawerAccordion(props) {
+  const theme = useTheme();
   const [expanded, setExpanded] = useState('files');
 
   const handleChange = panel => (_, newExpanded) => {
@@ -68,25 +47,49 @@ export default function DrawerAccordion(props) {
   };
 
   return (
-    <div>
-      {items.map(item => (
-        <Accordion
-          key={item.id}
-          expanded={expanded === item.id}
-          onChange={handleChange(item.id)}
-          square
-        >
-          <AccordionSummary
-            aria-controls={`${item.label} panel content`}
-            id={`${item.id}-header`}
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        height: '100%',
+      }}
+    >
+      {items.map(item =>
+      {
+        const isExpanded = expanded === item.id;
+        return (
+          <Accordion
+            key={item.id}
+            expanded={isExpanded}
+            onChange={handleChange(item.id)}
+            style={{
+              flexGrow: isExpanded ? 1 : 0,
+              overflow: 'scroll',
+              flexShrink: isExpanded ? 1 : 0,
+            }}
+            TransitionProps={{ timeout: 0 }}
+            square
           >
-            <Text variant="h6">{item.label}</Text>
-          </AccordionSummary>
-          <AccordionDetails>
-            {<item.component {...props} />}
-          </AccordionDetails>
-        </Accordion>
-      ))}
+            <AccordionSummary
+              aria-controls={`${item.label} panel content`}
+              id={`${item.id}-header`}
+              style={{
+                backgroundColor: alpha(
+                  theme.palette.primary.main,
+                  0.1,
+                ),
+                minHeight: 56,
+              }}
+            >
+              <Text variant="h6">{item.label}</Text>
+            </AccordionSummary>
+            <AccordionDetails style={{ padding: 'unset' }}>
+              {<item.component {...props} />}
+            </AccordionDetails>
+          </Accordion>
+        );
+      })}
     </div>
   );
 }
