@@ -13,6 +13,7 @@ import usePatchTask from '../../models/tasks/usePatchTask';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import BodyHeader from '../../components/BodyHeader';
 import Button from '../../components/ButtonNew';
+import EphemeralFeedback from '../../components/EphemeralFeedback';
 import Text from '../../components/Text';
 import UserChips from '../../components/UserChips';
 import { getTaskQueryKey } from '../../constants/queryKeys';
@@ -26,13 +27,17 @@ export default function TaskSettings() {
   const { id: taskGuid } = useParams();
 
   const { data, isLoading } = useGetTask(taskGuid);
-  const { mutate: patchTask } = usePatchTask();
+  const {
+    mutate: patchTask,
+    loading: renameTaskLoading,
+  } = usePatchTask();
 
   function refreshTaskData() {
     const queryKey = getTaskQueryKey(taskGuid);
     queryClient.invalidateQueries(queryKey);
   }
 
+  const [renameSuccessOpen, setRenameSuccessOpen] = useState(false);
   const [userToRemove, setUserToRemove] = useState(null);
   const [deletingTask, setDeletingTask] = useState(false);
   const [addingUser, setAddingUser] = useState(false);
@@ -59,6 +64,11 @@ export default function TaskSettings() {
 
   return (
     <div style={{ padding: '32px 0 0 200px', maxWidth: 800 }}>
+      <EphemeralFeedback
+        open={renameSuccessOpen}
+        setOpen={setRenameSuccessOpen}
+        message={`Task name changed to "${data?.title}"`}
+      />
       <AddUserDialog
         open={addingUser}
         onClose={() => setAddingUser(false)}
@@ -100,6 +110,7 @@ export default function TaskSettings() {
         />
         <Button
           display="primary"
+          loading={renameTaskLoading}
           disabled={data?.title === title}
           onClick={async () => {
             const titlePatchOp = {
@@ -107,14 +118,17 @@ export default function TaskSettings() {
               path: '/title',
               value: title,
             };
-            patchTask({
+
+            const result = await patchTask({
               taskGuid,
               missionGuid,
               operations: [titlePatchOp],
             });
+
+            if (result?.status === 200) setRenameSuccessOpen(true);
           }}
         >
-          Rename
+          RENAME
         </Button>
       </div>
       <Text style={{ fontWeight: 'bold', margin: '24px 0 4px 4px' }}>
@@ -157,7 +171,7 @@ export default function TaskSettings() {
           display="danger"
           onClick={() => setDeletingTask(true)}
         >
-          Delete task
+          DELETE TASK
         </Button>
       </div>
     </div>

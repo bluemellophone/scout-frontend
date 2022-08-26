@@ -12,6 +12,7 @@ import usePatchMission from '../../models/missions/usePatchMission';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import BodyHeader from '../../components/BodyHeader';
 import Button from '../../components/ButtonNew';
+import EphemeralFeedback from '../../components/EphemeralFeedback';
 import Text from '../../components/Text';
 import UserChips from '../../components/UserChips';
 import { getMissionQueryKey } from '../../constants/queryKeys';
@@ -25,13 +26,17 @@ export default function MissionSettings() {
   const { id: missionGuid } = useParams();
 
   const { data, isLoading } = useGetMission(missionGuid);
-  const { mutate: patchMission } = usePatchMission();
+  const {
+    mutate: patchMission,
+    loading: renameMissionLoading,
+  } = usePatchMission();
 
   function refreshMissionData() {
     const queryKey = getMissionQueryKey(missionGuid);
     queryClient.invalidateQueries(queryKey);
   }
 
+  const [renameSuccessOpen, setRenameSuccessOpen] = useState(false);
   const [userToRemove, setUserToRemove] = useState(null);
   const [deletingMission, setDeletingMission] = useState(false);
   const [addingUser, setAddingUser] = useState(false);
@@ -56,6 +61,11 @@ export default function MissionSettings() {
 
   return (
     <div style={{ padding: '32px 0 0 200px', maxWidth: 800 }}>
+      <EphemeralFeedback
+        open={renameSuccessOpen}
+        setOpen={setRenameSuccessOpen}
+        message={`Project name changed to "${data?.title}"`}
+      />
       <AddUserDialog
         open={addingUser}
         onClose={() => setAddingUser(false)}
@@ -96,13 +106,18 @@ export default function MissionSettings() {
         <Button
           display="primary"
           disabled={data?.title === title}
+          loading={renameMissionLoading}
           onClick={async () => {
             const titlePatchOp = {
               op: 'replace',
               path: '/title',
               value: title,
             };
-            patchMission({ missionGuid, operations: [titlePatchOp] });
+            const result = await patchMission({
+              missionGuid,
+              operations: [titlePatchOp],
+            });
+            if (result?.status === 200) setRenameSuccessOpen(true);
           }}
         >
           RENAME
