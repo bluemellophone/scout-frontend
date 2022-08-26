@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from './Button';
+import Button from './ButtonNew';
 import Link from './Link';
 
 export default function ButtonLink({

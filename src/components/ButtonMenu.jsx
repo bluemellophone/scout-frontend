@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import DownIcon from '@material-ui/icons/ArrowDropDown';
 
-import Button from './Button';
+import Button from './ButtonNew';
 
 export default function ButtonMenu({
   children,
@@ -23,7 +22,12 @@ export default function ButtonMenu({
 
   return (
     <div>
-      <Button onClick={handleClick} endIcon={<DownIcon />} {...rest}>
+      <Button
+        display="neutral"
+        onClick={handleClick}
+        icon="expand"
+        {...rest}
+      >
         {children}
       </Button>
       <Menu

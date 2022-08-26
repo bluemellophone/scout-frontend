@@ -6,7 +6,7 @@ import IconButton from '@material-ui/core/IconButton';
 import CollapseIcon from '@material-ui/icons/ChevronLeft';
 
 import WildMeLogo from '../../../assets/wild-me-gradient-logo.png';
-import Button from '../../../components/Button';
+import Button from '../../../components/ButtonNew';
 import Text from '../../../components/Text';
 import DrawerAccordion from './DrawerAccordion';
 import AddImagesDialog from './dialogs/AddImagesDialog';
@@ -97,8 +97,10 @@ export default function TaskDrawer({
       <Divider style={minimizedStyles} />
 
       {noImages ? (
-        <div style={minimizedStyles}>
-          <Text style={{ margin: '20px 0 12px 0' }}>
+        <div
+          style={{ ...minimizedStyles, margin: '20px 20px 0 20px ' }}
+        >
+          <Text style={{ marginBottom: 12 }}>
             {hasEditPermissions
               ? 'This task has no images. Get started by adding some images!'
               : 'This task has no images.'}
@@ -106,6 +108,7 @@ export default function TaskDrawer({
           {hasEditPermissions && (
             <Button
               display="primary"
+              icon="add"
               onClick={() => setAddImagesDialogOpen(true)}
             >
               Add images

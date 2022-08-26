@@ -8,7 +8,7 @@ import { useHistory } from 'react-router-dom';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 
-import Button from '../../../components/Button';
+import Button from '../../../components/ButtonNew';
 import StandardDialog from '../../../components/StandardDialog';
 import UppyDashboard from '../../../components/UppyDashboard';
 import usePostMissionCollection from '../../../models/missionCollection/usePostMissionCollection';
@@ -112,7 +112,7 @@ export default function AddImagesDialog({
       </DialogContent>
       <DialogActions>
         <Button
-          display="basic"
+          display="inline"
           disabled={closeDialogDisabled}
           onClick={onCloseDialog}
           id="CANCEL"

@@ -11,7 +11,8 @@ import useGetMission from '../../models/missions/useGetMission';
 import usePatchMission from '../../models/missions/usePatchMission';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import BodyHeader from '../../components/BodyHeader';
-import Button from '../../components/Button';
+import Button from '../../components/ButtonNew';
+import EphemeralFeedback from '../../components/EphemeralFeedback';
 import Text from '../../components/Text';
 import UserChips from '../../components/UserChips';
 import { getMissionQueryKey } from '../../constants/queryKeys';
@@ -25,13 +26,17 @@ export default function MissionSettings() {
   const { id: missionGuid } = useParams();
 
   const { data, isLoading } = useGetMission(missionGuid);
-  const { mutate: patchMission } = usePatchMission();
+  const {
+    mutate: patchMission,
+    loading: renameMissionLoading,
+  } = usePatchMission();
 
   function refreshMissionData() {
     const queryKey = getMissionQueryKey(missionGuid);
     queryClient.invalidateQueries(queryKey);
   }
 
+  const [renameSuccessOpen, setRenameSuccessOpen] = useState(false);
   const [userToRemove, setUserToRemove] = useState(null);
   const [deletingMission, setDeletingMission] = useState(false);
   const [addingUser, setAddingUser] = useState(false);
@@ -56,6 +61,11 @@ export default function MissionSettings() {
 
   return (
     <div style={{ padding: '32px 0 0 200px', maxWidth: 800 }}>
+      <EphemeralFeedback
+        open={renameSuccessOpen}
+        setOpen={setRenameSuccessOpen}
+        message={`Project name changed to "${data?.title}"`}
+      />
       <AddUserDialog
         open={addingUser}
         onClose={() => setAddingUser(false)}
@@ -96,16 +106,21 @@ export default function MissionSettings() {
         <Button
           display="primary"
           disabled={data?.title === title}
+          loading={renameMissionLoading}
           onClick={async () => {
             const titlePatchOp = {
               op: 'replace',
               path: '/title',
               value: title,
             };
-            patchMission({ missionGuid, operations: [titlePatchOp] });
+            const result = await patchMission({
+              missionGuid,
+              operations: [titlePatchOp],
+            });
+            if (result?.status === 200) setRenameSuccessOpen(true);
           }}
         >
-          Rename
+          RENAME
         </Button>
       </div>
       <Text style={{ fontWeight: 'bold', margin: '24px 0 4px 4px' }}>
@@ -117,14 +132,9 @@ export default function MissionSettings() {
         onDelete={user => setUserToRemove(user)}
       >
         <Button
+          display="tag"
           onClick={() => setAddingUser(true)}
           startIcon={<AddIcon />}
-          size="small"
-          style={{
-            margin: '4px 4px 0 0',
-            height: 32,
-            padding: '0 12px',
-          }}
         >
           Add user
         </Button>
@@ -152,13 +162,10 @@ export default function MissionSettings() {
           </Text>
         </div>
         <Button
+          display="danger"
           onClick={() => setDeletingMission(true)}
-          style={{
-            background: theme.palette.error.main,
-            color: theme.palette.common.white,
-          }}
         >
-          Delete project
+          DELETE PROJECT
         </Button>
       </div>
     </div>

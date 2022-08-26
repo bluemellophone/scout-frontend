@@ -9,7 +9,7 @@ import { startOfDay, endOfDay, format } from 'date-fns';
 
 import useOnEnter from '../../hooks/useOnEnter';
 import { isValidDate } from '../../utils/dateUtils';
-import Button from '../Button';
+import Button from '../ButtonNew';
 import FilterButton from './components/FilterButton';
 
 const dateFormat = 'yyyy-MM-dd'; // US: MM/dd/yyyy
@@ -75,7 +75,7 @@ export default function DateFilter({
         <Button
           display="text"
           style={{
-            float: 'right',
+            margin: '0 0 2px 2px',
           }}
           onClick={() => {
             setStartDate(null);
@@ -121,17 +121,7 @@ export default function DateFilter({
             }}
           />
         </MuiPickersUtilsProvider>
-        <Button
-          display="primary"
-          style={{
-            marginLeft: 4,
-            padding: '8px 12px',
-            minWidth: 12,
-            height: 'fit-content',
-            flexShrink: 0,
-          }}
-          onClick={updateFilter}
-        >
+        <Button display="primary" onClick={updateFilter}>
           Go
         </Button>
       </div>

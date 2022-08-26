@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom';
 import WildMeLogo from '../assets/wild-me-gradient-logo.png';
 import useDocumentTitle from '../hooks/useDocumentTitle';
 import useOnEnter from '../hooks/useOnEnter';
-import Button from './Button';
+import Button from './ButtonNew';
 import Text from './Text';
 
 export default function SimpleFormPage({
@@ -18,7 +18,6 @@ export default function SimpleFormPage({
   buttonProps = {},
   renderBelowButton,
   disableBack = false,
-  disableLogout = false,
   children,
 }) {
   const history = useHistory();
@@ -42,34 +41,13 @@ export default function SimpleFormPage({
     >
       {!disableBack && (
         <Button
-          display="back"
+          display="inline"
+          icon="back"
           onClick={history.goBack}
           style={{ position: 'absolute', left: 16, top: 12 }}
         >
           Back
         </Button>
-      )}
-      {!disableLogout && (
-        <form
-          action={`${__houston_url__}/logout?next=/`}
-          method="POST"
-          style={{ position: 'absolute', right: 16, top: 12 }}
-        >
-          <button
-            type="submit"
-            style={{
-              textDecoration: 'underline',
-              fontSize: '1rem',
-              backgroundColor: 'unset',
-              width: '100%',
-              border: 'unset',
-              cursor: 'pointer',
-              padding: 0,
-            }}
-          >
-            Logout
-          </button>
-        </form>
       )}
       <div
         style={{

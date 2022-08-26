@@ -36,7 +36,6 @@ export default function MissionActionsMenu({
         <MenuItem onClick={onAddImages} style={{ minHeight: 'auto' }}>
           <div
             style={{
-              padding: 12,
               borderRadius: 1000,
               color: theme.palette.grey['600'],
               lineHeight: 0,
@@ -54,7 +53,6 @@ export default function MissionActionsMenu({
           <MenuItem style={{ minHeight: 'auto' }}>
             <div
               style={{
-                padding: 12,
                 borderRadius: 1000,
                 color: theme.palette.grey['600'],
                 lineHeight: 0,

@@ -1,21 +1,18 @@
 import React from 'react';
 
-import ViewIcon from '@material-ui/icons/Visibility';
-
-import Button from '../../Button';
+import Button from '../../ButtonNew';
 import ButtonLink from '../../ButtonLink';
 import ButtonMenu from '../../ButtonMenu';
 
 const buttonStyles = {
-  borderRadius: 3,
   margin: '4px 0',
-  padding: '0 8px',
+  padding: '0 12px',
 };
+
 const viewButtonProps = {
-  size: 'small',
-  display: 'panel',
+  display: 'neutral',
   style: { ...buttonStyles, marginRight: 4 },
-  startIcon: <ViewIcon />,
+  icon: 'view',
 };
 
 export default function ActionsRenderer({
@@ -34,22 +31,22 @@ export default function ActionsRenderer({
     <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
       {onView && (
         <Button onClick={onView} {...viewButtonProps}>
-          View
+          VIEW
         </Button>
       )}
       {viewHref && (
         <ButtonLink href={viewHref} {...viewButtonProps}>
-          View
+          VIEW
         </ButtonLink>
       )}
       <ButtonMenu
         size="small"
-        display="panel"
+        display="neutral"
         buttonId="actions"
         actions={clickyActions}
         style={buttonStyles}
       >
-        Actions
+        ACTIONS
       </ButtonMenu>
     </div>
   );

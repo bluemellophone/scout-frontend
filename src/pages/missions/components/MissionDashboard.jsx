@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import useGetMissionAssets from '../../../models/assets/useGetMissionAssets';
 import BodyHeader from '../../../components/BodyHeader';
 import Text from '../../../components/Text';
-import Button from '../../../components/Button';
+import Button from '../../../components/ButtonNew';
 import SelectedImageDialog from '../../../components/SelectedImageDialog';
 import ImageDisplay from '../../../components/ImageDisplay';
 import AddImagesDialog from './AddImagesDialog';
@@ -72,7 +72,11 @@ export default function MissionDashboard({
               Your project has no images. Get started by adding some
               images!
             </Text>
-            <Button display="primary" onClick={onAddImages}>
+            <Button
+              display="primary"
+              icon="add"
+              onClick={onAddImages}
+            >
               Add images
             </Button>
           </div>

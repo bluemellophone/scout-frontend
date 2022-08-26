@@ -7,7 +7,8 @@ import useGetMe from '../../models/users/useGetMe';
 import usePatchUser from '../../models/users/usePatchUser';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import BodyHeader from '../../components/BodyHeader';
-import Button from '../../components/Button';
+import Button from '../../components/ButtonNew';
+import EphemeralFeedback from '../../components/EphemeralFeedback';
 import Text from '../../components/Text';
 import PasswordVerificationAlert from '../../components/PasswordVerificationAlert';
 import ChangeUserPasswordDialog from '../../components/dialogs/ChangeUserPasswordDialog';
@@ -20,6 +21,12 @@ export default function UserSettings() {
   } = usePatchUser();
 
   const userGuid = data?.guid;
+
+  const [renameSuccessOpen, setRenameSuccessOpen] = useState(false);
+  const [
+    changeEmailSuccessOpen,
+    setChangeEmailSuccessOpen,
+  ] = useState(false);
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -44,6 +51,16 @@ export default function UserSettings() {
 
   return (
     <div style={{ padding: '32px 0 0 200px', maxWidth: 800 }}>
+      <EphemeralFeedback
+        open={renameSuccessOpen}
+        setOpen={setRenameSuccessOpen}
+        message={`User name changed to "${data?.full_name}"`}
+      />
+      <EphemeralFeedback
+        open={changeEmailSuccessOpen}
+        setOpen={setChangeEmailSuccessOpen}
+        message={`Email address changed to "${data?.email}"`}
+      />
       <ChangeUserPasswordDialog
         title="Change password"
         open={changePasswordOpen}
@@ -79,10 +96,14 @@ export default function UserSettings() {
               path: '/full_name',
               value: name,
             };
-            patchUser({ userGuid, operations: [namePatchOp] });
+            const result = await patchUser({
+              userGuid,
+              operations: [namePatchOp],
+            });
+            if (result?.status === 200) setRenameSuccessOpen(true);
           }}
         >
-          Update
+          RENAME
         </Button>
       </div>
       <Text style={{ fontWeight: 'bold', margin: '24px 0 4px 4px' }}>
@@ -114,14 +135,16 @@ export default function UserSettings() {
                 path: '/email',
                 value: email,
               };
-              patchUser({
+              const result = await patchUser({
                 userGuid,
                 password,
                 operations: [emailPatchOp],
               });
+              if (result?.status === 200)
+                setChangeEmailSuccessOpen(true);
             }}
           >
-            Update
+            UPDATE
           </Button>
         </PasswordVerificationAlert>
       )}
@@ -133,7 +156,7 @@ export default function UserSettings() {
           display="primary"
           onClick={() => setChangePasswordOpen(true)}
         >
-          Change password
+          CHANGE PASSWORD
         </Button>
       </div>
     </div>

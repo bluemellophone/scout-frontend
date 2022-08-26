@@ -55,8 +55,7 @@ export default function DrawerAccordion(props) {
         height: '100%',
       }}
     >
-      {items.map(item =>
-      {
+      {items.map(item => {
         const isExpanded = expanded === item.id;
         return (
           <Accordion

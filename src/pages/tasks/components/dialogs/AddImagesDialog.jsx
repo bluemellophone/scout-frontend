@@ -6,7 +6,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import useGetMissionAssets from '../../../../models/assets/useGetMissionAssets';
 import usePostAssetsToTask from '../../../../models/tasks/usePostAssetsToTask';
 import Alert from '../../../../components/Alert';
-import Button from '../../../../components/Button';
+import Button from '../../../../components/ButtonNew';
 import ImageDisplay from '../../../../components/ImageDisplay';
 import SelectedImageDialog from '../../../../components/SelectedImageDialog';
 import StandardDialog from '../../../../components/StandardDialog';
@@ -99,11 +99,9 @@ export default function AddImagesDialog({
             </Alert>
           )}
           <div>
-            <Button
-              display="basic"
-              onClick={handleClose}
-              id="CANCEL"
-            />
+            <Button display="inline" onClick={handleClose}>
+              Cancel
+            </Button>
             <Button
               disabled={isLoading || postAssetsLoading}
               loading={postAssetsLoading}
@@ -124,7 +122,7 @@ export default function AddImagesDialog({
                 if (result?.status === 200) handleClose();
               }}
             >
-              Add images
+              ADD IMAGES
             </Button>
           </div>
         </div>

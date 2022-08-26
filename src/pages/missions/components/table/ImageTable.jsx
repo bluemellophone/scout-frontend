@@ -11,7 +11,6 @@ import TableFooter from '@material-ui/core/TableFooter';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import Fade from '@material-ui/core/Fade';
@@ -26,6 +25,7 @@ import CloudDownload from '@material-ui/icons/CloudDownload';
 
 import { cellRendererTypes } from '../../../../components/dataDisplays/cellRenderers';
 import Text from '../../../../components/Text';
+import Button from '../../../../components/ButtonNew';
 import Keywords from '../../../../components/Keywords';
 import TaskChips from '../../../../components/TaskChips';
 import TablePaginationActions from './TablePaginationActions';
@@ -239,25 +239,30 @@ export default function ImageTable({
         style={{ margin: '16px 0' }}
       >
         <Grid item>
-          <Text variant="body2">{title}</Text>
+          <Text style={{ marginLeft: 2 }}>{title}</Text>
         </Grid>
         <Grid item>
-          <IconButton
-            onClick={() => sendCsv(visibleColumns, visibleData)}
+          <Button
+            display="neutral"
             size="small"
+            startIcon={<CloudDownload />}
+            onClick={() => sendCsv(visibleColumns, visibleData)}
           >
-            <CloudDownload style={{ marginRight: 4 }} />
-          </IconButton>
-          <IconButton
+            Export
+          </Button>
+          <Button
+            display="neutral"
+            size="small"
+            style={{ marginLeft: 4 }}
+            startIcon={<FilterList />}
             onClick={event => {
               setFilterAnchorEl(
                 filterAnchorEl ? null : event.currentTarget,
               );
             }}
-            size="small"
           >
-            <FilterList />
-          </IconButton>
+            Columns
+          </Button>
         </Grid>
       </Grid>
       <TableContainer style={paperStyles}>
