@@ -3,14 +3,11 @@ import { get } from 'lodash-es';
 
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
 
 import { getKeywordColor } from '../../../utils/colorUtils';
 import useGetKeywords from '../../../models/keywords/useGetKeywords';
 import useAddKeywordToAssets from '../../../models/keywords/useAddKeywordToAssets';
-import StandardDialog from '../../../components/StandardDialog';
-import Button from '../../../components/Button';
+import StandardDialog from '../../../components/StandardDialogNew';
 import Alert from '../../../components/Alert';
 
 export default function BulkAddTagDialog({
@@ -41,94 +38,81 @@ export default function BulkAddTagDialog({
     <StandardDialog
       open={open}
       onClose={handleClose}
+      onSubmit={async () => {
+        const selectValue = get(newTagSelectValue, 'value');
+        const selectKeywordId = get(newTagSelectValue, 'guid');
+        const matchingKeywordId =
+          newTagInputValue === selectValue ? selectKeywordId : null;
+
+        const result = await addKeywordToAssets({
+          missionGuid,
+          imageGuids: selectedImages,
+          keywordGuid: matchingKeywordId,
+          tag: newTagInputValue,
+        });
+        if (result?.status === 200) handleClose();
+      }}
+      submitDisabled={newTagInputValue === ''}
+      submitButtonLoading={isLoading}
+      submitButtonLabel="Add tag"
       title="Add tag"
-      PaperProps={{ style: { width: 400 } }}
+      maxWidth="xs"
     >
-      <DialogContent>
-        <Autocomplete
-          id="tag value"
-          freeSolo
-          blurOnSelect
-          clearOnEscape
-          handleHomeEndKeys
-          selectOnFocus
-          value={newTagSelectValue}
-          onChange={(_, newValue) => {
-            setNewTagSelectValue(newValue);
-          }}
-          inputValue={newTagInputValue}
-          onInputChange={(_, newValue) => {
-            setNewTagInputValue(newValue);
-          }}
-          disabled={isLoading}
-          options={safeKeywordOptions}
-          getOptionLabel={option => get(option, 'value', '')}
-          renderOption={option => (
+      <Autocomplete
+        id="tag value"
+        freeSolo
+        blurOnSelect
+        clearOnEscape
+        handleHomeEndKeys
+        selectOnFocus
+        value={newTagSelectValue}
+        onChange={(_, newValue) => {
+          setNewTagSelectValue(newValue);
+        }}
+        inputValue={newTagInputValue}
+        onInputChange={(_, newValue) => {
+          setNewTagInputValue(newValue);
+        }}
+        disabled={isLoading}
+        options={safeKeywordOptions}
+        getOptionLabel={option => get(option, 'value', '')}
+        renderOption={option => (
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
             <div
               style={{
-                display: 'flex',
-                alignItems: 'center',
+                width: 12,
+                height: 12,
+                marginRight: 8,
+                borderRadius: 100,
+                backgroundColor: getKeywordColor(option.guid),
               }}
-            >
-              <div
-                style={{
-                  width: 12,
-                  height: 12,
-                  marginRight: 8,
-                  borderRadius: 100,
-                  backgroundColor: getKeywordColor(option.guid),
-                }}
-              />
-              <span>{option.value}</span>
-            </div>
-          )}
-          renderInput={params => (
-            <TextField
-              {...params}
-              autoFocus
-              variant="outlined"
-              style={{ width: 300, marginBottom: 16 }}
             />
-          )}
-        />
-        {error && (
-          <Alert
-            style={{ marginTop: 16, marginBottom: 8 }}
-            severity="error"
-            title="Failed to add tag"
-          >
-            {error}
-          </Alert>
+            <span>{option.value}</span>
+          </div>
         )}
-      </DialogContent>
-      <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
-        <Button display="basic" onClick={handleClose}>
-          Cancel
-        </Button>
-        <Button
-          display="primary"
-          loading={isLoading}
-          disabled={isLoading || newTagInputValue === ''}
-          onClick={async () => {
-            const selectValue = get(newTagSelectValue, 'value');
-            const selectKeywordId = get(newTagSelectValue, 'guid');
-            const matchingKeywordId =
-              newTagInputValue === selectValue
-                ? selectKeywordId
-                : null;
-
-            const result = await addKeywordToAssets({
-              missionGuid,
-              imageGuids: selectedImages,
-              keywordGuid: matchingKeywordId,
-              tag: newTagInputValue,
-            });
-            if (result?.status === 200) handleClose();
-          }}
+        renderInput={params => (
+          <TextField
+            {...params}
+            autoFocus
+            variant="outlined"
+            style={{ width: 300, marginBottom: 16 }}
+          />
+        )}
+      />
+      {error && (
+        <Alert
+          style={{ marginTop: 16, marginBottom: 8 }}
+          severity="error"
+          title="Failed to add tag"
         >
-          Add tag
-        </Button>
-      </DialogActions>
+          {error}
+        </Alert>
+      )}
     </StandardDialog>
   );
 }

@@ -1,15 +1,11 @@
 import React, { useState } from 'react';
 
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
-
 import useGetMissionAssets from '../../../../models/assets/useGetMissionAssets';
 import usePostAssetsToTask from '../../../../models/tasks/usePostAssetsToTask';
 import Alert from '../../../../components/Alert';
-import Button from '../../../../components/ButtonNew';
 import ImageDisplay from '../../../../components/ImageDisplay';
 import SelectedImageDialog from '../../../../components/SelectedImageDialog';
-import StandardDialog from '../../../../components/StandardDialog';
+import StandardDialog from '../../../../components/StandardDialogNew';
 import { resultsPerPage } from '../../../../constants/search';
 
 export default function AddImagesDialog({
@@ -54,6 +50,24 @@ export default function AddImagesDialog({
       fullScreen
       open={open}
       onClose={handleClose}
+      onSubmit={async () => {
+        const operations = [
+          {
+            op: 'union',
+            path: '/assets',
+            value: selectedImages,
+          },
+        ];
+        const result = await postAssetsToTask({
+          taskGuid,
+          missionGuid,
+          operations,
+        });
+        if (result?.status === 200) handleClose();
+      }}
+      submitDisabled={isLoading || postAssetsLoading}
+      submitButtonLoading={postAssetsLoading}
+      submitButtonLabel="Add images"
       title="Add images to task"
     >
       <SelectedImageDialog
@@ -63,70 +77,30 @@ export default function AddImagesDialog({
         open={Boolean(clickedAssetGuid)}
         onClose={() => setClickedAssetGuid(null)}
       />
-      <DialogContent>
-        <ImageDisplay
-          missionData={missionData}
-          images={images}
-          loading={isLoading}
-          onClickImage={asset => setClickedAssetGuid(asset?.guid)}
-          resultCount={resultCount}
-          selectedImages={selectedImages}
-          setSelectedImages={setSelectedImages}
-          imageQuery={imageQuery}
-          setImageQuery={setImageQuery}
-          searchParams={searchParams}
-          setSearchParams={setSearchParams}
-          querySelected={querySelected}
-          setQuerySelected={setQuerySelected}
-        />
-      </DialogContent>
-      <DialogActions>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            width: '100%',
-            alignItems: 'flex-end',
-          }}
+      <ImageDisplay
+        missionData={missionData}
+        images={images}
+        loading={isLoading}
+        onClickImage={asset => setClickedAssetGuid(asset?.guid)}
+        resultCount={resultCount}
+        selectedImages={selectedImages}
+        setSelectedImages={setSelectedImages}
+        imageQuery={imageQuery}
+        setImageQuery={setImageQuery}
+        searchParams={searchParams}
+        setSearchParams={setSearchParams}
+        querySelected={querySelected}
+        setQuerySelected={setQuerySelected}
+      />
+      {error && (
+        <Alert
+          style={{ marginBottom: 8, width: '100%' }}
+          severity="error"
+          title="Error loading images"
         >
-          {error && (
-            <Alert
-              style={{ marginBottom: 8, width: '100%' }}
-              severity="error"
-              title="Error loading images"
-            >
-              {error}
-            </Alert>
-          )}
-          <div>
-            <Button display="inline" onClick={handleClose}>
-              Cancel
-            </Button>
-            <Button
-              disabled={isLoading || postAssetsLoading}
-              loading={postAssetsLoading}
-              display="primary"
-              onClick={async () => {
-                const operations = [
-                  {
-                    op: 'union',
-                    path: '/assets',
-                    value: selectedImages,
-                  },
-                ];
-                const result = await postAssetsToTask({
-                  taskGuid,
-                  missionGuid,
-                  operations,
-                });
-                if (result?.status === 200) handleClose();
-              }}
-            >
-              ADD IMAGES
-            </Button>
-          </div>
-        </div>
-      </DialogActions>
+          {error}
+        </Alert>
+      )}
     </StandardDialog>
   );
 }

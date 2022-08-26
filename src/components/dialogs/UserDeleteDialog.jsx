@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
 import { get } from 'lodash-es';
 
-import DialogActions from '@material-ui/core/DialogActions';
-
 import Text from '../Text';
 import Alert from '../Alert';
-import Button from '../Button';
-import StandardDialog from '../StandardDialog';
+import StandardDialog from '../StandardDialogNew';
 import PasswordVerificationAlert from '../PasswordVerificationAlert';
 import useDeleteUser from '../../models/users/useDeleteUser';
 
@@ -34,9 +31,9 @@ export default function UserDeleteDialog({
     }
   }
 
-  const titleId = deactivatingSelf
-    ? 'DEACTIVATE_ACCOUNT'
-    : 'DEACTIVATE_USER';
+  const title = deactivatingSelf
+    ? 'Deactivate account'
+    : 'Deactivate user';
   const confirmationId = deactivatingSelf
     ? 'DEACTIVATE_ACCOUNT_CONFIRMATION'
     : 'CONFIRM_USER_DEACTIVATION';
@@ -51,11 +48,15 @@ export default function UserDeleteDialog({
   return (
     <StandardDialog
       open={open}
+      title={title}
       onClose={cleanupAndClose}
-      titleId={titleId}
+      onSubmit={processDeletion}
+      submitButtonLoading={loading}
+      submitButtonLabel={title}
+      submitButtonProps={{ display: 'danger' }}
       maxWidth="xs"
     >
-      <div style={{ padding: '12px 24px' }}>
+      <div>
         <Text id={confirmationId} values={confirmationValues} />
         {touched ? (
           <PasswordVerificationAlert
@@ -70,14 +71,6 @@ export default function UserDeleteDialog({
           </Alert>
         )}
       </div>
-      <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
-        <Button
-          display="primary"
-          onClick={processDeletion}
-          loading={loading}
-          id={titleId}
-        />
-      </DialogActions>
     </StandardDialog>
   );
 }

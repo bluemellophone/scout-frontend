@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 
 import FormControl from '@material-ui/core/FormControl';
-import DialogActions from '@material-ui/core/DialogActions';
 import TextField from '@material-ui/core/TextField';
 
 import Alert from '../../components/Alert';
-import Button from '../../components/Button';
-import StandardDialog from '../../components/StandardDialog';
+import StandardDialog from '../../components/StandardDialogNew';
 import PasswordVerificationAlert from '../../components/PasswordVerificationAlert';
 import usePatchUser from '../../models/users/usePatchUser';
 
@@ -64,10 +62,13 @@ export default function ChangeUserPasswordDialog({
         if (reason === 'backdropClick') return;
         cleanupAndClose();
       }}
+      onSubmit={saveProperties}
+      submitButtonLabel="Change password"
+      submitButtonLoading={isLoading}
       title={title}
       maxWidth="xs"
     >
-      <div style={{ padding: '12px 24px' }}>
+      <div>
         <FormControl variant="outlined" style={{ width: '100%' }}>
           <TextField
             variant="outlined"
@@ -113,7 +114,6 @@ export default function ChangeUserPasswordDialog({
         <PasswordVerificationAlert
           setPassword={setVerificationPassword}
           descriptionId="SENSITIVE_USER_DATA_CHANGE_DESCRIPTION"
-          style={{ marginTop: 16, marginBottom: 0 }}
         />
         {error && (
           <Alert
@@ -125,16 +125,6 @@ export default function ChangeUserPasswordDialog({
           </Alert>
         )}
       </div>
-      <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
-        <Button
-          disabled={verificationPassword === '' || showMatchWarning}
-          display="primary"
-          onClick={saveProperties}
-          loading={isLoading}
-        >
-          Change password
-        </Button>
-      </DialogActions>
     </StandardDialog>
   );
 }

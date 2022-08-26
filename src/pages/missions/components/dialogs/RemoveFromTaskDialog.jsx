@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
 
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
-
 import useGetMission from '../../../../models/missions/useGetMission';
 import usePostAssetsToTask from '../../../../models/tasks/usePostAssetsToTask';
-import StandardDialog from '../../../../components/StandardDialog';
-import Button from '../../../../components/Button';
+import StandardDialog from '../../../../components/StandardDialogNew';
 import Text from '../../../../components/Text';
 import Alert from '../../../../components/Alert';
 import TaskDropdown from '../../../../components/TaskDropdown';
@@ -35,58 +31,47 @@ export default function RemoveFromTaskDialog({
     <StandardDialog
       open={open}
       onClose={handleClose}
+      onSubmit={async () => {
+        const operations = [
+          {
+            op: 'difference',
+            path: '/assets',
+            value: selectedImages,
+          },
+        ];
+        const result = await postAssetsToTask({
+          taskGuid: selectedTask,
+          missionGuid,
+          operations,
+          goToTask: false,
+        });
+        if (result?.status === 200) handleClose();
+      }}
+      submitLoading={isLoading}
+      submitDisabled={selectedTask === ''}
+      submitButtonLabel="REMOVE FROM TASK"
       title="Remove from task"
-      PaperProps={{ style: { width: 400 } }}
+      maxWidth="xs"
     >
-      <DialogContent>
-        <Text variant="body2" style={{ marginBottom: 12 }}>
-          {`Select a task to remove ${
-            selectedImages?.length
-          } images. If one of the images you selected is not in the task, it will be skipped over.`}
-        </Text>
-        <TaskDropdown
-          tasks={missionData?.tasks}
-          value={selectedTask}
-          onChange={taskGuid => setSelectedTask(taskGuid)}
-        />
-        {error && (
-          <Alert
-            style={{ marginTop: 16, marginBottom: 8 }}
-            severity="error"
-            title="Failed to remove images from task"
-          >
-            {error}
-          </Alert>
-        )}
-      </DialogContent>
-      <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
-        <Button display="basic" onClick={handleClose}>
-          Cancel
-        </Button>
-        <Button
-          display="primary"
-          loading={isLoading}
-          disabled={selectedTask === '' || isLoading}
-          onClick={async () => {
-            const operations = [
-              {
-                op: 'difference',
-                path: '/assets',
-                value: selectedImages,
-              },
-            ];
-            const result = await postAssetsToTask({
-              taskGuid: selectedTask,
-              missionGuid,
-              operations,
-              goToTask: false,
-            });
-            if (result?.status === 200) handleClose();
-          }}
+      <Text variant="body2" style={{ marginBottom: 12 }}>
+        {`Select a task to remove ${
+          selectedImages?.length
+        } images. If one of the images you selected is not in the task, it will be skipped over.`}
+      </Text>
+      <TaskDropdown
+        tasks={missionData?.tasks}
+        value={selectedTask}
+        onChange={taskGuid => setSelectedTask(taskGuid)}
+      />
+      {error && (
+        <Alert
+          style={{ marginTop: 16, marginBottom: 8 }}
+          severity="error"
+          title="Failed to remove images from task"
         >
-          Remove from task
-        </Button>
-      </DialogActions>
+          {error}
+        </Alert>
+      )}
     </StandardDialog>
   );
 }

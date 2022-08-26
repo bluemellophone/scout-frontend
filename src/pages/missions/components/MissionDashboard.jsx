@@ -81,21 +81,23 @@ export default function MissionDashboard({
             </Button>
           </div>
         ) : (
-          <ImageDisplay
-            missionData={missionData}
-            images={images}
-            loading={assetsLoading}
-            onClickImage={asset => setClickedAssetGuid(asset?.guid)}
-            resultCount={resultCount}
-            selectedImages={selectedImages}
-            setSelectedImages={setSelectedImages}
-            imageQuery={imageQuery}
-            setImageQuery={setImageQuery}
-            searchParams={searchParams}
-            setSearchParams={setSearchParams}
-            querySelected={querySelected}
-            setQuerySelected={setQuerySelected}
-          />
+          <div style={{ marginTop: 24 }}>
+            <ImageDisplay
+              missionData={missionData}
+              images={images}
+              loading={assetsLoading}
+              onClickImage={asset => setClickedAssetGuid(asset?.guid)}
+              resultCount={resultCount}
+              selectedImages={selectedImages}
+              setSelectedImages={setSelectedImages}
+              imageQuery={imageQuery}
+              setImageQuery={setImageQuery}
+              searchParams={searchParams}
+              setSearchParams={setSearchParams}
+              querySelected={querySelected}
+              setQuerySelected={setQuerySelected}
+            />
+          </div>
         )}
         <AddImagesDialog
           missionGuid={missionData?.guid}

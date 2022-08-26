@@ -4,6 +4,7 @@ import MuiButton from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import AddIcon from '@material-ui/icons/Add';
 import BackIcon from '@material-ui/icons/KeyboardBackspace';
+import ExpandUpIcon from '@material-ui/icons/ExpandLess';
 import ExpandIcon from '@material-ui/icons/ExpandMore';
 import ViewIcon from '@material-ui/icons/Visibility';
 
@@ -18,6 +19,9 @@ const iconPropsMap = {
   },
   back: {
     startIcon: <BackIcon />,
+  },
+  expandup: {
+    endIcon: <ExpandUpIcon />,
   },
   expand: {
     endIcon: <ExpandIcon />,

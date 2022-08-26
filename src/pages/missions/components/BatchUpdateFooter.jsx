@@ -4,7 +4,7 @@ import { useTheme } from '@material-ui/core/styles';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
-import Button from '../../../components/Button';
+import Button from '../../../components/ButtonNew';
 import Text from '../../../components/Text';
 import BulkAddTagDialog from './BulkAddTagDialog';
 import CreateTaskDialog from './CreateTaskDialog';
@@ -97,7 +97,7 @@ export default function BatchUpdateFooter({
             : '1 image selected.'}
         </Text>
         <Button
-          display="primary"
+          icon="expandup"
           onClick={e => setAnchorEl(e.currentTarget)}
         >
           Actions
