@@ -5,11 +5,7 @@ import Uppy from '@uppy/core';
 import Tus from '@uppy/tus';
 import { useHistory } from 'react-router-dom';
 
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
-
-import Button from '../../../components/ButtonNew';
-import StandardDialog from '../../../components/StandardDialog';
+import StandardDialog from '../../../components/StandardDialogNew';
 import UppyDashboard from '../../../components/UppyDashboard';
 import usePostMissionCollection from '../../../models/missionCollection/usePostMissionCollection';
 
@@ -104,38 +100,22 @@ export default function AddImagesDialog({
     <StandardDialog
       open={open}
       onClose={onCloseDialog}
-      closeDialogDisabled={closeDialogDisabled}
+      closeDisabled={closeDialogDisabled}
+      onSubmit={async () => {
+        const result = await postMissionCollection({
+          missionGuid,
+          transactionId: assetSubmissionId,
+        });
+        if (result?.status === 200) {
+          onCloseDialog();
+          history.push(`/adding-images/${missionGuid}`);
+        }
+      }}
+      submitDisabled={addButtonDisabled}
+      submitButtonLabel="Add images"
       title="Add images"
     >
-      <DialogContent>
-        <UppyDashboard uppyInstance={uppy} />
-      </DialogContent>
-      <DialogActions>
-        <Button
-          display="inline"
-          disabled={closeDialogDisabled}
-          onClick={onCloseDialog}
-          id="CANCEL"
-        />
-
-        <Button
-          display="primary"
-          disabled={addButtonDisabled}
-          loading={isLoading}
-          onClick={async () => {
-            const result = await postMissionCollection({
-              missionGuid,
-              transactionId: assetSubmissionId,
-            });
-            if (result?.status === 200) {
-              onCloseDialog();
-              history.push(`/adding-images/${missionGuid}`);
-            }
-          }}
-        >
-          Add images
-        </Button>
-      </DialogActions>
+      <UppyDashboard uppyInstance={uppy} />
     </StandardDialog>
   );
 }

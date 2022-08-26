@@ -106,7 +106,6 @@ export default function ImageDisplay({
     <div>
       <Text
         style={{
-          marginTop: 32,
           marginBottom: 8,
           fontWeight: 'bold',
         }}

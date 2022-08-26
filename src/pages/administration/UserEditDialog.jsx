@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
 import FormControl from '@material-ui/core/FormControl';
-import DialogActions from '@material-ui/core/DialogActions';
 import TextField from '@material-ui/core/TextField';
 
 import Alert from '../../components/Alert';
-import Button from '../../components/Button';
-import StandardDialog from '../../components/StandardDialog';
+import StandardDialog from '../../components/StandardDialogNew';
 import PasswordVerificationAlert from '../../components/PasswordVerificationAlert';
 import usePatchUser from '../../models/users/usePatchUser';
 import RoleDropdown from './components/RoleDropdown';
@@ -76,10 +74,13 @@ export default function UserEditDialog({ open, onClose, userData }) {
         if (reason === 'backdropClick') return;
         cleanupAndClose();
       }}
+      onSubmit={saveProperties}
+      submitDisabled={password === ''}
+      submitButtonLoading={isLoading}
       title="Edit user"
       maxWidth="xs"
     >
-      <div style={{ padding: '12px 24px' }}>
+      <div>
         <FormControl variant="outlined" style={{ width: '100%' }}>
           <TextField
             variant="outlined"
@@ -112,7 +113,7 @@ export default function UserEditDialog({ open, onClose, userData }) {
         <PasswordVerificationAlert
           setPassword={setPassword}
           descriptionId="SENSITIVE_USER_DATA_CHANGE_DESCRIPTION"
-          style={{ marginTop: 16, marginBottom: 0 }}
+          style={{ marginTop: 16 }}
         />
         {error && (
           <Alert
@@ -124,16 +125,6 @@ export default function UserEditDialog({ open, onClose, userData }) {
           </Alert>
         )}
       </div>
-      <DialogActions style={{ padding: '0px 24px 24px 24px' }}>
-        <Button
-          disabled={password === ''}
-          display="primary"
-          onClick={saveProperties}
-          loading={isLoading}
-        >
-          Save
-        </Button>
-      </DialogActions>
     </StandardDialog>
   );
 }

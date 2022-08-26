@@ -19,7 +19,7 @@ export default function PasswordVerificationAlert({
       titleId="PASSWORD_VERIFICATION_REQUIRED"
       description={description}
       descriptionId={descriptionId}
-      style={{ marginBottom: 20, ...style }}
+      style={style}
     >
       <FormControl
         required

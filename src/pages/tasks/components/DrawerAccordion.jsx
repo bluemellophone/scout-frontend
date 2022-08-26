@@ -78,7 +78,7 @@ export default function DrawerAccordion(props) {
                   theme.palette.primary.main,
                   0.1,
                 ),
-                minHeight: 56,
+                minHeight: 0,
               }}
             >
               <Text variant="h6">{item.label}</Text>

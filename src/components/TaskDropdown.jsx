@@ -27,7 +27,7 @@ export default function TaskDropdown({
         variant="outlined"
         onChange={e => onChange(e.target.value)}
         value={value}
-        style={{ width: 360, ...style }}
+        style={{ minWidth: 396, ...style }}
         MenuProps={{ style: { maxHeight: 440 } }}
         {...rest}
       >
