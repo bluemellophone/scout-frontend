@@ -1,6 +1,7 @@
 import React from 'react';
 import { get, minBy, maxBy } from 'lodash-es';
 
+import { useTheme } from '@material-ui/core/styles';
 import PreviousIcon from '@material-ui/icons/ChevronLeft';
 import NextIcon from '@material-ui/icons/ChevronRight';
 
@@ -33,6 +34,7 @@ export default function TaskDashboard({
   mode,
   setMode,
 }) {
+  const theme = useTheme();
   const hotdogView =
     selectedAssets.length > 1 && mode === viewModes.hotdog;
   const hamburgerView =
@@ -175,7 +177,10 @@ export default function TaskDashboard({
           <img
             alt={selectedAssets[0].filename}
             src={selectedAssets[0].src}
-            style={{ width: '100%', marginTop: 12 }}
+            style={{
+              width: '100%',
+              marginTop: 12,
+            }}
           />
         )}
         {hotdogView && (
@@ -189,7 +194,10 @@ export default function TaskDashboard({
             <img
               alt={selectedAssets[0].filename}
               src={selectedAssets[0].src}
-              style={{ width: '50%' }}
+              style={{
+                width: '50%',
+                border: `6px solid ${theme.palette.primary.main}`,
+              }}
             />
             <img
               alt={selectedAssets[1].filename}
@@ -203,7 +211,11 @@ export default function TaskDashboard({
             <img
               alt={selectedAssets[0].filename}
               src={selectedAssets[0].src}
-              style={{ width: '100%', marginTop: 12 }}
+              style={{
+                width: '100%',
+                marginTop: 12,
+                border: `6px solid ${theme.palette.primary.main}`,
+              }}
             />
             <img
               alt={selectedAssets[1].filename}

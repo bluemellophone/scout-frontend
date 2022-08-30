@@ -17,6 +17,7 @@ export default function TaskDrawer({
   mode,
   selectedAssets,
   setSelectedAssets,
+  selectedAssetQuery,
 }) {
   const [addImagesDialogOpen, setAddImagesDialogOpen] = useState(
     false,
@@ -95,7 +96,6 @@ export default function TaskDrawer({
         </IconButton>
       </div>
       <Divider style={minimizedStyles} />
-
       {noImages ? (
         <div
           style={{ ...minimizedStyles, margin: '20px 20px 0 20px ' }}
@@ -125,6 +125,7 @@ export default function TaskDrawer({
             mode={mode}
             selectedAssets={selectedAssets}
             setSelectedAssets={setSelectedAssets}
+            selectedAssetQuery={selectedAssetQuery}
           />
         </div>
       )}
