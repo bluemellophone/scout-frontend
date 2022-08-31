@@ -32,8 +32,14 @@ export default function StandardDialog({
 }) {
   const closeActionDisabled = submitButtonLoading || closeDisabled;
   const submitActionDisabled = submitButtonLoading || submitDisabled;
+
+  function handleClose(e, reason) {
+    if (reason === 'backdropClick') return;
+    onClose(e, reason);
+  }
+
   return (
-    <Dialog open={open} onClose={onClose} {...rest}>
+    <Dialog open={open} onClose={handleClose} {...rest}>
       <DialogTitle>
         <Text id={titleId} style={{ marginRight: 60 }}>
           {title}
@@ -43,7 +49,7 @@ export default function StandardDialog({
             style={{ position: 'absolute', top: 4, right: 12 }}
             aria-label="close"
             disabled={closeActionDisabled}
-            onClick={onClose}
+            onClick={handleClose}
           >
             <CloseIcon />
           </IconButton>
@@ -55,7 +61,7 @@ export default function StandardDialog({
           {onClose && (
             <Button
               display="inline"
-              onClick={onClose}
+              onClick={handleClose}
               disabled={closeActionDisabled}
               loading={closeButtonLoading}
               {...closeButtonProps}

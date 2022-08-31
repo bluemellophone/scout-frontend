@@ -17,7 +17,6 @@ export default function TaskSwitcher({ missionData }) {
   return (
     <>
       <CreateTaskDialog
-        message="Are you sure you want to create a new task?"
         selectedImages={[]}
         missionGuid={missionData?.guid}
         open={creatingTask}
