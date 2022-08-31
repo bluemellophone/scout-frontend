@@ -28,8 +28,6 @@ export default function ChipPool({
     [users, filter],
   );
 
-  console.log(users);
-
   return (
     <div style={style}>
       <div
@@ -58,6 +56,7 @@ export default function ChipPool({
       </div>
       <div
         style={{
+          // not in MUI theme for some reason, but this is the color of borders on other inputs
           border: '1px solid rgba(0,0,0,0.23)',
           borderRadius: 4,
           padding: '4px 12px 12px',
