@@ -1,12 +1,14 @@
 import React from 'react';
 import Snackbar from '@material-ui/core/Snackbar';
-import Alert from '@material-ui/lab/Alert';
+
+import Alert from './Alert';
 
 export default function EphemeralFeedback({
   severity = 'success',
   message,
   open,
   setOpen,
+  title,
   ...rest
 }) {
   return (
@@ -23,7 +25,9 @@ export default function EphemeralFeedback({
       }}
       {...rest}
     >
-      <Alert severity={severity}>{message}</Alert>
+      <Alert title={title} severity={severity}>
+        {message}
+      </Alert>
     </Snackbar>
   );
 }

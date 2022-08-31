@@ -16,6 +16,7 @@ export default function StandardDialog({
   titleId,
   children,
   onClose,
+  renderDialogActions = true,
   closeDisabled = false,
   closeButtonLabel = 'CANCEL',
   closeButtonLoading = false,
@@ -49,34 +50,36 @@ export default function StandardDialog({
         )}
       </DialogTitle>
       <DialogContent>{children}</DialogContent>
-      <DialogActions style={{ padding: '4px 24px 24px 24px' }}>
-        {onClose && (
-          <Button
-            display="inline"
-            onClick={onClose}
-            disabled={closeActionDisabled}
-            loading={closeButtonLoading}
-            {...closeButtonProps}
-            style={closeButtonStyle}
-          >
-            {closeButtonLabel}
-          </Button>
-        )}
-        {onSubmit && (
-          <Button
-            onClick={onSubmit}
-            disabled={submitActionDisabled}
-            loading={submitButtonLoading}
-            {...submitButtonProps}
-            style={{
-              ...submitButtonStyle,
-              textTransform: 'uppercase',
-            }}
-          >
-            {submitButtonLabel}
-          </Button>
-        )}
-      </DialogActions>
+      {renderDialogActions && (
+        <DialogActions style={{ padding: '4px 24px 24px 24px' }}>
+          {onClose && (
+            <Button
+              display="inline"
+              onClick={onClose}
+              disabled={closeActionDisabled}
+              loading={closeButtonLoading}
+              {...closeButtonProps}
+              style={closeButtonStyle}
+            >
+              {closeButtonLabel}
+            </Button>
+          )}
+          {onSubmit && (
+            <Button
+              onClick={onSubmit}
+              disabled={submitActionDisabled}
+              loading={submitButtonLoading}
+              {...submitButtonProps}
+              style={{
+                ...submitButtonStyle,
+                textTransform: 'uppercase',
+              }}
+            >
+              {submitButtonLabel}
+            </Button>
+          )}
+        </DialogActions>
+      )}
     </Dialog>
   );
 }
