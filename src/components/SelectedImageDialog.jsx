@@ -1,18 +1,11 @@
 import React, { useState, useMemo } from 'react';
-import { get, differenceBy } from 'lodash-es';
 
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import TextField from '@material-ui/core/TextField';
-
-import useAddKeyword from '../models/keywords/useAddKeyword';
-import useGetKeywords from '../models/keywords/useGetKeywords';
 import { formatDate } from '../utils/formatters';
-import { getKeywordColor } from '../utils/colorUtils';
 import StandardDialog from './StandardDialogNew';
 import Text from './Text';
 import Keywords from './Keywords';
 import Button from './ButtonNew';
-import Alert from './Alert';
+import AddTagWidget from './AddTagWidget';
 
 export default function SelectedImageDialog({
   open,
@@ -22,35 +15,14 @@ export default function SelectedImageDialog({
   assetGuid,
 }) {
   const [addingTag, setAddingTag] = useState(false);
-  const { data: keywordOptions } = useGetKeywords();
 
   const asset = useMemo(
     () => missionAssets.find(a => a?.guid === assetGuid),
     [assetGuid, missionAssets],
   );
 
-  const filteredKeywordOptions = useMemo(
-    () => {
-      const assetKeywords = asset?.tags;
-      if (!assetKeywords || !keywordOptions) return [];
-      return differenceBy(keywordOptions, assetKeywords, 'guid');
-    },
-    [asset?.guid, keywordOptions],
-  );
-  const [newTagSelectValue, setNewTagSelectValue] = useState(null);
-  const [newTagInputValue, setNewTagInputValue] = useState('');
-
-  const {
-    mutate: addKeyword,
-    loading: addKeywordLoading,
-    error: addKeywordError,
-    clearError: clearAddKeywordError,
-  } = useAddKeyword();
-
   function onCloseDialog() {
     setAddingTag(false);
-    setNewTagInputValue('');
-    setNewTagSelectValue(null);
     onClose();
   }
 
@@ -75,110 +47,19 @@ export default function SelectedImageDialog({
           marginBottom: 80,
         }}
       >
-        <div>
-          {addKeywordError && (
-            <Alert
-              style={{ marginTop: 16, marginBottom: 8 }}
-              severity="error"
-              onClose={clearAddKeywordError}
-              title="Server error"
-              description={addKeywordError}
-            />
+        <Keywords asset={asset} missionGuid={missionGuid} deletable>
+          {addingTag ? (
+            <AddTagWidget missionGuid={missionGuid} asset={asset} />
+          ) : (
+            <Button
+              display="tag"
+              icon="add"
+              onClick={() => setAddingTag(true)}
+            >
+              Add tag
+            </Button>
           )}
-          <Keywords asset={asset} missionGuid={missionGuid} deletable>
-            {addingTag ? (
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Autocomplete
-                  id="tag value"
-                  freeSolo
-                  blurOnSelect
-                  clearOnEscape
-                  handleHomeEndKeys
-                  selectOnFocus
-                  value={newTagSelectValue}
-                  onChange={(_, newValue) => {
-                    setNewTagSelectValue(newValue);
-                  }}
-                  inputValue={newTagInputValue}
-                  onInputChange={(_, newValue) => {
-                    setNewTagInputValue(newValue);
-                  }}
-                  disabled={addKeywordLoading}
-                  options={filteredKeywordOptions}
-                  getOptionLabel={option => get(option, 'value', '')}
-                  renderOption={option => (
-                    <div
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                      }}
-                    >
-                      <div
-                        style={{
-                          width: 12,
-                          height: 12,
-                          marginRight: 8,
-                          borderRadius: 100,
-                          backgroundColor: getKeywordColor(
-                            option.guid,
-                          ),
-                        }}
-                      />
-                      <span>{option.value}</span>
-                    </div>
-                  )}
-                  renderInput={params => (
-                    <TextField
-                      {...params}
-                      autoFocus
-                      style={{ width: 200, margin: '0 8px' }}
-                    />
-                  )}
-                />
-                <Button
-                  display="tag"
-                  icon="add"
-                  loading={addKeywordLoading}
-                  onClick={async () => {
-                    const selectValue = get(
-                      newTagSelectValue,
-                      'value',
-                    );
-                    const selectKeywordId = get(
-                      newTagSelectValue,
-                      'guid',
-                    );
-                    const matchingKeywordId =
-                      newTagInputValue === selectValue
-                        ? selectKeywordId
-                        : null;
-
-                    const successful = await addKeyword({
-                      assetGuid: asset?.guid,
-                      keywordGuid: matchingKeywordId,
-                      keywordValue: newTagInputValue,
-                      missionGuid,
-                    });
-                    if (successful) {
-                      setNewTagInputValue('');
-                      setNewTagSelectValue(null);
-                    }
-                  }}
-                >
-                  Add tag
-                </Button>
-              </div>
-            ) : (
-              <Button
-                display="tag"
-                icon="add"
-                onClick={() => setAddingTag(true)}
-              >
-                Add tag
-              </Button>
-            )}
-          </Keywords>
-        </div>
+        </Keywords>
         <div>
           <Text variant="body2">{`Filename: ${
             asset?.filename

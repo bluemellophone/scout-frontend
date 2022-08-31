@@ -1,6 +1,7 @@
 import { usePatch } from '../../hooks/useMutate';
 import queryKeys, {
   getAllMissionAssetsQueryKeys,
+  getAssetQueryKey,
 } from '../../constants/queryKeys';
 
 export default function useAddKeyword() {
@@ -22,11 +23,10 @@ export default function useAddKeyword() {
     },
     /* Note: for some reason when using fetch keys here it causes an erroneous
      * fetch to occur in the form of POST /missions/undefined/assets */
-    deriveInvalidateKeys: ({ missionGuid }) => {
-      return [
-        queryKeys.keywords,
-        getAllMissionAssetsQueryKeys(missionGuid),
-      ];
-    },
+    deriveInvalidateKeys: ({ assetGuid, missionGuid }) => [
+      queryKeys.keywords,
+      getAssetQueryKey(assetGuid),
+      getAllMissionAssetsQueryKeys(missionGuid),
+    ],
   });
 }

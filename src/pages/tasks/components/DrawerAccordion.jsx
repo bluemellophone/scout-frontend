@@ -9,6 +9,7 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Text from '../../../components/Text';
 import Files from './drawerAreas/Files';
 import Properties from './drawerAreas/Properties';
+import Tags from './drawerAreas/Tags';
 
 const items = [
   {
@@ -34,7 +35,7 @@ const items = [
   {
     id: 'tags',
     label: 'Tags',
-    component: () => <div>Tags</div>,
+    component: Tags,
   },
 ];
 
@@ -84,7 +85,7 @@ export default function DrawerAccordion(props) {
               <Text variant="h6">{item.label}</Text>
             </AccordionSummary>
             <AccordionDetails style={{ padding: 'unset' }}>
-              {<item.component {...props} />}
+              <item.component {...props} />
             </AccordionDetails>
           </Accordion>
         );
