@@ -7,6 +7,7 @@ import { useHistory } from 'react-router-dom';
 
 import StandardDialog from '../../../components/StandardDialogNew';
 import UppyDashboard from '../../../components/UppyDashboard';
+import Alert from '../../../components/Alert';
 import usePostMissionCollection from '../../../models/missionCollection/usePostMissionCollection';
 
 import '@uppy/core/dist/style.css';
@@ -19,8 +20,10 @@ export default function AddImagesDialog({
 }) {
   const history = useHistory();
   const {
-    isLoading,
     mutate: postMissionCollection,
+    isLoading,
+    error,
+    clearError,
   } = usePostMissionCollection();
 
   const [files, setFiles] = useState([]);
@@ -75,6 +78,7 @@ export default function AddImagesDialog({
               f => f.path !== file.name,
             );
             setFiles(newFiles);
+            uppyInstance.removeFile(file?.id); // does nothing?
           }
         });
 
@@ -91,6 +95,7 @@ export default function AddImagesDialog({
   function onCloseDialog() {
     setFiles([]);
     onClose();
+    clearError();
   }
 
   const closeDialogDisabled = isLoading || uploadInProgress;
@@ -116,6 +121,11 @@ export default function AddImagesDialog({
       title="Add images"
     >
       <UppyDashboard uppyInstance={uppy} />
+      {error && (
+        <Alert title="Error adding images" severity="error">
+          {error}
+        </Alert>
+      )}
     </StandardDialog>
   );
 }
