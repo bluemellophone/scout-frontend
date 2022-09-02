@@ -1,5 +1,4 @@
-import React, { useMemo, useState } from 'react';
-import { isEmpty } from 'lodash-es';
+import React, { useCallback, useMemo, useState } from 'react';
 
 import Text from './Text';
 import Button from './ButtonNew';
@@ -23,6 +22,7 @@ const buttonStyle = { marginRight: 4, marginTop: 4 };
 export default function ImageDisplay({
   images,
   loading,
+  hideTitle,
   resultCount,
   missionData,
   imageQuery,
@@ -66,17 +66,16 @@ export default function ImageDisplay({
     [],
   );
 
-  const onClearSelection = useMemo(
-    () => () => {
-      if (imageQuery) setImageQuery({});
+  const onClearSelection = useCallback(
+    () => {
       if (selectedImages) setSelectedImages([]);
     },
     [imageQuery, selectedImages],
   );
 
   const showClearSelectionWarning = useMemo(
-    () => selectedImages?.length > 0 || !isEmpty(imageQuery),
-    [isEmpty(imageQuery), selectedImages?.length],
+    () => selectedImages?.length > 0,
+    [selectedImages?.length],
   );
 
   const filters = {
@@ -97,10 +96,11 @@ export default function ImageDisplay({
   const imageCount = images?.length;
 
   let tableTitle = `Displaying ${imageCount} out of ${resultCount} matching images.`;
-  if (imageCount === 0) tableTitle = 'No images match these filters.';
   if (imageCount === resultCount)
     tableTitle = `${resultCount} images in this project.`;
   if (loading) tableTitle = 'Loading images...';
+  if (hideTitle) tableTitle = '';
+  if (imageCount === 0) tableTitle = 'No images match these filters.';
 
   return (
     <div>

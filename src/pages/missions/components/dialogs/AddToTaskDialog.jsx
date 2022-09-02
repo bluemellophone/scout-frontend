@@ -10,7 +10,8 @@ import TaskDropdown from '../../../../components/TaskDropdown';
 export default function AddToTaskDialog({
   open,
   onClose,
-  selectedImages,
+  requestOperations,
+  affectedImageCount,
   missionGuid,
 }) {
   const [selectedTask, setSelectedTask] = useState('');
@@ -32,17 +33,10 @@ export default function AddToTaskDialog({
       open={open}
       onClose={handleClose}
       onSubmit={async () => {
-        const operations = [
-          {
-            op: 'union',
-            path: '/assets',
-            value: selectedImages,
-          },
-        ];
         const result = await postAssetsToTask({
           taskGuid: selectedTask,
           missionGuid,
-          operations,
+          operations: requestOperations,
         });
         if (result?.status === 200) handleClose();
       }}
@@ -53,7 +47,7 @@ export default function AddToTaskDialog({
       maxWidth="xs"
     >
       <Text variant="body2" style={{ marginBottom: 12 }}>
-        {`Select a task to add ${selectedImages?.length} images.`}
+        {`Select a task to add ${affectedImageCount} images.`}
       </Text>
       <TaskDropdown
         tasks={missionData?.tasks}

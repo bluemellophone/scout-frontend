@@ -17,8 +17,6 @@ import Fade from '@material-ui/core/Fade';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 
 import FilterList from '@material-ui/icons/FilterList';
 import CloudDownload from '@material-ui/icons/CloudDownload';
@@ -54,8 +52,6 @@ export default function ImageTable({
   cellStyles = {},
   searchParams,
   setSearchParams,
-  querySelected, // eslint-disable-line
-  setQuerySelected,
   ...rest
 }) {
   const columns = [
@@ -140,9 +136,7 @@ export default function ImageTable({
     initialColumnNames,
   );
   const [filterAnchorEl, setFilterAnchorEl] = useState(null);
-  const [selectionAnchorEl, setSelectionAnchorEl] = useState(null);
   const filterPopperOpen = Boolean(filterAnchorEl);
-  const selectionMenuOpen = Boolean(selectionAnchorEl);
 
   const visibleData = data;
 
@@ -153,19 +147,6 @@ export default function ImageTable({
   const noResults = data && data.length === 0;
   const allImagesSelected =
     selectedImages.length === visibleData.length;
-
-  const onClickSelectAll = event => {
-    if (allImagesSelected) {
-      setSelectedImages([]);
-      setQuerySelected(false);
-    } else {
-      setSelectionAnchorEl(event.currentTarget);
-    }
-  };
-
-  const closeSelectionMenu = () => {
-    setSelectionAnchorEl(null);
-  };
 
   const currentPage = Math.round(
     searchParams?.offset / searchParams?.limit,
@@ -279,48 +260,17 @@ export default function ImageTable({
                     selectedImages.length > 0 && !allImagesSelected
                   }
                   checked={allImagesSelected}
-                  onClick={onClickSelectAll}
+                  onClick={() => {
+                    if (allImagesSelected) {
+                      setSelectedImages([]);
+                    } else {
+                      setSelectedImages(
+                        visibleData.map(datum => get(datum, idKey)),
+                      );
+                    }
+                  }}
                   inputProps={{ 'aria-label': 'Select all images' }}
                 />
-                <Menu
-                  id="selection-menu"
-                  anchorEl={selectionAnchorEl}
-                  keepMounted
-                  open={selectionMenuOpen}
-                  onClose={closeSelectionMenu}
-                  getContentAnchorEl={null}
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                  }}
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'left',
-                  }}
-                >
-                  <MenuItem
-                    onClick={() => {
-                      setSelectedImages(
-                        visibleData.map(datum => get(datum, idKey)),
-                      );
-                      setQuerySelected(false);
-                      closeSelectionMenu();
-                    }}
-                  >
-                    Select all images on this page
-                  </MenuItem>
-                  <MenuItem
-                    onClick={() => {
-                      setSelectedImages(
-                        visibleData.map(datum => get(datum, idKey)),
-                      );
-                      setQuerySelected(true);
-                      closeSelectionMenu();
-                    }}
-                  >
-                    Select all matching images
-                  </MenuItem>
-                </Menu>
               </TableCell>
               {visibleColumns.map((c, i) => {
                 const sortProperty = c?.sortProperty || c.name;

@@ -19,7 +19,6 @@ export default function MissionDashboard({
   const [clickedAssetGuid, setClickedAssetGuid] = useState(null);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
-  const [querySelected, setQuerySelected] = useState(false);
   const [searchParams, setSearchParams] = useState({
     limit: resultsPerPage,
     offset: 0,
@@ -83,6 +82,7 @@ export default function MissionDashboard({
         ) : (
           <div style={{ marginTop: 24 }}>
             <ImageDisplay
+              hideTitle
               missionData={missionData}
               images={images}
               loading={assetsLoading}
@@ -94,8 +94,6 @@ export default function MissionDashboard({
               setImageQuery={setImageQuery}
               searchParams={searchParams}
               setSearchParams={setSearchParams}
-              querySelected={querySelected}
-              setQuerySelected={setQuerySelected}
             />
           </div>
         )}
@@ -113,12 +111,11 @@ export default function MissionDashboard({
         />
       </div>
       <BatchUpdateFooter
+        open={!assetsLoading}
         resultCount={resultCount}
         missionData={missionData}
-        open={footerOpen}
-        allImages={images}
         selectedImages={selectedImages}
-        imageQuery={querySelected ? imageQuery : null}
+        imageQuery={imageQuery}
       />
     </div>
   );
