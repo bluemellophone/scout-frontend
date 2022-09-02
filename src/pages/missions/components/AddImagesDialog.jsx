@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
 import { get } from 'lodash-es';
 import { v4 as uuid } from 'uuid';
 import Uppy from '@uppy/core';
@@ -12,6 +13,15 @@ import usePostMissionCollection from '../../../models/missionCollection/usePostM
 
 import '@uppy/core/dist/style.css';
 import '@uppy/dashboard/dist/style.css';
+
+function parseFileGuidFromUploadUrl(uploadUrl) {
+  if (!uploadUrl) throw new Error('Missing upload URL');
+
+  return uploadUrl
+    .split('/')
+    .filter(token => token)
+    .pop();
+}
 
 export default function AddImagesDialog({
   open,
@@ -72,13 +82,33 @@ export default function AddImagesDialog({
           setFiles([...fileRef.current, ...assetReferences]);
         });
 
-        uppyInstance.on('file-removed', (file, reason) => {
+        uppyInstance.on('file-removed', async (file, reason) => {
           if (reason === 'removed-by-user') {
+            const uploadUrl = file?.response?.uploadURL;
+            try {
+              const fileGuid = parseFileGuidFromUploadUrl(uploadUrl);
+              await axios.delete(
+                `${__houston_url__}/api/v1/tus/${fileGuid}`,
+                {
+                  headers: {
+                    'x-tus-transaction-id': newAssetSubmissionId,
+                  },
+                },
+              );
+            } catch (removeError) {
+              let errorMessage = `${removeError.name ||
+                'Error'} deleting ${file.name}.`;
+
+              if (removeError.message)
+                errorMessage += ` ${removeError.message}`;
+
+              console.error(errorMessage);
+            }
+
             const newFiles = fileRef.current.filter(
               f => f.path !== file.name,
             );
             setFiles(newFiles);
-            uppyInstance.removeFile(file?.id); // does nothing?
           }
         });
 
