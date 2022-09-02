@@ -10,7 +10,8 @@ import TaskDropdown from '../../../../components/TaskDropdown';
 export default function RemoveFromTaskDialog({
   open,
   onClose,
-  selectedImages,
+  affectedImageCount,
+  requestOperations,
   missionGuid,
 }) {
   const [selectedTask, setSelectedTask] = useState('');
@@ -32,17 +33,10 @@ export default function RemoveFromTaskDialog({
       open={open}
       onClose={handleClose}
       onSubmit={async () => {
-        const operations = [
-          {
-            op: 'difference',
-            path: '/assets',
-            value: selectedImages,
-          },
-        ];
         const result = await postAssetsToTask({
           taskGuid: selectedTask,
           missionGuid,
-          operations,
+          operations: requestOperations,
           goToTask: false,
         });
         if (result?.status === 200) handleClose();
@@ -54,9 +48,7 @@ export default function RemoveFromTaskDialog({
       maxWidth="xs"
     >
       <Text variant="body2" style={{ marginBottom: 12 }}>
-        {`Select a task to remove ${
-          selectedImages?.length
-        } images. If one of the images you selected is not in the task, it will be skipped over.`}
+        {`Select a task to remove ${affectedImageCount} images. If one of the images you selected is not in the task, it will be skipped over.`}
       </Text>
       <TaskDropdown
         tasks={missionData?.tasks}

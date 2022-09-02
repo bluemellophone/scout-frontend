@@ -13,7 +13,7 @@ import UserSelectionPool from '../../../components/UserSelectionPool';
 export default function CreateTaskDialog({
   open,
   onClose,
-  selectedImages,
+  requestOperations,
   missionGuid,
 }) {
   const { data: missionData } = useGetMission(missionGuid);
@@ -33,13 +33,7 @@ export default function CreateTaskDialog({
       title="Create task"
       onClose={handleClose}
       onSubmit={async () => {
-        const operations = [
-          {
-            op: 'union',
-            path: '/assets',
-            value: selectedImages,
-          },
-        ];
+        const operations = [...requestOperations];
         if (title)
           operations.push({
             op: 'identity',

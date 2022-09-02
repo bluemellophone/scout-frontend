@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
 import { get } from 'lodash-es';
 import { v4 as uuid } from 'uuid';
 import Uppy from '@uppy/core';
@@ -7,10 +8,20 @@ import { useHistory } from 'react-router-dom';
 
 import StandardDialog from '../../../components/StandardDialogNew';
 import UppyDashboard from '../../../components/UppyDashboard';
+import Alert from '../../../components/Alert';
 import usePostMissionCollection from '../../../models/missionCollection/usePostMissionCollection';
 
 import '@uppy/core/dist/style.css';
 import '@uppy/dashboard/dist/style.css';
+
+function parseFileGuidFromUploadUrl(uploadUrl) {
+  if (!uploadUrl) throw new Error('Missing upload URL');
+
+  return uploadUrl
+    .split('/')
+    .filter(token => token)
+    .pop();
+}
 
 export default function AddImagesDialog({
   open,
@@ -19,8 +30,10 @@ export default function AddImagesDialog({
 }) {
   const history = useHistory();
   const {
-    isLoading,
     mutate: postMissionCollection,
+    isLoading,
+    error,
+    clearError,
   } = usePostMissionCollection();
 
   const [files, setFiles] = useState([]);
@@ -69,8 +82,29 @@ export default function AddImagesDialog({
           setFiles([...fileRef.current, ...assetReferences]);
         });
 
-        uppyInstance.on('file-removed', (file, reason) => {
+        uppyInstance.on('file-removed', async (file, reason) => {
           if (reason === 'removed-by-user') {
+            const uploadUrl = file?.response?.uploadURL;
+            try {
+              const fileGuid = parseFileGuidFromUploadUrl(uploadUrl);
+              await axios.delete(
+                `${__houston_url__}/api/v1/tus/${fileGuid}`,
+                {
+                  headers: {
+                    'x-tus-transaction-id': newAssetSubmissionId,
+                  },
+                },
+              );
+            } catch (removeError) {
+              let errorMessage = `${removeError.name ||
+                'Error'} deleting ${file.name}.`;
+
+              if (removeError.message)
+                errorMessage += ` ${removeError.message}`;
+
+              console.error(errorMessage);
+            }
+
             const newFiles = fileRef.current.filter(
               f => f.path !== file.name,
             );
@@ -91,6 +125,7 @@ export default function AddImagesDialog({
   function onCloseDialog() {
     setFiles([]);
     onClose();
+    clearError();
   }
 
   const closeDialogDisabled = isLoading || uploadInProgress;
@@ -116,6 +151,11 @@ export default function AddImagesDialog({
       title="Add images"
     >
       <UppyDashboard uppyInstance={uppy} />
+      {error && (
+        <Alert title="Error adding images" severity="error">
+          {error}
+        </Alert>
+      )}
     </StandardDialog>
   );
 }
